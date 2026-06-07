@@ -1,5 +1,48 @@
 [
   {
+    "name":     "BBC iPlayer",
+    "abbr":     "iP",
+    "icon":     "https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/BBC_iPlayer_logo_%282021%29.svg/250px-BBC_iPlayer_logo_%282021%29.svg.png",
+    "file":     "BBCiPlayer.apk",
+    "category": "Entertainment",
+    "size":     "6 MB",
+    "rating":   4.8,
+    "color":    "linear-gradient(145deg,#e4002b,#a3001f)",
+    "updated":  "June 2026"
+  },
+  {
+    "name":     "Channel 4",
+    "abbr":     "C4",
+    "icon":     "https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Channel_4_%28On_Demand%29_2023.svg/250px-Channel_4_%28On_Demand%29_2023.svg.png",
+    "file":     "Channel4.apk",
+    "category": "Entertainment",
+    "size":     "6 MB",
+    "rating":   4.3,
+    "color":    "linear-gradient(145deg,#6d0eb1,#44007a)",
+    "updated":  "June 2026"
+  },
+  {
+    "name":     "Amazon FreeVee",
+    "abbr":     "FV",
+    "icon":     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Freevee_logo_background_purple.svg/250px-Freevee_logo_background_purple.svg.png",
+    "file":     "FreeVee.apkm",
+    "category": "Entertainment",
+    "size":     "11.7 MB",
+    "rating":   4.1,
+    "color":    "linear-gradient(145deg,#0073cf,#004f99)",
+    "updated":  "June 2026"
+  },
+  {
+    "name":     "Aptoide TV",
+    "abbr":     "AP",
+    "file":     "AptoideTV.apk",
+    "category": "Tools",
+    "size":     "12 MB",
+    "rating":   4.2,
+    "color":    "linear-gradient(145deg,#5ec653,#2e8b2c)",
+    "updated":  "June 2026"
+  },
+  {
     "name":     "My5",
     "abbr":     "M5",
     "file":     "MY5.apk",
@@ -7,6 +50,16 @@
     "size":     "31 MB",
     "rating":   4.4,
     "color":    "linear-gradient(145deg,#ffd400,#e0a800)",
+    "updated":  "June 2026"
+  },
+  {
+    "name":     "Mystery App",
+    "abbr":     "?",
+    "file":     "MysteryApp.apk",
+    "category": "Tools",
+    "size":     "7 MB",
+    "rating":   4.0,
+    "color":    "linear-gradient(145deg,#888,#444)",
     "updated":  "June 2026"
   }
 ]
