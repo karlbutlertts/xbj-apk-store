@@ -61,6 +61,77 @@ header { text-align:center; padding:36px 20px 8px; }
 h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 .subtitle { font-size:15px; color:var(--text2); margin-top:6px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.5; }
 
+/* ── URGENT FIX BANNER ── */
+.fixban {
+  max-width:1100px; margin:18px auto 0; padding:0 24px;
+  opacity:0; animation:fadeUp 0.6s cubic-bezier(.2,.7,.3,1) forwards;
+}
+.fixban-card {
+  position:relative; overflow:hidden;
+  background:linear-gradient(120deg, rgba(255,107,107,0.16), rgba(255,177,68,0.10));
+  border:1px solid rgba(255,140,90,0.35);
+  border-radius:28px; padding:26px 28px;
+  box-shadow:0 20px 60px rgba(120,40,20,0.3);
+}
+.fixban-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
+  color:#ffb648; background:rgba(255,182,72,0.16); border:1px solid rgba(255,182,72,0.35);
+  padding:5px 14px; border-radius:20px; margin-bottom:14px;
+}
+.fixban-dot {
+  width:8px; height:8px; border-radius:50%; background:#ff6b6b;
+  animation:pulseDot 1.6s ease-out infinite;
+}
+@keyframes pulseDot {
+  0%   { box-shadow:0 0 0 0 rgba(255,107,107,0.55); }
+  70%  { box-shadow:0 0 0 9px rgba(255,107,107,0); }
+  100% { box-shadow:0 0 0 0 rgba(255,107,107,0); }
+}
+.fixban-title { font-size:20px; font-weight:800; margin-bottom:8px; }
+.fixban-desc { font-size:14px; color:var(--text2); line-height:1.6; max-width:720px; margin-bottom:20px; }
+.fixban-desc strong { color:var(--text); }
+.fixban-actions { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:22px; }
+.fixban-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  background:linear-gradient(145deg,#ff8a4c,#e8632a); color:#fff; font-weight:800; font-size:14px;
+  padding:14px 24px; border-radius:16px; text-decoration:none;
+  box-shadow:0 10px 28px rgba(232,99,42,0.4);
+  transition:transform 0.15s ease, box-shadow 0.15s ease;
+}
+.fixban-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 14px 36px rgba(232,99,42,0.55); }
+.fixban-btn.secondary {
+  background:rgba(255,255,255,0.08); color:var(--text); border:1px solid var(--border);
+  box-shadow:none;
+}
+.fixban-btn.secondary:hover { background:rgba(255,255,255,0.14); box-shadow:0 8px 20px rgba(0,0,0,0.25); }
+.fixban-steps {
+  background:rgba(11,18,32,0.4); border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px; padding:6px 20px;
+}
+.fixban-step {
+  display:flex; gap:14px; align-items:flex-start; padding:14px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.fixban-step:last-child { border-bottom:none; }
+.fixban-num {
+  width:28px; height:28px; border-radius:50%; flex-shrink:0;
+  background:rgba(255,140,90,0.18); color:#ffb648; font-weight:800; font-size:13px;
+  display:flex; align-items:center; justify-content:center; margin-top:1px;
+}
+.fixban-step-title { font-size:14px; font-weight:700; margin-bottom:2px; }
+.fixban-step-desc { font-size:13px; color:var(--text2); line-height:1.55; }
+.fixban-step-desc code {
+  background:rgba(255,255,255,0.08); padding:2px 7px; border-radius:6px;
+  font-size:12px; font-family:ui-monospace,monospace; color:#ffd9a8;
+}
+.fixban-warn {
+  margin-top:16px; display:flex; gap:10px; align-items:flex-start;
+  background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.3);
+  border-radius:16px; padding:14px 16px; font-size:13px; color:#ffb3b3; line-height:1.55;
+}
+.fixban-warn strong { color:#fff; }
+
 .hero {
   max-width:1100px; margin:18px auto 0; padding:0 24px;
   opacity:0; animation:fadeUp 0.6s cubic-bezier(.2,.7,.3,1) 0.05s forwards;
@@ -235,6 +306,62 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   </div>
   <div class="subtitle">Tap an app to download it straight to your XBJ projector and install... easy! 🍿 🎬 ⚽️</div>
 </header>
+
+<div class="fixban">
+  <div class="fixban-card">
+    <div class="fixban-badge"><span class="fixban-dot"></span> Urgent fix · Latest A5 Pro update</div>
+    <div class="fixban-title">😱 XBJ removed Google Play Store from the newest update</div>
+    <div class="fixban-desc">
+      Loads of you have messaged saying Play Store vanished after updating your XBJ A5 Pro. I've got a <strong>backup firmware image</strong> that restores it — plus I've thrown in the <strong>Disney+ APK</strong> too so you don't have to go hunting for it. Takes about 10 minutes with a USB stick.
+    </div>
+    <div class="fixban-actions">
+      <a class="fixban-btn" href="https://drive.google.com/drive/folders/1mtYxAFjumc-Nfp-SOgYcmjumBkDtUVg6?usp=sharing" target="_blank" rel="noopener">⬇ Get the firmware files</a>
+      <a class="fixban-btn secondary" href="#appGrid">📲 Jump to Disney+ in the app list</a>
+    </div>
+    <div class="fixban-steps">
+      <div class="fixban-step">
+        <div class="fixban-num">1</div>
+        <div>
+          <div class="fixban-step-title">Format a USB drive to FAT32</div>
+          <div class="fixban-step-desc">This is essential — the update <strong>will not work</strong> on any other format.</div>
+        </div>
+      </div>
+      <div class="fixban-step">
+        <div class="fixban-num">2</div>
+        <div>
+          <div class="fixban-step-title">Copy all 4 files to the root of the USB drive</div>
+          <div class="fixban-step-desc">Download them from the link above and drag them straight into the main folder (not inside any subfolder):<br>
+            <code>bootloader.img</code> · <code>emmc_boot.bin</code> · <code>IPL_PRE.bin</code> · <code>DY_8D196_026.bin</code>
+          </div>
+        </div>
+      </div>
+      <div class="fixban-step">
+        <div class="fixban-num">3</div>
+        <div>
+          <div class="fixban-step-title">Plug it into the projector (powered off)</div>
+          <div class="fixban-step-desc">With the projector off, plug the USB into the back, then press and hold the power button for <strong>7 seconds</strong> and release. It should boot to a blue screen and start updating.</div>
+        </div>
+      </div>
+      <div class="fixban-step">
+        <div class="fixban-num">4</div>
+        <div>
+          <div class="fixban-step-title">Didn't work first time? Try again</div>
+          <div class="fixban-step-desc">Turn it off, then firmly press and hold the power button for 7 seconds again to kick off the update process once more.</div>
+        </div>
+      </div>
+      <div class="fixban-step">
+        <div class="fixban-num">5</div>
+        <div>
+          <div class="fixban-step-title">Install Disney+ from the same USB</div>
+          <div class="fixban-step-desc">Pop the Disney+ APK on the same USB stick, then open <strong>FileManager</strong> on the projector and install it from there — no need to hunt for it elsewhere.</div>
+        </div>
+      </div>
+    </div>
+    <div class="fixban-warn">
+      ⚠️ <span><strong>Important:</strong> once this is done, please don't update your projector again until I've spoken to XBJ about why Google Play went missing. I'll let you know on TikTok as soon as it's safe.</span>
+    </div>
+  </div>
+</div>
 
 <div class="hero" id="hero" style="display:none;">
   <div class="hero-card">
