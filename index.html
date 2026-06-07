@@ -131,6 +131,43 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   border-radius:16px; padding:14px 16px; font-size:13px; color:#ffb3b3; line-height:1.55;
 }
 .fixban-warn strong { color:#fff; }
+.fixban-trigger { cursor:pointer; transition:transform 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease; }
+.fixban-trigger:hover, .fixban-trigger:focus-visible {
+  transform:translateY(-3px);
+  border-color:rgba(255,140,90,0.6);
+  box-shadow:0 24px 64px rgba(120,40,20,0.4), 0 0 0 3px rgba(255,140,90,0.22);
+  outline:none;
+}
+.fixban-trigger .fixban-desc { margin-bottom:0; }
+
+/* ── FIX MODAL ── */
+.fix-modal-overlay {
+  position:fixed; inset:0; z-index:2000;
+  display:flex; align-items:flex-start; justify-content:center;
+  background:rgba(5,10,20,0.72); backdrop-filter:blur(6px);
+  padding:32px 18px; overflow-y:auto;
+  opacity:1; transition:opacity 0.2s ease;
+}
+.fix-modal-overlay.hidden { opacity:0; pointer-events:none; }
+.fix-modal {
+  position:relative; max-width:680px; width:100%;
+  background:linear-gradient(160deg, #1c2540, #0f1626);
+  border:1px solid rgba(255,140,90,0.3);
+  border-radius:28px; padding:32px 28px 28px;
+  box-shadow:0 30px 90px rgba(0,0,0,0.55);
+  margin:auto;
+  transform:translateY(0); transition:transform 0.25s ease;
+}
+.fix-modal-overlay.hidden .fix-modal { transform:translateY(24px); }
+.fix-modal-close {
+  position:absolute; top:18px; right:18px;
+  width:36px; height:36px; border-radius:50%; border:1px solid var(--border);
+  background:rgba(255,255,255,0.06); color:var(--text);
+  font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background 0.15s ease, transform 0.15s ease;
+}
+.fix-modal-close:hover { background:rgba(255,255,255,0.14); transform:scale(1.08); }
+.fix-modal .fixban-steps, .fix-modal .fixban-warn { margin-top: 4px; }
 
 .hero {
   max-width:1100px; margin:18px auto 0; padding:0 24px;
@@ -307,62 +344,6 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   <div class="subtitle">Tap an app to download it straight to your XBJ projector and install... easy! 🍿 🎬 ⚽️</div>
 </header>
 
-<div class="fixban">
-  <div class="fixban-card">
-    <div class="fixban-badge"><span class="fixban-dot"></span> Urgent fix · Latest A5 Pro update</div>
-    <div class="fixban-title">😱 XBJ removed Google Play Store from the newest update</div>
-    <div class="fixban-desc">
-      Loads of you have messaged saying Play Store vanished after updating your XBJ A5 Pro. I've got a <strong>backup firmware image</strong> that restores it — plus I've thrown in the <strong>Disney+ APK</strong> too so you don't have to go hunting for it. Takes about 10 minutes with a USB stick.
-    </div>
-    <div class="fixban-actions">
-      <a class="fixban-btn" href="https://drive.google.com/drive/folders/1mtYxAFjumc-Nfp-SOgYcmjumBkDtUVg6?usp=sharing" target="_blank" rel="noopener">⬇ Get the firmware files</a>
-      <a class="fixban-btn secondary" href="#appGrid">📲 Jump to Disney+ in the app list</a>
-    </div>
-    <div class="fixban-steps">
-      <div class="fixban-step">
-        <div class="fixban-num">1</div>
-        <div>
-          <div class="fixban-step-title">Format a USB drive to FAT32</div>
-          <div class="fixban-step-desc">This is essential — the update <strong>will not work</strong> on any other format.</div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">2</div>
-        <div>
-          <div class="fixban-step-title">Copy all 4 files to the root of the USB drive</div>
-          <div class="fixban-step-desc">Download them from the link above and drag them straight into the main folder (not inside any subfolder):<br>
-            <code>bootloader.img</code> · <code>emmc_boot.bin</code> · <code>IPL_PRE.bin</code> · <code>DY_8D196_026.bin</code>
-          </div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">3</div>
-        <div>
-          <div class="fixban-step-title">Plug it into the projector (powered off)</div>
-          <div class="fixban-step-desc">With the projector off, plug the USB into the back, then press and hold the power button for <strong>7 seconds</strong> and release. It should boot to a blue screen and start updating.</div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">4</div>
-        <div>
-          <div class="fixban-step-title">Didn't work first time? Try again</div>
-          <div class="fixban-step-desc">Turn it off, then firmly press and hold the power button for 7 seconds again to kick off the update process once more.</div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">5</div>
-        <div>
-          <div class="fixban-step-title">Install Disney+ from the same USB</div>
-          <div class="fixban-step-desc">Pop the Disney+ APK on the same USB stick, then open <strong>FileManager</strong> on the projector and install it from there — no need to hunt for it elsewhere.</div>
-        </div>
-      </div>
-    </div>
-    <div class="fixban-warn">
-      ⚠️ <span><strong>Important:</strong> once this is done, please don't update your projector again until I've spoken to XBJ about why Google Play went missing. I'll let you know on TikTok as soon as it's safe.</span>
-    </div>
-  </div>
-</div>
-
 <div class="hero" id="hero" style="display:none;">
   <div class="hero-card">
     <div class="hero-icon" id="heroIcon"></div>
@@ -402,6 +383,68 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
         <div class="howto-title">Allow & Enjoy</div>
         <div class="howto-desc">Tap "Allow from this source" if asked, then Install... done!</div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="fixban">
+  <div class="fixban-card fixban-trigger" id="fixOpenBtn" role="button" tabindex="0">
+    <div class="fixban-badge"><span class="fixban-dot"></span> Urgent · Latest A5 Pro update</div>
+    <div class="fixban-title">⚠️ DON'T update to the latest firmware!</div>
+    <div class="fixban-desc">
+      XBJ removed Google Play Store in their newest update. Tap here for the fix — a backup firmware image you can flash via USB in about 10 minutes.
+    </div>
+    <div class="fixban-actions">
+      <span class="fixban-btn">📋 View the fix &amp; instructions</span>
+    </div>
+  </div>
+</div>
+
+<div id="fixModalOverlay" class="fix-modal-overlay hidden">
+  <div class="fix-modal">
+    <button class="fix-modal-close" id="fixCloseBtn" aria-label="Close">✕</button>
+    <div class="fixban-badge"><span class="fixban-dot"></span> Urgent fix · Latest A5 Pro update</div>
+    <div class="fixban-title">⚠️ DON'T update to the latest firmware!</div>
+    <div class="fixban-desc">
+      Loads of you have messaged saying Play Store vanished after updating your XBJ A5 Pro. I've got a <strong>backup firmware image</strong> that restores it. Takes about 10 minutes with a USB stick.
+    </div>
+    <div class="fixban-actions">
+      <a class="fixban-btn" href="https://drive.google.com/drive/folders/1mtYxAFjumc-Nfp-SOgYcmjumBkDtUVg6?usp=sharing" target="_blank" rel="noopener">⬇ Get the firmware files</a>
+    </div>
+    <div class="fixban-steps">
+      <div class="fixban-step">
+        <div class="fixban-num">1</div>
+        <div>
+          <div class="fixban-step-title">Format a USB drive to FAT32</div>
+          <div class="fixban-step-desc">This is essential — the update <strong>will not work</strong> on any other format.</div>
+        </div>
+      </div>
+      <div class="fixban-step">
+        <div class="fixban-num">2</div>
+        <div>
+          <div class="fixban-step-title">Copy all 4 files to the root of the USB drive</div>
+          <div class="fixban-step-desc">Download them from the link above and drag them straight into the main folder (not inside any subfolder):<br>
+            <code>bootloader.img</code> · <code>emmc_boot.bin</code> · <code>IPL_PRE.bin</code> · <code>DY_8D196_026.bin</code>
+          </div>
+        </div>
+      </div>
+      <div class="fixban-step">
+        <div class="fixban-num">3</div>
+        <div>
+          <div class="fixban-step-title">Plug it into the projector (powered off)</div>
+          <div class="fixban-step-desc">With the projector off, plug the USB into the back, then press and hold the power button for <strong>7 seconds</strong> and release. It should boot to a blue screen and start updating.</div>
+        </div>
+      </div>
+      <div class="fixban-step">
+        <div class="fixban-num">4</div>
+        <div>
+          <div class="fixban-step-title">Didn't work first time? Try again</div>
+          <div class="fixban-step-desc">Turn it off, then firmly press and hold the power button for 7 seconds again to kick off the update process once more.</div>
+        </div>
+      </div>
+    </div>
+    <div class="fixban-warn">
+      ⚠️ <span><strong>Important:</strong> once this is done, please don't update your projector again until I've spoken to XBJ about why Google Play went missing. I'll let you know on TikTok as soon as it's safe.</span>
     </div>
   </div>
 </div>
@@ -495,6 +538,18 @@ async function tryUnlock() {
   }
 }
 lockUser.addEventListener('keydown', e => { if (e.key === 'Enter') lockInput.focus(); });
+
+// ── Firmware fix modal ──
+const fixOpenBtn = document.getElementById('fixOpenBtn');
+const fixModalOverlay = document.getElementById('fixModalOverlay');
+const fixCloseBtn = document.getElementById('fixCloseBtn');
+function openFixModal() { fixModalOverlay.classList.remove('hidden'); }
+function closeFixModal() { fixModalOverlay.classList.add('hidden'); }
+fixOpenBtn.addEventListener('click', openFixModal);
+fixOpenBtn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFixModal(); } });
+fixCloseBtn.addEventListener('click', closeFixModal);
+fixModalOverlay.addEventListener('click', e => { if (e.target === fixModalOverlay) closeFixModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFixModal(); });
 lockBtn.addEventListener('click', tryUnlock);
 lockInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
 lockInput.addEventListener('input', () => { lockInput.value = lockInput.value.replace(/\D/g, '').slice(0, 6); });
