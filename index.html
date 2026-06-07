@@ -169,6 +169,32 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 .fix-modal-close:hover { background:rgba(255,255,255,0.14); transform:scale(1.08); }
 .fix-modal .fixban-steps, .fix-modal .fixban-warn { margin-top: 4px; }
 
+.updates-banner {
+  max-width:1100px; margin:18px auto 0; padding:0 24px;
+  opacity:0; animation:fadeUp 0.6s cubic-bezier(.2,.7,.3,1) 0.02s forwards;
+}
+.updates-banner a {
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  text-decoration:none; color:inherit;
+  background:linear-gradient(120deg, rgba(60,220,150,0.14), rgba(90,166,255,0.10));
+  border:1px solid rgba(80,220,160,0.32);
+  border-radius:20px; padding:14px 22px;
+  transition:transform 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
+}
+.updates-banner a:hover {
+  transform:translateY(-2px);
+  border-color:rgba(80,220,160,0.55);
+  box-shadow:0 14px 40px rgba(30,120,80,0.28);
+}
+.updates-pill {
+  flex-shrink:0; font-size:11px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase;
+  color:#3fe0a0; background:rgba(63,224,160,0.14); border:1px solid rgba(63,224,160,0.35);
+  border-radius:999px; padding:5px 12px; white-space:nowrap;
+}
+.updates-text { font-size:14px; color:var(--text2); line-height:1.4; }
+.updates-text strong { color:var(--text); }
+.updates-arrow { margin-left:auto; font-size:18px; color:#3fe0a0; flex-shrink:0; }
+
 .hero {
   max-width:1100px; margin:18px auto 0; padding:0 24px;
   opacity:0; animation:fadeUp 0.6s cubic-bezier(.2,.7,.3,1) 0.05s forwards;
@@ -343,6 +369,14 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   </div>
   <div class="subtitle">Tap an app to download it straight to your XBJ projector and install... easy! 🍿 🎬 ⚽️</div>
 </header>
+
+<div class="updates-banner">
+  <a href="#appGrid">
+    <span class="updates-pill">🆕 Latest updates</span>
+    <span class="updates-text">All apps refreshed for <strong>June 2026</strong> — Disney+, BBC iPlayer, ITVX, Channel 4, My5 &amp; more, all freshly updated and ready to download.</span>
+    <span class="updates-arrow">↓</span>
+  </a>
+</div>
 
 <div class="hero" id="hero" style="display:none;">
   <div class="hero-card">
