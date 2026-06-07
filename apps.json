@@ -2,6 +2,7 @@
   {
     "name":     "BBC iPlayer",
     "abbr":     "iP",
+    "icon":     "https://www.google.com/s2/favicons?domain=bbc.co.uk&sz=128",
     "file":     "BBCiPlayer.apk",
     "category": "Entertainment",
     "size":     "51 MB",
@@ -12,6 +13,7 @@
   {
     "name":     "Channel 4",
     "abbr":     "C4",
+    "icon":     "https://www.google.com/s2/favicons?domain=channel4.com&sz=128",
     "file":     "Channel4.apk",
     "category": "Entertainment",
     "size":     "35 MB",
@@ -22,6 +24,7 @@
   {
     "name":     "Amazon FreeVee",
     "abbr":     "FV",
+    "icon":     "https://www.google.com/s2/favicons?domain=amazon.co.uk&sz=128",
     "file":     "FreeVee.apkm",
     "category": "Entertainment",
     "size":     "42 MB",
@@ -32,6 +35,7 @@
   {
     "name":     "Google Play Store",
     "abbr":     "GP",
+    "icon":     "https://www.google.com/s2/favicons?domain=play.google.com&sz=128",
     "file":     "GooglePlayStore.apk",
     "category": "Tools",
     "size":     "28 MB",
@@ -42,6 +46,7 @@
   {
     "name":     "ITVX",
     "abbr":     "IT",
+    "icon":     "https://www.google.com/s2/favicons?domain=itv.com&sz=128",
     "file":     "ITVX.apk",
     "category": "Entertainment",
     "size":     "38 MB",
@@ -52,6 +57,7 @@
   {
     "name":     "Downloader",
     "abbr":     "DL",
+    "icon":     "https://www.google.com/s2/favicons?domain=downloader.net&sz=128",
     "file":     "Downloader.apk",
     "category": "Tools",
     "size":     "8 MB",
@@ -62,6 +68,7 @@
   {
     "name":     "Remote ADB Shell",
     "abbr":     "ADB",
+    "icon":     "https://www.google.com/s2/favicons?domain=android.com&sz=128",
     "file":     "RemoteADBShell.apk",
     "category": "Developer Tools",
     "size":     "5 MB",
