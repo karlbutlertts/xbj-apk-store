@@ -1,5 +1,15 @@
 [
   {
+    "name":     "Disney+",
+    "abbr":     "D+",
+    "file":     "DisneyPlus.apk",
+    "category": "Entertainment",
+    "size":     "43 MB",
+    "rating":   4.6,
+    "color":    "linear-gradient(145deg,#1a3a6b,#0d2342)",
+    "updated":  "June 2026"
+  },
+  {
     "name":     "BBC iPlayer",
     "abbr":     "iP",
     "icon":     "https://play-lh.googleusercontent.com/-jCY-l3RicXFIAJCfNNeJmuRiebUbZNSyYfk3jUYqq1n6mMoqNSM6dJjIOuHs8HjbA=w480-h960-rw",
