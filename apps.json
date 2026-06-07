@@ -1,5 +1,16 @@
 [
   {
+    "name":     "Google Play Services",
+    "abbr":     "GS",
+    "icon":     "https://www.apkmirror.com/wp-content/themes/APKMirror/ap_resize/ap_resize.php?src=https%3A%2F%2Fdownloadr2.apkmirror.com%2Fwp-content%2Fuploads%2F2021%2F10%2F21%2F61582bc8c1f9f.png&w=192&h=192&q=100",
+    "file":     "GooglePlayServices.apk",
+    "category": "Tools",
+    "size":     "50 MB",
+    "rating":   4.3,
+    "color":    "linear-gradient(145deg,#4285F4,#1a56c4)",
+    "updated":  "June 2026"
+  },
+  {
     "name":     "Google Play Store",
     "abbr":     "GP",
     "icon":     "https://www.huaweicentral.com/wp-content/uploads/2022/07/play-store-new-logo-4.jpg",
