@@ -1,5 +1,16 @@
 [
   {
+    "name":     "Google Play Store",
+    "abbr":     "GP",
+    "icon":     "https://www.huaweicentral.com/wp-content/uploads/2022/07/play-store-new-logo-4.jpg",
+    "file":     "GooglePlayStore.apk",
+    "category": "Tools",
+    "size":     "38 MB",
+    "rating":   4.5,
+    "color":    "linear-gradient(145deg,#34c759,#1f9e44)",
+    "updated":  "June 2026"
+  },
+  {
     "name":     "Disney+",
     "abbr":     "D+",
     "bg":       "https://play-lh.googleusercontent.com/jk4yLcR_Ev-vB7fmD5LXPl4ujsclvTSW7-Own-ud7W-VK_TdzsoVsWal3vKYDBYKewA=w5120-h2880-rw",
