@@ -22,17 +22,6 @@
     "updated":  "June 2026"
   },
   {
-    "name":     "Amazon FreeVee",
-    "abbr":     "FV",
-    "icon":     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Freevee_logo_background_purple.svg/250px-Freevee_logo_background_purple.svg.png",
-    "file":     "FreeVee.apkm",
-    "category": "Entertainment",
-    "size":     "11.7 MB",
-    "rating":   4.1,
-    "color":    "linear-gradient(145deg,#0073cf,#004f99)",
-    "updated":  "June 2026"
-  },
-  {
     "name":     "Aptoide TV",
     "abbr":     "AP",
     "icon":     "https://aptoide-tv.en.aptoide.com/_next/image?url=https%3A%2F%2Fcdn.aptoide.com%2Fimgs%2F7%2Fa%2F9%2F7a9e4088c254fb14c41d104a0a3efbc6_icon.png&w=384&q=75",
