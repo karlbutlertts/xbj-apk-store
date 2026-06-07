@@ -55,6 +55,17 @@
     "updated":  "June 2026"
   },
   {
+    "name":     "Downloader",
+    "abbr":     "DL",
+    "icon":     "https://www.apkmirror.com/wp-content/themes/APKMirror/ap_resize/ap_resize.php?src=https%3A%2F%2Fdownloadr2.apkmirror.com%2Fwp-content%2Fuploads%2F2024%2F08%2F89%2F66bca529713ab_com.esaba.downloader.png&w=192&h=192&q=100",
+    "file":     "Downloader.apk",
+    "category": "Tools",
+    "size":     "2.4 MB",
+    "rating":   4.9,
+    "color":    "linear-gradient(145deg,#f4511e,#bf360c)",
+    "updated":  "June 2026"
+  },
+  {
     "name":     "ITVX",
     "abbr":     "IT",
     "icon":     "https://play-lh.googleusercontent.com/E74dEk9-niy465ReZADylv2FMzQ9GMgkYbUqLzYE2ycOoidTgx6_6rhDM94wbkuhXA=w480-h960-rw",
