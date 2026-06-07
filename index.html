@@ -286,7 +286,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 // ─────────────────────────────────────────────
 const TOTP_SECRET = 'KARLXBJPROJECTOR';
 const SESSION_KEY = 'xbj_unlocked_until';
-const SESSION_DAYS = 30;
+const SESSION_MINUTES = 10;
 const STEP = 30;          // seconds — standard, matches Google Authenticator
 const WINDOW = 10;        // ±10 steps = ±5 minutes tolerance
 
@@ -328,7 +328,7 @@ const lockBtn = document.getElementById('lockBtn');
 const lockMsg = document.getElementById('lockMsg');
 
 function unlock() {
-  localStorage.setItem(SESSION_KEY, String(Date.now() + SESSION_DAYS * 86400 * 1000));
+  localStorage.setItem(SESSION_KEY, String(Date.now() + SESSION_MINUTES * 60 * 1000));
   lock.classList.add('hidden');
 }
 
