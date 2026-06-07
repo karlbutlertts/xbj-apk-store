@@ -2,7 +2,7 @@
   {
     "name":     "BBC iPlayer",
     "abbr":     "iP",
-    "icon":     "https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/BBC_iPlayer_logo_%282021%29.svg/250px-BBC_iPlayer_logo_%282021%29.svg.png",
+    "icon":     "https://play-lh.googleusercontent.com/-jCY-l3RicXFIAJCfNNeJmuRiebUbZNSyYfk3jUYqq1n6mMoqNSM6dJjIOuHs8HjbA=w480-h960-rw",
     "file":     "BBCiPlayer.apk",
     "category": "Entertainment",
     "size":     "6 MB",
@@ -13,7 +13,7 @@
   {
     "name":     "Channel 4",
     "abbr":     "C4",
-    "icon":     "https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Channel_4_%28On_Demand%29_2023.svg/250px-Channel_4_%28On_Demand%29_2023.svg.png",
+    "icon":     "https://play-lh.googleusercontent.com/OOahZdnHEfVWUfWaVA_M01JdNyPSMv7umDjK2oeksFX-I_m8gSFaZPtEo7967FmkmK4=w480-h960-rw",
     "file":     "Channel4.apk",
     "category": "Entertainment",
     "size":     "6 MB",
@@ -35,6 +35,7 @@
   {
     "name":     "Aptoide TV",
     "abbr":     "AP",
+    "icon":     "https://aptoide-tv.en.aptoide.com/_next/image?url=https%3A%2F%2Fcdn.aptoide.com%2Fimgs%2F7%2Fa%2F9%2F7a9e4088c254fb14c41d104a0a3efbc6_icon.png&w=384&q=75",
     "file":     "AptoideTV.apk",
     "category": "Tools",
     "size":     "12 MB",
@@ -45,6 +46,7 @@
   {
     "name":     "My5",
     "abbr":     "M5",
+    "icon":     "https://play-lh.googleusercontent.com/U2OQgb0fd1ToR3r8L31gVM8-BCWeq8R80TLDRl5AkMXGJhiZVzB_1K0Q405uukM-lfE=w480-h960-rw",
     "file":     "MY5.apk",
     "category": "Entertainment",
     "size":     "31 MB",
@@ -55,7 +57,7 @@
   {
     "name":     "ITVX",
     "abbr":     "IT",
-    "icon":     "https://upload.wikimedia.org/wikipedia/en/thumb/1/12/ITVX_logo.svg/250px-ITVX_logo.svg.png",
+    "icon":     "https://play-lh.googleusercontent.com/E74dEk9-niy465ReZADylv2FMzQ9GMgkYbUqLzYE2ycOoidTgx6_6rhDM94wbkuhXA=w480-h960-rw",
     "file":     "ITVX.apk",
     "category": "Entertainment",
     "size":     "7 MB",
