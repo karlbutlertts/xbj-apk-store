@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "name":     "My5",
+    "abbr":     "M5",
+    "file":     "MY5.apk",
+    "category": "Entertainment",
+    "size":     "31 MB",
+    "rating":   4.4,
+    "color":    "linear-gradient(145deg,#ffd400,#e0a800)",
+    "updated":  "June 2026"
+  }
+]
