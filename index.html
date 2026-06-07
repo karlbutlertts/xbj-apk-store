@@ -40,6 +40,16 @@ body::after {
 @keyframes driftB { 0%{ transform:translate(0,0) scale(1);} 100%{ transform:translate(-100px,-60px) scale(1.2);} }
 header, .grid-wrap, .howto, .footer-note, .hero { position:relative; z-index:1; }
 
+/* ambient blurred backdrop shown behind highlighted app */
+#ambientBg {
+  position:fixed; inset:-5%; z-index:0; pointer-events:none;
+  background-size:cover; background-position:center;
+  filter:blur(60px) brightness(0.55) saturate(1.3);
+  opacity:0; transform:scale(1.08);
+  transition:opacity 0.5s ease, transform 6s ease;
+}
+#ambientBg.show { opacity:0.55; transform:scale(1.18); }
+
 @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
 @keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
 
@@ -198,6 +208,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 </style>
 </head>
 <body>
+<div id="ambientBg"></div>
 
 <div id="lock">
   <div class="lock-card">
@@ -374,7 +385,7 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
     }
 
     grid.innerHTML = apps.map((a, i) => `
-      <a class="app-tile" style="animation-delay:${0.06 * i}s" href="${APK_BASE_URL}${a.file}" download="${a.file}">
+      <a class="app-tile" style="animation-delay:${0.06 * i}s" href="${APK_BASE_URL}${a.file}" download="${a.file}" data-bg="${a.icon || ''}">
         <div class="tile-icon" style="background:${a.color}">
           ${a.icon
             ? `<img src="${a.icon}" alt="${a.name}" loading="lazy" onerror="this.parentElement.textContent='${a.abbr}';this.remove();">`
@@ -385,6 +396,22 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
         <div class="tile-dl">⬇ Download</div>
       </a>
     `).join('');
+
+    // ── Ambient backdrop on hover/focus ──
+    const ambientBg = document.getElementById('ambientBg');
+    grid.querySelectorAll('.app-tile').forEach(tile => {
+      const bg = tile.getAttribute('data-bg');
+      if (!bg) return;
+      const activate = () => {
+        ambientBg.style.backgroundImage = `url("${bg}")`;
+        ambientBg.classList.add('show');
+      };
+      const deactivate = () => ambientBg.classList.remove('show');
+      tile.addEventListener('mouseenter', activate);
+      tile.addEventListener('mouseleave', deactivate);
+      tile.addEventListener('focus', activate);
+      tile.addEventListener('blur', deactivate);
+    });
   })
   .catch(() => {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text2);padding:40px;">Couldn\'t load the app list — refresh, or message @karlsmidlifecrisis on TikTok.</div>';
