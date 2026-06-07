@@ -35,7 +35,7 @@
   {
     "name":     "Google Play Store",
     "abbr":     "GP",
-    "icon":     "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Google_Play_2022_logo.svg/330px-Google_Play_2022_logo.svg.png",
+    "icon":     "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Google_Play_Arrow_logo.svg/256px-Google_Play_Arrow_logo.svg.png",
     "file":     "GooglePlayStore.apk",
     "category": "Tools",
     "size":     "28 MB",
