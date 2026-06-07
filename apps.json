@@ -53,13 +53,14 @@
     "updated":  "June 2026"
   },
   {
-    "name":     "Mystery App",
-    "abbr":     "?",
-    "file":     "MysteryApp.apk",
-    "category": "Tools",
+    "name":     "ITVX",
+    "abbr":     "IT",
+    "icon":     "https://upload.wikimedia.org/wikipedia/en/thumb/1/12/ITVX_logo.svg/250px-ITVX_logo.svg.png",
+    "file":     "ITVX.apk",
+    "category": "Entertainment",
     "size":     "7 MB",
     "rating":   4.0,
-    "color":    "linear-gradient(145deg,#888,#444)",
+    "color":    "linear-gradient(145deg,#003c8f,#00246b)",
     "updated":  "June 2026"
   }
 ]
