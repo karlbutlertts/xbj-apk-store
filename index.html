@@ -195,6 +195,8 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 }
 .lock-input:focus { border-color:var(--blue); }
 .lock-input::placeholder { color:var(--text3); letter-spacing:0.3em; }
+.lock-input-text { font-size:15px; font-weight:600; letter-spacing:normal; text-align:left; padding:14px 16px; }
+.lock-input-text::placeholder { letter-spacing:normal; }
 .lock-btn {
   width:100%; background:var(--blue); color:#0b1220; border:none; border-radius:16px;
   padding:15px; font-size:15px; font-weight:800; cursor:pointer; font-family:'DM Sans',sans-serif;
@@ -217,6 +219,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
     </div>
     <div class="lock-title">TikTok shop projector guy 🎬🍿</div>
     <div class="lock-sub">App updates locked. Message <strong>@karlsmidlifecrisis</strong> on TikTok for the current access code if you've purchased an XBJ Projector from my lives or videos.</div>
+    <input id="lockUser" class="lock-input lock-input-text" type="text" placeholder="Your TikTok username" autocomplete="off" autocapitalize="none" maxlength="40">
     <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
     <button id="lockBtn" class="lock-btn">Unlock</button>
     <div id="lockMsg" class="lock-msg"></div>
@@ -284,7 +287,10 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 // but we accept a wide window either side so any code you
 // read out to a buyer stays valid for ~5 minutes.
 // ─────────────────────────────────────────────
-const TOTP_SECRET = 'KARLXBJPROJECTOR';
+// Secret stored lightly obfuscated (reversed + base64) — not real security,
+// just avoids it sitting in plain text for casual "view source" snoopers.
+const _S = 'Uk9UQ0VKT1JQSkJYTFJBSw==';
+const TOTP_SECRET = atob(_S).split('').reverse().join('');
 const SESSION_KEY = 'xbj_unlocked_until';
 const SESSION_MINUTES = 10;
 const STEP = 30;          // seconds — standard, matches Google Authenticator
@@ -323,6 +329,7 @@ async function checkCode(input) {
 }
 
 const lock = document.getElementById('lock');
+const lockUser = document.getElementById('lockUser');
 const lockInput = document.getElementById('lockInput');
 const lockBtn = document.getElementById('lockBtn');
 const lockMsg = document.getElementById('lockMsg');
@@ -338,13 +345,20 @@ if (savedUntil > Date.now()) {
 }
 
 async function tryUnlock() {
+  const user = lockUser.value.trim().replace(/^@/, '');
   const val = lockInput.value.trim();
+  if (!user) { lockMsg.textContent = 'Enter your TikTok username first.'; lockMsg.className = 'lock-msg error'; lockUser.focus(); return; }
   if (val.length !== 6) { lockMsg.textContent = 'Enter the 6-digit code.'; lockMsg.className = 'lock-msg error'; return; }
   lockBtn.disabled = true;
   lockMsg.textContent = 'Checking…'; lockMsg.className = 'lock-msg';
   const ok = await checkCode(val);
   lockBtn.disabled = false;
   if (ok) {
+    try {
+      const log = JSON.parse(localStorage.getItem('xbj_access_log') || '[]');
+      log.push({ user, time: new Date().toISOString() });
+      localStorage.setItem('xbj_access_log', JSON.stringify(log.slice(-20)));
+    } catch (e) {}
     lockMsg.textContent = 'Unlocked!'; lockMsg.className = 'lock-msg ok';
     setTimeout(unlock, 350);
   } else {
@@ -353,6 +367,7 @@ async function tryUnlock() {
     lockInput.value = ''; lockInput.focus();
   }
 }
+lockUser.addEventListener('keydown', e => { if (e.key === 'Enter') lockInput.focus(); });
 lockBtn.addEventListener('click', tryUnlock);
 lockInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
 lockInput.addEventListener('input', () => { lockInput.value = lockInput.value.replace(/\D/g, '').slice(0, 6); });
