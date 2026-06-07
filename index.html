@@ -191,7 +191,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 // but we accept a wide window either side so any code you
 // read out to a buyer stays valid for ~5 minutes.
 // ─────────────────────────────────────────────
-const TOTP_SECRET = 'KARLXBJ2026';
+const TOTP_SECRET = 'KARLXBJPROJECTOR';
 const SESSION_KEY = 'xbj_unlocked_until';
 const SESSION_DAYS = 30;
 const STEP = 30;          // seconds — standard, matches Google Authenticator
@@ -207,11 +207,12 @@ function base32ToBytes(str) {
   return new Uint8Array(bytes);
 }
 
-// Plain-text secret → use raw UTF-8 bytes (simpler for Karl: type the passphrase straight into the app)
+// Google Authenticator decodes the key as Base32 to get the raw secret bytes —
+// we must do the same here so both sides generate identical codes.
 async function hotp(secret, counter) {
   const counterBuf = new ArrayBuffer(8);
   new DataView(counterBuf).setUint32(4, counter, false);
-  const keyData = new TextEncoder().encode(secret);
+  const keyData = base32ToBytes(secret);
   const key = await crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-1' }, false, ['sign']);
   const sig = new Uint8Array(await crypto.subtle.sign('HMAC', key, counterBuf));
   const offset = sig[19] & 0xf;
