@@ -1,5 +1,17 @@
 [
   {
+    "name": "Prime Video",
+    "abbr": "PV",
+    "icon": "https://www.apkmirror.com/wp-content/themes/APKMirror/ap_resize/ap_resize.php?src=https%3A%2F%2Fdownloadr2.apkmirror.com%2Fwp-content%2Fuploads%2F2024%2F01%2F03%2F659f2d297d9c6_com.amazon.amazonvideo.livingroom.png&w=192&h=192&q=100",
+    "file": "PrimeVideo.apk",
+    "category": "Entertainment",
+    "size": "33 MB",
+    "rating": 4.4,
+    "color": "linear-gradient(145deg,#1f2933,#0d1b2a)",
+    "updated": "June 2026",
+    "downloads": "2.5k"
+  },
+  {
     "name": "Google Play Services",
     "abbr": "GS",
     "icon": "https://www.apkmirror.com/wp-content/themes/APKMirror/ap_resize/ap_resize.php?src=https%3A%2F%2Fdownloadr2.apkmirror.com%2Fwp-content%2Fuploads%2F2021%2F10%2F21%2F61582bc8c1f9f.png&w=192&h=192&q=100",
