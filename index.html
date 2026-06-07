@@ -569,7 +569,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 const _S = 'Uk9UQ0VKT1JQSkJYTFJBSw==';
 const TOTP_SECRET = atob(_S).split('').reverse().join('');
 const SESSION_KEY = 'xbj_unlocked_until';
-const SESSION_MINUTES = 10;
+const SESSION_MINUTES = 120;
 const STEP = 30;          // seconds — standard, matches Google Authenticator
 const WINDOW = 10;        // ±10 steps = ±5 minutes tolerance
 
