@@ -2,6 +2,7 @@
   {
     "name": "Projector Guy App",
     "abbr": "PG",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
     "file": "ProjectorGuyApp.apk",
     "category": "Tools",
     "size": "1.6 MB",
