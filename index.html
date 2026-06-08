@@ -699,7 +699,7 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
     gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
 
     // Feature the top-rated app in the hero banner
-    const featured = [...apps].sort((a, b) => (b.rating||0) - (a.rating||0))[0];
+    const featured = apps.find(a => a.name === 'Google Play Store') || [...apps].sort((a, b) => (b.rating||0) - (a.rating||0))[0];
     if (featured) {
       const hero = document.getElementById('hero');
       document.getElementById('heroIcon').innerHTML = featured.icon
