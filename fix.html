@@ -404,19 +404,26 @@ async function startFormatAndDownload(){
   document.getElementById('fmtRetry').style.display = 'none';
   await sleep(400);
 
-  let ok = false;
-  try { ok = Bridge.formatUsbFat32(); } catch(e){ ok = false; }
-  // clear root too (covers "already FAT32" case + leftover files)
-  try { Bridge.clearUsbRoot(); } catch(e){}
+  let formatted = false;
+  try { formatted = Bridge.formatUsbFat32(); } catch(e){ formatted = false; }
 
-  if (!ok){
+  // Check what the filesystem actually is now. On non-rooted projectors the
+  // auto-format can't run — but if the stick is ALREADY FAT32 we can carry on
+  // (just wipe the root). We only block if it's still a non-FAT32 format.
+  const fs = (Bridge.getUsbFilesystem() || '').toLowerCase();
+  const isFat32 = formatted || fs === 'vfat' || fs === 'msdos' || fs === 'fat';
+
+  if (!isFat32){
     const err = document.getElementById('fmtErr');
     err.style.display = 'block';
-    err.innerHTML = 'Could not format the USB drive automatically. This needs a rooted / system-privileged build. ' +
-                    'You can format it to <strong>FAT32</strong> on a computer instead, then come back and skip this step.';
+    err.innerHTML = 'This USB stick is <strong>' + (fs ? fs.toUpperCase() : 'not FAT32') + '</strong> and your projector can\'t reformat it automatically. ' +
+                    'Format it to <strong>FAT32</strong> first: <strong>Settings → Storage</strong>, pick the USB drive, then <strong>Format / Erase</strong> — or format it on a computer. Then come back and tap Retry.';
     document.getElementById('fmtRetry').style.display = 'block';
     return;
   }
+
+  // FAT32 confirmed — clear any existing files from the root, then download.
+  try { Bridge.clearUsbRoot(); } catch(e){}
   await downloadAll();
 }
 
