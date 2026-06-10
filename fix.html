@@ -314,6 +314,19 @@ const Bridge = {
     if (NATIVE) return window.AndroidBridge.abortWriteSession(token);
     delete mock.sessions[token]; return true;
   },
+  hasNativeDownloader(){
+    return !!(window.AndroidBridge && window.AndroidBridge.startDownloadToUsb);
+  },
+  startDownloadToUsb(url, filename){
+    if (window.AndroidBridge && window.AndroidBridge.startDownloadToUsb)
+      return window.AndroidBridge.startDownloadToUsb(url, filename);
+    return null;
+  },
+  getDownloadProgress(token){
+    if (window.AndroidBridge && window.AndroidBridge.getDownloadProgress)
+      return window.AndroidBridge.getDownloadProgress(token);
+    return null;
+  },
 };
 
 /* ───────────────────────────────────────────────────────────────────────
@@ -483,18 +496,23 @@ async function downloadOne(i){
 
   await ensureUsbPresent();
 
+  // Browser preview: simulate streaming
+  if (!NATIVE){
+    for (let p = 0; p <= 100; p += 5){ setRow(i, p, p+'%', 'active'); await sleep(40); }
+    setRow(i, 100, '✓ Done', 'done');
+    return true;
+  }
+
+  // Preferred path: native downloader (no CORS, handles the ~1 GB file)
+  if (Bridge.hasNativeDownloader()){
+    return await downloadOneNative(i);
+  }
+
+  // Fallback path: fetch + stream chunks through the write-session API
   let token = null;
   try {
     token = Bridge.openWriteSessionRoot(f.name);
     if (!token) throw new Error('Could not open USB file for writing');
-
-    if (!NATIVE){
-      // browser preview: simulate streaming
-      for (let p = 0; p <= 100; p += 5){ setRow(i, p, p+'%', 'active'); await sleep(40); }
-      Bridge.closeWriteSession(token);
-      setRow(i, 100, '✓ Done', 'done');
-      return true;
-    }
 
     const resp = await fetch(driveUrl(f.id));
     if (!resp.ok || !resp.body) throw new Error('HTTP ' + resp.status);
@@ -533,6 +551,36 @@ async function downloadOne(i){
 
   } catch (err){
     try { if (token) Bridge.abortWriteSession(token); } catch(e){}
+    setRow(i, 0, '✗ Failed', 'fail');
+    document.getElementById('dlStatus').textContent =
+      f.name + ' failed: ' + (err && err.message ? err.message : 'error') + '. Tap retry.';
+    return false;
+  }
+}
+
+async function downloadOneNative(i){
+  const f = FILES[i];
+  try {
+    const token = Bridge.startDownloadToUsb(driveUrl(f.id), f.name);
+    if (!token) throw new Error('Could not start download');
+
+    while (true){
+      await ensureUsbPresent();
+      await sleep(500);
+      const raw = Bridge.getDownloadProgress(token);
+      if (raw == null) throw new Error('Lost track of download');
+      const [received, total, state] = raw.split(',').map(Number);
+
+      const denom = total > 0 ? total : f.approx;
+      const pct = state === 1 ? 100 : Math.min(99, Math.round(received/denom*100));
+      setRow(i, pct, pct + '%', 'active');
+      document.getElementById('dlStatus').textContent =
+        'Downloading ' + f.name + ' — ' + pct + '%';
+
+      if (state === 1){ setRow(i, 100, '✓ Done', 'done'); return true; }
+      if (state === 2) throw new Error('download/write error');
+    }
+  } catch (err){
     setRow(i, 0, '✗ Failed', 'fail');
     document.getElementById('dlStatus').textContent =
       f.name + ' failed: ' + (err && err.message ? err.message : 'error') + '. Tap retry.';
