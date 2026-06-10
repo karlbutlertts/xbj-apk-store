@@ -499,36 +499,6 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 </div>
 
 
-<div id="psModalOverlay" class="fix-modal-overlay hidden">
-  <div class="fix-modal" style="max-width:480px;">
-    <button class="fix-modal-close" id="psCloseBtn" aria-label="Close">✕</button>
-    <div class="fixban-badge"><span class="fixban-dot"></span> Before you install</div>
-    <div class="fixban-title">📦 You'll also need Google Play Services</div>
-    <div class="fixban-desc">
-      The Play Store app on its own won't run on Android 12 — it needs <strong>Google Play Services</strong> installed alongside it, otherwise it'll crash on opening.
-    </div>
-    <div class="fixban-steps">
-      <div class="fixban-step">
-        <div class="fixban-num">1</div>
-        <div>
-          <div class="fixban-step-title">Download &amp; install Google Play Services first</div>
-          <div class="fixban-step-desc">Find it in the app list (look for the blue "GS" icon) and install it on your projector.</div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">2</div>
-        <div>
-          <div class="fixban-step-title">Then download &amp; install Google Play Store</div>
-          <div class="fixban-step-desc">Once Play Services is installed, come back and install the Play Store — it should now open without crashing.</div>
-        </div>
-      </div>
-    </div>
-    <div class="fixban-actions">
-      <span class="fixban-btn" id="psContinueBtn">⬇ Continue downloading Play Store</span>
-    </div>
-  </div>
-</div>
-
 <div class="howto">
   <div class="howto-card">
     <div class="howto-step">
@@ -730,37 +700,7 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
 
     // ── Ambient backdrop on hover/focus ──
     const ambientBg = document.getElementById('ambientBg');
-    // ── Play Services reminder popup when downloading Play Store ──
-    const psModalOverlay = document.getElementById('psModalOverlay');
-    const psCloseBtn = document.getElementById('psCloseBtn');
-    const psContinueBtn = document.getElementById('psContinueBtn');
-    let psPendingLink = null;
-    function openPsModal(link) { psPendingLink = link; psModalOverlay.classList.remove('hidden'); }
-    function closePsModal() { psModalOverlay.classList.add('hidden'); psPendingLink = null; }
-    psCloseBtn.addEventListener('click', closePsModal);
-    psModalOverlay.addEventListener('click', e => { if (e.target === psModalOverlay) closePsModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !psModalOverlay.classList.contains('hidden')) closePsModal(); });
-    psContinueBtn.addEventListener('click', () => {
-      if (psPendingLink) {
-        const a = document.createElement('a');
-        a.href = psPendingLink.href;
-        a.setAttribute('download', psPendingLink.getAttribute('download'));
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      }
-      closePsModal();
-    });
     grid.querySelectorAll('.app-tile').forEach(tile => {
-      const tileName = tile.querySelector('.tile-name')?.textContent.trim();
-      if (tileName === 'Google Play Store') {
-        tile.addEventListener('click', e => {
-          if (sessionStorage.getItem('psNoticeSeen')) return;
-          e.preventDefault();
-          sessionStorage.setItem('psNoticeSeen', '1');
-          openPsModal(tile);
-        });
-      }
       const bg = tile.getAttribute('data-bg');
       if (!bg) return;
       const activate = () => {
