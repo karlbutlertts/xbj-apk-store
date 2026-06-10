@@ -453,53 +453,50 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
     <div class="fixban-desc">
       Loads of you have messaged saying Play Store vanished after updating your XBJ A5 Pro. I've got a <strong>backup firmware image</strong> that restores it. Takes about 10 minutes with a USB stick.
     </div>
-    <a class="fixban-btn" href="fix.html" style="display:block;text-align:center;background:#f97316;color:#1a0e00;font-weight:700;margin-bottom:12px;">⚡ Automatic USB Fix (in-app)</a>
-    <div class="fixban-dl-grid">
-      <a class="fixban-btn" href="https://drive.google.com/uc?id=1tNgwDK8LelYYdzWimXnm7f1zfr04c3pz" target="_blank" rel="noopener">⬇ bootloader.img</a>
-      <a class="fixban-btn" href="https://drive.google.com/uc?id=1urewSdpVX62pD_Qxthx2fVRyS2TZcZqx" target="_blank" rel="noopener">⬇ emmc_boot.bin</a>
-      <a class="fixban-btn" href="https://drive.google.com/uc?id=1lN_BYiHZacYu-zf9UGMQTOxcp1LnjvbG" target="_blank" rel="noopener">⬇ IPL_PRE.bin</a>
-      <a class="fixban-btn" href="https://drive.google.com/uc?id=13L3ya_0zHhmFkWMKG9kPrK7vTsHgKMfi" target="_blank" rel="noopener">⬇ DY_8D196_026.bin</a>
-    </div>
-    <div class="fixban-dl-tip">💻 Tip: download all 4 files onto a laptop or computer first — it's much easier to format a USB drive and drag the files onto it from there.</div>
+    <a class="fixban-btn" href="fix.html" style="display:block;text-align:center;background:#f97316;color:#1a0e00;font-weight:700;margin-bottom:8px;">⚡ Automatic USB Fix — do it all on the projector</a>
+    <div class="fixban-dl-tip">📺 No laptop needed. Just plug a USB stick into the projector and tap the button above — it formats the stick and copies all 4 files for you, right here on the device.</div>
+
     <div class="fixban-steps">
       <div class="fixban-step">
         <div class="fixban-num">1</div>
         <div>
-          <div class="fixban-step-title">Format a USB drive to FAT32</div>
-          <div class="fixban-step-desc">This is essential — the update <strong>will not work</strong> on any other format.</div>
+          <div class="fixban-step-title">Plug a USB stick into the projector</div>
+          <div class="fixban-step-desc">Any USB drive with at least 2&nbsp;GB free. Anything already on it will be wiped, so use a spare or back it up first.</div>
         </div>
       </div>
       <div class="fixban-step">
         <div class="fixban-num">2</div>
         <div>
-          <div class="fixban-step-title">Copy all 4 files to the root of the USB drive</div>
-          <div class="fixban-step-desc">Download them from the link above and drag them straight into the main folder (not inside any subfolder):<br>
-            <code>bootloader.img</code> · <code>emmc_boot.bin</code> · <code>IPL_PRE.bin</code> · <code>DY_8D196_026.bin</code>
-          </div>
+          <div class="fixban-step-title">Tap “Automatic USB Fix” above</div>
+          <div class="fixban-step-desc">It formats the stick to FAT32 and downloads all 4 firmware files straight onto it — no computer, no dragging files about. Just wait for the green tick.</div>
         </div>
       </div>
       <div class="fixban-step">
         <div class="fixban-num">3</div>
         <div>
-          <div class="fixban-step-title">Plug the USB into the projector</div>
-          <div class="fixban-step-desc">Leave the projector switched on — just plug the USB stick into the back.</div>
+          <div class="fixban-step-title">Go to Settings → System → Local Upgrade</div>
+          <div class="fixban-step-desc">With the USB still plugged in, open <strong>Settings</strong> on the projector, go to <strong>System</strong>, then tap <strong>Local Upgrade</strong> (also shown as System Update → Local Update). <strong>Do NOT</strong> tap Online Update — that reinstalls the broken firmware.</div>
         </div>
       </div>
       <div class="fixban-step">
         <div class="fixban-num">4</div>
-        <div>
-          <div class="fixban-step-title">Go to Settings → System → Local Upgrade</div>
-          <div class="fixban-step-desc">On the projector, open <strong>Settings</strong>, go to <strong>System</strong>, then tap <strong>Local Upgrade</strong> (also shown as System Update → Local Update). <strong>Do NOT</strong> tap Online Update — that reinstalls the broken firmware.</div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">5</div>
         <div>
           <div class="fixban-step-title">Tap Upgrade and wait</div>
           <div class="fixban-step-desc">It'll find the files on the USB and update itself — takes about 5–10 minutes. Keep the USB plugged in and don't power it off during the update.</div>
         </div>
       </div>
     </div>
+
+    <details class="fixban-manual">
+      <summary style="cursor:pointer;color:#9aa0b0;font-size:13px;margin:6px 0;">Prefer to do it manually? Download the 4 files</summary>
+      <div class="fixban-dl-grid" style="margin-top:10px;">
+        <a class="fixban-btn" href="https://drive.google.com/uc?id=1tNgwDK8LelYYdzWimXnm7f1zfr04c3pz" target="_blank" rel="noopener">⬇ bootloader.img</a>
+        <a class="fixban-btn" href="https://drive.google.com/uc?id=1urewSdpVX62pD_Qxthx2fVRyS2TZcZqx" target="_blank" rel="noopener">⬇ emmc_boot.bin</a>
+        <a class="fixban-btn" href="https://drive.google.com/uc?id=1lN_BYiHZacYu-zf9UGMQTOxcp1LnjvbG" target="_blank" rel="noopener">⬇ IPL_PRE.bin</a>
+        <a class="fixban-btn" href="https://drive.google.com/uc?id=13L3ya_0zHhmFkWMKG9kPrK7vTsHgKMfi" target="_blank" rel="noopener">⬇ DY_8D196_026.bin</a>
+      </div>
+      <div class="fixban-dl-tip" style="margin-top:8px;">Format a USB stick to <strong>FAT32</strong>, copy all 4 files to the <strong>root</strong> (not in a subfolder), then follow steps 3–4 above.</div>
+    </details>
     <div class="fixban-warn">
       ⚠️ <span><strong>Important:</strong> always use <strong>Local Upgrade</strong> — never Online Update. Once this is done, please don't update your projector again until I've spoken to XBJ about why Google Play went missing. I'll let you know on TikTok as soon as it's safe.</span>
     </div>
