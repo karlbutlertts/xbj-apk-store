@@ -372,6 +372,29 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 .lock-msg { font-size:13px; margin-top:14px; min-height:18px; font-weight:600; }
 .lock-msg.error { color:#ff6b6b; }
 .lock-msg.ok { color:#34c759; }
+
+.lock-input-row { display:flex; flex-direction:column; }
+.lock-input-row .lock-input { margin-bottom:0; }
+.lock-input-row .lock-input-text { margin-bottom:14px; }
+
+/* ── Android TV / large-screen layout ── */
+@media (min-width:900px) {
+  .lock-card { max-width:680px; padding:48px 64px; }
+  .lock-badge { width:72px; height:72px; border-radius:20px; margin-bottom:22px; }
+  .lock-badge svg { width:36px; height:36px; }
+  .lock-title { font-size:30px; margin-bottom:10px; }
+  .lock-sub { font-size:17px; margin-bottom:30px; }
+  .lock-input-row {
+    flex-direction:row; align-items:stretch; gap:16px; margin-bottom:14px;
+  }
+  .lock-input-row .lock-input { margin-bottom:0; }
+  .lock-input-row .lock-input-text { flex:1.6; margin-bottom:0; }
+  .lock-input-row #lockInput { flex:1; }
+  .lock-input { font-size:22px; padding:18px 20px; }
+  .lock-input-text { font-size:18px; padding:18px 22px; }
+  .lock-btn { font-size:18px; padding:18px; }
+  .lock-msg { font-size:15px; }
+}
 </style>
 </head>
 <body>
@@ -384,8 +407,10 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
     </div>
     <div class="lock-title">TikTok shop projector guy 🎬🍿</div>
     <div class="lock-sub">App updates locked. Message <strong>@karlsmidlifecrisis</strong> on TikTok for the current access code if you've purchased an XBJ Projector from my lives or videos.</div>
-    <input id="lockUser" class="lock-input lock-input-text" type="text" placeholder="Your TikTok username" autocomplete="off" autocapitalize="none" maxlength="40">
-    <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
+    <div class="lock-input-row">
+      <input id="lockUser" class="lock-input lock-input-text" type="text" placeholder="Your TikTok username" autocomplete="off" autocapitalize="none" maxlength="40">
+      <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
+    </div>
     <button id="lockBtn" class="lock-btn">Unlock</button>
     <div id="lockMsg" class="lock-msg"></div>
   </div>
