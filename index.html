@@ -262,6 +262,23 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 }
 .hero-dl:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 12px 32px rgba(90,166,255,0.5); }
 
+.category-pills {
+  max-width:1100px; margin:18px auto 0; padding:0 24px;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:10px;
+}
+.category-pill {
+  font-size:13.5px; font-weight:700; color:var(--text2);
+  background:rgba(255,255,255,0.05); border:1px solid var(--border);
+  border-radius:999px; padding:9px 20px; cursor:pointer;
+  transition:transform 0.12s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  font-family:'DM Sans',sans-serif;
+}
+.category-pill:hover { transform:translateY(-1px); border-color:rgba(90,166,255,0.45); color:var(--text); }
+.category-pill.active {
+  color:#0b1220; background:var(--blue); border-color:var(--blue);
+  box-shadow:0 6px 18px rgba(90,166,255,0.35);
+}
+
 .grid-wrap { max-width:1100px; margin:0 auto; padding:30px 24px 20px; }
 .grid-label { font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); margin-bottom:18px; padding-left:4px; }
 
@@ -435,6 +452,13 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
     <span class="updates-text">Google Play Store just got a fresh update, plus Disney+, BBC iPlayer, ITVX, Channel 4, My5 &amp; more — all refreshed for <strong>June 2026</strong> and ready to download.</span>
     <span class="updates-arrow">↓</span>
   </a>
+</div>
+
+<div class="category-pills" id="categoryPills">
+  <button class="category-pill active" data-filter="all">All apps</button>
+  <button class="category-pill" data-filter="livetv">📺 Live TV apps</button>
+  <button class="category-pill" data-filter="streaming">🎬 Streaming</button>
+  <button class="category-pill" data-filter="tools">🛠️ Tools</button>
 </div>
 
 <div id="installBar" class="install-bar hidden">
@@ -707,12 +731,45 @@ const APK_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-st
 
 const grid = document.getElementById('appGrid');
 const gridLabel = document.getElementById('gridLabel');
+const categoryPills = document.getElementById('categoryPills');
+
+function renderGrid(apps) {
+  gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
+
+  grid.innerHTML = apps.map((a, i) => `
+    <a class="app-tile" style="animation-delay:${0.06 * i}s" href="${APK_BASE_URL}${a.file}" download="${a.file}" data-bg="${a.bg || a.icon || ''}">
+      <div class="tile-icon" style="background:${a.color}">
+        ${a.icon
+          ? `<img src="${a.icon}" alt="${a.name}" loading="lazy" onerror="this.parentElement.textContent='${a.abbr}';this.remove();">`
+          : a.abbr}
+      </div>
+      <div class="tile-name">${a.name}</div>
+      <div class="tile-meta"><span class="star">★</span><span>${a.rating}</span><span>·</span><span>${a.size}</span></div>
+      ${a.downloads ? `<div class="tile-downloads">⬇ ${a.downloads} downloads</div>` : ''}
+      <div class="tile-dl">⬇ Download</div>
+    </a>
+  `).join('');
+
+  // ── Ambient backdrop on hover/focus ──
+  const ambientBg = document.getElementById('ambientBg');
+  grid.querySelectorAll('.app-tile').forEach(tile => {
+    const bg = tile.getAttribute('data-bg');
+    if (!bg) return;
+    const activate = () => {
+      ambientBg.style.backgroundImage = `url("${bg}")`;
+      ambientBg.classList.add('show');
+    };
+    const deactivate = () => ambientBg.classList.remove('show');
+    tile.addEventListener('mouseenter', activate);
+    tile.addEventListener('mouseleave', deactivate);
+    tile.addEventListener('focus', activate);
+    tile.addEventListener('blur', deactivate);
+  });
+}
 
 fetch(MANIFEST_URL + '?nc=' + Date.now())
   .then(r => r.json())
   .then(apps => {
-    gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
-
     // Feature the top-rated app in the hero banner
     const featured = apps.find(a => a.name === 'Google Play Store') || [...apps].sort((a, b) => (b.rating||0) - (a.rating||0))[0];
     if (featured) {
@@ -729,34 +786,17 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
       hero.style.display = 'block';
     }
 
-    grid.innerHTML = apps.map((a, i) => `
-      <a class="app-tile" style="animation-delay:${0.06 * i}s" href="${APK_BASE_URL}${a.file}" download="${a.file}" data-bg="${a.bg || a.icon || ''}">
-        <div class="tile-icon" style="background:${a.color}">
-          ${a.icon
-            ? `<img src="${a.icon}" alt="${a.name}" loading="lazy" onerror="this.parentElement.textContent='${a.abbr}';this.remove();">`
-            : a.abbr}
-        </div>
-        <div class="tile-name">${a.name}</div>
-        <div class="tile-meta"><span class="star">★</span><span>${a.rating}</span><span>·</span><span>${a.size}</span></div>
-        ${a.downloads ? `<div class="tile-downloads">⬇ ${a.downloads} downloads</div>` : ''}
-        <div class="tile-dl">⬇ Download</div>
-      </a>
-    `).join('');
+    renderGrid(apps);
 
-    // ── Ambient backdrop on hover/focus ──
-    const ambientBg = document.getElementById('ambientBg');
-    grid.querySelectorAll('.app-tile').forEach(tile => {
-      const bg = tile.getAttribute('data-bg');
-      if (!bg) return;
-      const activate = () => {
-        ambientBg.style.backgroundImage = `url("${bg}")`;
-        ambientBg.classList.add('show');
-      };
-      const deactivate = () => ambientBg.classList.remove('show');
-      tile.addEventListener('mouseenter', activate);
-      tile.addEventListener('mouseleave', deactivate);
-      tile.addEventListener('focus', activate);
-      tile.addEventListener('blur', deactivate);
+    // ── Category pill filtering ──
+    categoryPills.addEventListener('click', e => {
+      const btn = e.target.closest('.category-pill');
+      if (!btn) return;
+      categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      const filtered = filter === 'all' ? apps : apps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
+      renderGrid(filtered);
     });
   })
   .catch(() => {
