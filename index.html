@@ -68,6 +68,8 @@ header { text-align:center; padding:36px 20px 8px; }
 .xbj-logo { width:30px; height:30px; object-fit:contain; filter:brightness(0) invert(1); }
 h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 .subtitle { font-size:15px; color:var(--text2); margin-top:6px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.5; }
+.greeting { font-size:14px; font-weight:700; color:var(--blue); margin-bottom:4px; display:none; }
+.greeting.show { display:block; }
 
 /* ── URGENT FIX BANNER ── */
 .fixban {
@@ -416,6 +418,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 </div>
 
 <header>
+  <div id="userGreeting" class="greeting"></div>
   <div class="logo-row">
     <div class="logo-badge">
       <img src="https://p16-oec-general.ttcdn-us.com/tos-alisg-i-aphluv4xwc-sg/2d222ed585f748f0b3b2ec5f0d222edb~tplv-fhlh96nyum-resize-webp:300:300.webp?dr=12185&t=555f072d&ps=933b5bde&shp=905da467&shcp=948674b7&idc=useast5&from=2422056039" alt="XBJ" class="xbj-logo">
@@ -610,14 +613,25 @@ const lockInput = document.getElementById('lockInput');
 const lockBtn = document.getElementById('lockBtn');
 const lockMsg = document.getElementById('lockMsg');
 
+function showGreeting() {
+  const user = localStorage.getItem('xbj_username');
+  const greeting = document.getElementById('userGreeting');
+  if (user) {
+    greeting.textContent = `Welcome back, @${user} 👋`;
+    greeting.classList.add('show');
+  }
+}
+
 function unlock() {
   localStorage.setItem(SESSION_KEY, String(Date.now() + SESSION_MINUTES * 60 * 1000));
   lock.classList.add('hidden');
+  showGreeting();
 }
 
 const savedUntil = parseInt(localStorage.getItem(SESSION_KEY) || '0', 10);
 if (savedUntil > Date.now()) {
   lock.classList.add('hidden');
+  showGreeting();
 }
 
 async function tryUnlock() {
@@ -630,6 +644,7 @@ async function tryUnlock() {
   const ok = await checkCode(val);
   lockBtn.disabled = false;
   if (ok) {
+    localStorage.setItem('xbj_username', user);
     try {
       const log = JSON.parse(localStorage.getItem('xbj_access_log') || '[]');
       log.push({ user, time: new Date().toISOString() });
