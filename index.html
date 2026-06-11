@@ -348,8 +348,8 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   background:var(--surface); border:1px solid var(--border); border-radius:26px;
   padding:36px 28px; max-width:360px; width:100%; text-align:center;
 }
-.lock-badge { width:56px; height:56px; border-radius:16px; margin:0 auto 18px; background:linear-gradient(145deg,#5aa6ff,#2563d6); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(90,166,255,0.35); }
-.lock-badge svg { width:28px; height:28px; }
+.lock-badge { width:56px; height:56px; border-radius:16px; margin:0 auto 18px; overflow:hidden; box-shadow:0 6px 20px rgba(90,166,255,0.35); }
+.lock-badge img { width:100%; height:100%; object-fit:cover; display:block; }
 .lock-title { font-size:20px; font-weight:800; margin-bottom:6px; }
 .lock-sub { font-size:13.5px; color:var(--text2); line-height:1.5; margin-bottom:22px; }
 .lock-input {
@@ -381,7 +381,6 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 @media (min-width:900px) {
   .lock-card { max-width:680px; padding:48px 64px; }
   .lock-badge { width:72px; height:72px; border-radius:20px; margin-bottom:22px; }
-  .lock-badge svg { width:36px; height:36px; }
   .lock-title { font-size:30px; margin-bottom:10px; }
   .lock-sub { font-size:17px; margin-bottom:30px; }
   .lock-input-row {
@@ -403,7 +402,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 <div id="lock">
   <div class="lock-card">
     <div class="lock-badge">
-      <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="white" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <img src="icon-512.png" alt="App icon">
     </div>
     <div class="lock-title">TikTok shop projector guy 🎬🍿</div>
     <div class="lock-sub">App updates locked. Message <strong>@karlsmidlifecrisis</strong> on TikTok for the current access code if you've purchased an XBJ Projector from my lives or videos.</div>
