@@ -449,7 +449,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 <div class="updates-banner">
   <a href="#appGrid">
     <span class="updates-pill">🆕 Latest updates</span>
-    <span class="updates-text">Google Play Store just got a fresh update, plus Disney+, BBC iPlayer, ITVX, Channel 4, My5 &amp; more — all refreshed for <strong>June 2026</strong> and ready to download.</span>
+    <span class="updates-text" id="updatesText">Loading the latest update&hellip;</span>
     <span class="updates-arrow">↓</span>
   </a>
 </div>
@@ -770,6 +770,14 @@ function renderGrid(apps) {
 fetch(MANIFEST_URL + '?nc=' + Date.now())
   .then(r => r.json())
   .then(apps => {
+    // ── "Latest updates" banner: highlight the most recently updated app ──
+    const newest = [...apps].sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0))[0];
+    if (newest) {
+      const others = apps.filter(a => a.name !== newest.name).slice(0, 5).map(a => a.name).join(', ');
+      document.getElementById('updatesText').innerHTML =
+        `${newest.name} just got a fresh update, plus ${others} &amp; more — all refreshed for <strong>${newest.updated}</strong> and ready to download.`;
+    }
+
     // Feature the top-rated app in the hero banner
     const featured = apps.find(a => a.name === 'Google Play Store') || [...apps].sort((a, b) => (b.rating||0) - (a.rating||0))[0];
     if (featured) {
