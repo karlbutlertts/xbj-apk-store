@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Projector Guy — Engineering Tools</title>
+<style>
+  :root{
+    --bg:#0a0a0f; --surface:#13131a; --surface2:#1c1c27;
+    --blue:#3b6ff5; --orange:#f97316; --green:#22c87a;
+    --text:#f4f4f8; --muted:#9aa0b0;
+    --border:#262634;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"DM Sans",sans-serif;
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .wrap{max-width:680px;margin:0 auto;padding:18px 16px 48px;min-height:100vh}
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .back{
+    background:var(--surface2);border:1px solid var(--border);color:var(--text);
+    border-radius:12px;padding:8px 12px;font-size:14px;cursor:pointer;
+  }
+  .back:active{transform:scale(.97)}
+  .title-lg{font-size:22px;font-weight:700;margin:4px 0 2px}
+  .sub{color:var(--muted);font-size:14px;line-height:1.5}
+
+  .card{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:18px;padding:16px;margin:14px 0;
+  }
+  .card.amber{border-color:rgba(249,115,22,.5);background:rgba(249,115,22,.07)}
+  .card-title{font-weight:700;font-size:16px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .card-body{color:var(--muted);font-size:13.5px;line-height:1.55}
+  .card-pkg{font-size:12px;color:var(--muted);margin-top:2px}
+
+  .btn{
+    display:block;width:100%;border:none;border-radius:14px;
+    padding:13px;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;
+    transition:transform .1s ease, opacity .2s; font-family:inherit;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn-blue{background:var(--blue);color:#fff}
+  .btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+  .btn-sm{padding:9px 14px;font-size:13px;margin-top:0;width:auto;border-radius:10px}
+
+  .status{font-size:12.5px;font-weight:600;margin-top:8px;min-height:16px}
+  .status.ok{color:var(--green)}
+  .status.err{color:#ff5a5a}
+
+  .activity-list{list-style:none;margin:10px 0 0;padding:0;display:none}
+  .activity-list.show{display:block}
+  .activity-list li{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+    padding:9px 12px;margin-bottom:6px;font-size:12.5px;
+  }
+  .activity-list .name{word-break:break-all;flex:1}
+  .activity-list .disabled{opacity:.45}
+  .activity-list .badge{font-size:10px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:1px 5px}
+
+  .browse-row{display:flex;gap:8px;margin-top:10px}
+  .browse-row input{
+    flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);
+    border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;
+  }
+  .browse-row input:focus{border-color:var(--blue)}
+
+  .web-warning{display:none}
+  .native-only{display:none}
+  body.native .web-warning{display:none}
+  body.native .native-only{display:block}
+  body:not(.native) .native-only{display:none}
+  body:not(.native) .web-warning{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <button class="back" onclick="goBack()">← Back to App</button>
+  </div>
+
+  <h1 class="title-lg">🛠️ Engineering Tools</h1>
+  <div class="sub">Direct access to hidden factory menus, picture-quality (PQ) settings and system activities on the XBJ A5 Pro. For advanced users only — some menus can change low-level display calibration.</div>
+
+  <div class="card web-warning amber">
+    <div class="card-title">Native app required</div>
+    <div class="card-body">These shortcuts only work inside the Projector Guy app installed on your projector — they won't do anything in a regular web browser.</div>
+  </div>
+
+  <div class="native-only">
+
+  <div class="card greenline" style="border-color:rgba(34,200,122,.5);background:rgba(34,200,122,.07)">
+    <div class="card-title">✅ Confirmed working shortcuts</div>
+    <div class="card-body">These were tested over ADB and are known to work on this firmware.</div>
+    <button class="btn btn-blue" onclick="quickLaunch('settings')">Android Settings</button>
+    <button class="btn btn-blue" onclick="quickLaunch('tvsettings')">Android TV Settings (MainSettings)</button>
+    <button class="btn btn-blue" onclick="quickLaunch('zhiying')">Zhiying Settings</button>
+    <button class="btn btn-blue" onclick="quickLaunch('accessibility')">Accessibility Settings</button>
+    <button class="btn btn-blue" onclick="quickLaunch('appinfo')">Application / App Info Settings</button>
+    <div class="status" id="status-quick"></div>
+  </div>
+
+  <div id="menuCards"></div>
+
+  <div class="card">
+    <div class="card-title">Browse any package</div>
+    <div class="card-body">Enter a package name to list its activities, then tap one to launch it directly. Useful for exploring unfamiliar factory/service apps.</div>
+    <div class="browse-row">
+      <input id="customPkg" type="text" placeholder="e.g. com.sstar.factorymenu" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button class="btn btn-blue btn-sm" onclick="browseCustom()">Browse</button>
+    </div>
+    <div class="status" id="status-custom"></div>
+    <ul class="activity-list" id="customList"></ul>
+  </div>
+
+  </div>
+</div>
+
+<script>
+const NATIVE = !!(window.AndroidBridge && window.AndroidBridge.isUsbMounted);
+if (NATIVE) document.body.classList.add('native');
+
+function goBack(){
+  if (NATIVE && window.history.length > 1) history.back();
+  else location.href = 'index.html';
+}
+
+// Shortcuts confirmed working over ADB on this firmware (see investigation notes)
+function quickLaunch(which){
+  const statusId = 'status-quick';
+  if (!NATIVE) { setStatus(statusId, 'Native app required.', false); return; }
+
+  let ok = false;
+  switch (which) {
+    case 'settings':
+      ok = window.AndroidBridge.openSettingsAction('android.settings.SETTINGS');
+      break;
+    case 'tvsettings':
+      ok = window.AndroidBridge.launchActivity('com.android.tv.settings', '.MainSettings');
+      break;
+    case 'zhiying':
+      ok = window.AndroidBridge.launchActivity('com.zhiying.settings', '.MainActivity');
+      break;
+    case 'accessibility':
+      ok = window.AndroidBridge.openSettingsAction('android.settings.ACCESSIBILITY_SETTINGS');
+      break;
+    case 'appinfo':
+      ok = window.AndroidBridge.openSettingsAction('android.settings.APPLICATION_SETTINGS');
+      break;
+  }
+  setStatus(statusId, ok ? 'Opening…' : 'Could not open — not available on this build.', ok);
+}
+
+// Known hidden/factory menu packages discovered via ADB on this firmware.
+// "launch" tries the package's normal launcher activity first; if that
+// fails (most factory menus have no launcher), we list its activities so
+// you can pick the right entry point manually.
+const MENUS = [
+  {
+    pkg: 'com.sstar.factorymenu',
+    title: 'SStar Factory Menu',
+    desc: 'SStar/MStar chipset engineering menu — likely contains PQ debug, gamma and panel calibration.'
+  },
+  {
+    pkg: 'com.newlink.factorymenu',
+    title: 'NewLink Factory Menu',
+    desc: 'Projector-specific factory menu from the NewLink firmware layer.'
+  },
+  {
+    pkg: 'com.sstar.systemcontrol',
+    title: 'SStar System Control',
+    desc: 'Low-level system control service — display, output and hardware settings.'
+  },
+  {
+    pkg: 'com.sstar.customizedmenu',
+    title: 'SStar Customized Menu',
+    desc: 'Custom OEM settings menu layered on top of the SStar base firmware.'
+  },
+  {
+    pkg: 'com.zhiying.settings',
+    title: 'Zhiying Settings',
+    desc: 'Custom settings app used by this projector\'s Android TV build.'
+  },
+  {
+    pkg: 'com.newlink.projector.service',
+    title: 'NewLink Projector Service',
+    desc: 'Background service that manages picture profiles — likely enforces PQ values. Browsing this can help find its settings UI.'
+  }
+];
+
+function renderMenus(){
+  const container = document.getElementById('menuCards');
+  MENUS.forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-title">
+        <div>${m.title}<div class="card-pkg mono">${m.pkg}</div></div>
+        <button class="btn btn-ghost btn-sm" onclick="launchOrBrowse(${i})">Open</button>
+      </div>
+      <div class="card-body">${m.desc}</div>
+      <div class="status" id="status-${i}"></div>
+      <ul class="activity-list" id="list-${i}"></ul>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function setStatus(id, msg, ok){
+  const el = document.getElementById(id);
+  el.className = 'status ' + (ok ? 'ok' : 'err');
+  el.textContent = msg;
+}
+
+function renderActivityList(listEl, pkg, activities, statusId){
+  listEl.innerHTML = '';
+  if (!activities.length) {
+    listEl.classList.remove('show');
+    setStatus(statusId, 'No activities found — package may not be installed.', false);
+    return;
+  }
+  activities.forEach(a => {
+    const li = document.createElement('li');
+    if (!a.enabled) li.classList.add('disabled');
+    const shortName = a.name.startsWith(pkg) ? a.name.substring(pkg.length) : a.name;
+    li.innerHTML = `
+      <span class="name mono">${shortName}</span>
+      <span class="badge">${a.exported ? 'exported' : 'internal'}</span>
+      <button class="btn btn-blue btn-sm" onclick='launchActivity("${pkg}", ${JSON.stringify(a.name)})'>Launch</button>
+    `;
+    listEl.appendChild(li);
+  });
+  listEl.classList.add('show');
+  setStatus(statusId, `Found ${activities.length} activities. Tap one to launch.`, true);
+}
+
+function launchOrBrowse(i){
+  const m = MENUS[i];
+  const statusId = `status-${i}`;
+  const listEl = document.getElementById(`list-${i}`);
+
+  if (!NATIVE) { setStatus(statusId, 'Native app required.', false); return; }
+
+  if (!window.AndroidBridge.isPackageInstalled(m.pkg)) {
+    setStatus(statusId, 'Package not found on this device.', false);
+    listEl.classList.remove('show');
+    return;
+  }
+
+  // Try the normal launcher first (rare for factory menus, but quick if it works)
+  if (window.AndroidBridge.launchApp(m.pkg)) {
+    setStatus(statusId, 'Launching…', true);
+    return;
+  }
+
+  // No launcher — list activities so the user can pick one
+  let activities = [];
+  try { activities = JSON.parse(window.AndroidBridge.listActivities(m.pkg) || '[]'); } catch (e) {}
+  renderActivityList(listEl, m.pkg, activities, statusId);
+}
+
+function launchActivity(pkg, activity){
+  if (!NATIVE) return;
+  const ok = window.AndroidBridge.launchActivity(pkg, activity);
+  if (!ok) alert('Could not launch ' + activity + '\n\nIt may require system permissions this app does not have.');
+}
+
+function browseCustom(){
+  const pkg = document.getElementById('customPkg').value.trim();
+  const listEl = document.getElementById('customList');
+  if (!pkg) { setStatus('status-custom', 'Enter a package name first.', false); return; }
+  if (!NATIVE) { setStatus('status-custom', 'Native app required.', false); return; }
+
+  if (!window.AndroidBridge.isPackageInstalled(pkg)) {
+    setStatus('status-custom', 'Package not found on this device.', false);
+    listEl.classList.remove('show');
+    return;
+  }
+  let activities = [];
+  try { activities = JSON.parse(window.AndroidBridge.listActivities(pkg) || '[]'); } catch (e) {}
+  renderActivityList(listEl, pkg, activities, 'status-custom');
+}
+
+renderMenus();
+</script>
+</body>
+</html>
