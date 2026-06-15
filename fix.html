@@ -142,7 +142,7 @@
 <body>
 <div class="wrap">
   <div class="topbar">
-    <button class="back" onclick="goBack()">← Back to App</button>
+    <button class="back" onclick="goBack()">← Back to Menu</button>
   </div>
 
   <!-- STATE 1: checking -->
@@ -339,8 +339,9 @@ function show(id){
   window.scrollTo(0,0);
 }
 function goBack(){
-  if (NATIVE && window.history.length > 1) history.back();
-  else location.href = 'index.html';
+  // Always go to index.html (not history.back()) so we land on the hub
+  // screen, even if bfcache would otherwise restore the app grid view.
+  location.href = 'index.html';
 }
 const fmtBytes = b => {
   if (b == null) return '—';
