@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>TikTok shop projector guy</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#5aa6ff">
@@ -784,6 +784,14 @@ async function checkCode(input) {
   return false;
 }
 
+// Some older/embedded Android TV browsers don't expose window.crypto.subtle
+// (or only in a "secure context" that doesn't include their webview). If
+// that happens, hotp() throws and checkCode() never resolves, which leaves
+// tryUnlock() stuck and re-triggers the on-screen keyboard in a loop.
+function cryptoAvailable() {
+  return !!(window.crypto && window.crypto.subtle && window.crypto.subtle.importKey);
+}
+
 // ── Hide the splash screen once everything is ready ──
 function hideSplash() {
   const splash = document.getElementById('splash');
@@ -833,9 +841,24 @@ async function tryUnlock() {
   const val = lockInput.value.trim();
   if (!user) { lockMsg.textContent = 'Enter your TikTok username first.'; lockMsg.className = 'lock-msg error'; lockUser.focus(); return; }
   if (val.length !== 6) { lockMsg.textContent = 'Enter the 6-digit code.'; lockMsg.className = 'lock-msg error'; return; }
+
+  if (!cryptoAvailable()) {
+    lockMsg.textContent = 'This browser is too old to check the code securely. Please update your projector\'s browser/firmware, or open this page in Chrome.';
+    lockMsg.className = 'lock-msg error';
+    return;
+  }
+
   lockBtn.disabled = true;
   lockMsg.textContent = 'Checking…'; lockMsg.className = 'lock-msg';
-  const ok = await checkCode(val);
+  let ok = false;
+  try {
+    ok = await checkCode(val);
+  } catch (e) {
+    lockBtn.disabled = false;
+    lockMsg.textContent = 'Something went wrong checking the code on this device. Please try again or use a different browser.';
+    lockMsg.className = 'lock-msg error';
+    return;
+  }
   lockBtn.disabled = false;
   if (ok) {
     localStorage.setItem('xbj_username', user);
@@ -849,7 +872,10 @@ async function tryUnlock() {
   } else {
     lockMsg.textContent = 'Wrong code — message @karlsmidlifecrisis on TikTok for the current one.';
     lockMsg.className = 'lock-msg error';
-    lockInput.value = ''; lockInput.focus();
+    lockInput.value = '';
+    // Don't auto-focus the numeric field here — on some Android TV browsers
+    // (e.g. XBJ 360, Android 14) focusing it pops up an on-screen keypad
+    // that covers the error message and re-triggers Unlock in a loop.
   }
 }
 lockUser.addEventListener('keydown', e => { if (e.key === 'Enter') lockInput.focus(); });
