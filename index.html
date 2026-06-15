@@ -157,7 +157,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 
 /* ── FIX MODAL ── */
 .fix-modal-overlay {
-  position:fixed; inset:0; z-index:2000;
+  position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:2000;
   display:flex; align-items:flex-start; justify-content:center;
   background:rgba(5,10,20,0.72); backdrop-filter:blur(6px);
   padding:32px 18px; overflow-y:auto;
@@ -362,7 +362,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 
 /* ── LOCK SCREEN ── */
 #lock {
-  position:fixed; inset:0; z-index:1000;
+  position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:1000;
   display:flex; align-items:center; justify-content:center;
   background:radial-gradient(ellipse at top, #1c3a6e 0%, #0b1220 55%), var(--bg);
   padding:24px; overflow:hidden;
@@ -440,7 +440,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 
 /* ── HUB SCREEN (post-unlock launcher) ── */
 #hub {
-  position:fixed; inset:0; z-index:999;
+  position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:999;
   display:flex; align-items:center; justify-content:center;
   background:radial-gradient(ellipse at top, #1c3a6e 0%, #0b1220 55%), var(--bg);
   padding:24px; overflow:hidden;
@@ -498,7 +498,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 
 /* ── SPLASH SCREEN ── */
 #splash {
-  position:fixed; inset:0; z-index:2000;
+  position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:2000;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   background:radial-gradient(ellipse at center, #1c3a6e 0%, #0b1220 65%), var(--bg);
   transition:opacity 1.2s ease, visibility 1.2s ease;
