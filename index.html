@@ -748,7 +748,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 const _S = 'Uk9UQ0VKT1JQSkJYTFJBSw==';
 const TOTP_SECRET = atob(_S).split('').reverse().join('');
 const SESSION_KEY = 'xbj_unlocked_until';
-const SESSION_MINUTES = 120;
+const SESSION_MINUTES = 60;
 const STEP = 30;          // seconds — standard, matches Google Authenticator
 const WINDOW = 10;        // ±10 steps = ±5 minutes tolerance
 
@@ -818,8 +818,35 @@ function showGreeting() {
   }
 }
 
+// Save session to both localStorage and a cookie so it survives browser
+// restarts and projector reboots (some Android TV browsers wipe localStorage
+// when the browser is killed, but cookies with max-age persist on disk).
+function saveSession() {
+  const until = Date.now() + SESSION_MINUTES * 60 * 1000;
+  try { localStorage.setItem(SESSION_KEY, String(until)); } catch(e) {}
+  const maxAge = SESSION_MINUTES * 60;
+  document.cookie = `${SESSION_KEY}=${until}; max-age=${maxAge}; path=/; SameSite=Lax`;
+}
+
+function loadSession() {
+  // Try localStorage first, then fall back to cookie
+  const ls = parseInt(localStorage.getItem(SESSION_KEY) || '0', 10);
+  if (ls > Date.now()) return ls;
+  const match = document.cookie.split(';').map(c => c.trim())
+    .find(c => c.startsWith(SESSION_KEY + '='));
+  if (match) {
+    const val = parseInt(match.split('=')[1], 10);
+    if (val > Date.now()) {
+      // Re-sync localStorage from cookie
+      try { localStorage.setItem(SESSION_KEY, String(val)); } catch(e) {}
+      return val;
+    }
+  }
+  return 0;
+}
+
 function unlock() {
-  localStorage.setItem(SESSION_KEY, String(Date.now() + SESSION_MINUTES * 60 * 1000));
+  saveSession();
   lock.classList.add('hidden');
   showGreeting();
   document.getElementById('hub').classList.remove('hidden');
@@ -829,8 +856,7 @@ function enterApps() {
   document.getElementById('hub').classList.add('hidden');
 }
 
-const savedUntil = parseInt(localStorage.getItem(SESSION_KEY) || '0', 10);
-if (savedUntil > Date.now()) {
+if (loadSession() > Date.now()) {
   lock.classList.add('hidden');
   showGreeting();
   document.getElementById('hub').classList.remove('hidden');
