@@ -80,6 +80,9 @@
   }
   .platform-tiktok{background:rgba(255,0,80,0.15);color:#ff3855;border:1px solid rgba(255,0,80,0.3)}
   .platform-youtube{background:rgba(255,0,0,0.12);color:#ff4444;border:1px solid rgba(255,0,0,0.25)}
+  .platform-video{background:rgba(34,200,122,0.12);color:#22c87a;border:1px solid rgba(34,200,122,0.3)}
+  .tcard-thumb-video{aspect-ratio:unset;background:none}
+  .tcard-video{width:100%;display:block;border-radius:0;background:#000}
   .tcard-model-tag{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em}
   .tcard-title{font-weight:700;font-size:14.5px;line-height:1.4;color:var(--text);flex:1}
   .tcard-desc{font-size:12.5px;color:var(--text2);line-height:1.5}
@@ -154,15 +157,24 @@ function renderGrid() {
     return;
   }
   grid.innerHTML = filtered.map(t => {
-    const platformClass = t.platform === 'youtube' ? 'platform-youtube' : 'platform-tiktok';
-    const platformLabel = t.platform === 'youtube' ? 'YouTube' : 'TikTok';
+    const isVideo = t.platform === 'video';
+    const platformClass = t.platform === 'youtube' ? 'platform-youtube' : isVideo ? 'platform-video' : 'platform-tiktok';
+    const platformLabel = t.platform === 'youtube' ? 'YouTube' : isVideo ? 'Video' : 'TikTok';
     const modelTag = t.model === 'all' ? 'All models' : (MODEL_LABELS[t.model] || t.model);
-    const thumbHtml = t.thumbnail
-      ? `<img src="${t.thumbnail}" alt="" loading="lazy"><div class="tcard-play"><div class="tcard-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>`
-      : `<span>🎬</span>`;
+
+    const mediaHtml = isVideo
+      ? `<video class="tcard-video" src="${t.url}" controls playsinline preload="metadata"></video>`
+      : t.thumbnail
+        ? `<img src="${t.thumbnail}" alt="" loading="lazy"><div class="tcard-play"><div class="tcard-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>`
+        : `<span>🎬</span>`;
+
+    const actionHtml = isVideo
+      ? ''
+      : `<a class="tcard-btn" href="${t.url}" target="_blank" rel="noopener">Watch on ${platformLabel} →</a>`;
+
     return `
       <div class="tcard">
-        <div class="tcard-thumb">${thumbHtml}</div>
+        <div class="tcard-thumb ${isVideo ? 'tcard-thumb-video' : ''}">${mediaHtml}</div>
         <div class="tcard-body">
           <div class="tcard-meta">
             <span class="tcard-platform ${platformClass}">${platformLabel}</span>
@@ -170,7 +182,7 @@ function renderGrid() {
           </div>
           <div class="tcard-title">${t.title}</div>
           ${t.description ? `<div class="tcard-desc">${t.description}</div>` : ''}
-          <a class="tcard-btn" href="${t.url}" target="_blank" rel="noopener">Watch on ${platformLabel} →</a>
+          ${actionHtml}
         </div>
       </div>`;
   }).join('');
