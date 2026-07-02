@@ -480,6 +480,21 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   display:flex; align-items:center; justify-content:center;
   background:rgba(90,166,255,0.15); border-radius:12px;
 }
+.hub-tile-img {
+  width:100%; aspect-ratio:4/3; border-radius:14px; overflow:hidden;
+  background:rgba(90,166,255,0.08); border:1px solid var(--border);
+  margin-bottom:14px; display:flex; align-items:center; justify-content:center;
+}
+.hub-tile-img img {
+  width:100%; height:100%; object-fit:contain; display:block;
+}
+.hub-tile.model-tile {
+  flex-direction:column; align-items:stretch; padding:18px 18px 14px; gap:0;
+}
+.hub-tile.model-tile .hub-tile-text { display:flex; align-items:center; gap:8px; }
+.hub-tile.model-tile .hub-tile-title { flex:1; font-size:16px; }
+.hub-tile.model-tile .hub-tile-sub { margin-top:2px; }
+.hub-tile.model-tile .hub-tile-arrow { font-size:20px; flex-shrink:0; }
 .hub-tile-text { flex:1; min-width:0; }
 .hub-tile-title { font-weight:800; font-size:15px; margin-bottom:2px; }
 .hub-tile-sub { font-size:12.5px; color:var(--text2); line-height:1.4; }
@@ -567,29 +582,29 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
     <div class="lock-title">Which projector do you have?</div>
     <div class="lock-sub">We'll show the right apps and guides for your model.</div>
     <div class="hub-tiles">
-      <button class="hub-tile" onclick="selectModel('a5pro')">
-        <span class="hub-tile-icon">📺</span>
-        <span class="hub-tile-text">
+      <button class="hub-tile model-tile" onclick="selectModel('a5pro')">
+        <div class="hub-tile-img"><img src="img/a5pro.png" alt="XBJ A5 Pro"></div>
+        <div class="hub-tile-text">
           <span class="hub-tile-title">XBJ A5 Pro</span>
           <span class="hub-tile-sub">Touchscreen projector · Android 12</span>
-        </span>
-        <span class="hub-tile-arrow">→</span>
+          <span class="hub-tile-arrow">→</span>
+        </div>
       </button>
-      <button class="hub-tile" onclick="selectModel('360')">
-        <span class="hub-tile-icon">🎯</span>
-        <span class="hub-tile-text">
+      <button class="hub-tile model-tile" onclick="selectModel('360')">
+        <div class="hub-tile-img"><img src="img/projector-360.png" alt="XBJ 360"></div>
+        <div class="hub-tile-text">
           <span class="hub-tile-title">XBJ 360</span>
           <span class="hub-tile-sub">360° projector · Android 14</span>
-        </span>
-        <span class="hub-tile-arrow">→</span>
+          <span class="hub-tile-arrow">→</span>
+        </div>
       </button>
-      <button class="hub-tile" onclick="selectModel('other')">
-        <span class="hub-tile-icon">📦</span>
-        <span class="hub-tile-text">
+      <button class="hub-tile model-tile" onclick="selectModel('other')">
+        <div class="hub-tile-img"><img src="img/other.png" alt="Other projector"></div>
+        <div class="hub-tile-text">
           <span class="hub-tile-title">Other / Not sure</span>
           <span class="hub-tile-sub">Works for any XBJ projector model</span>
-        </span>
-        <span class="hub-tile-arrow">→</span>
+          <span class="hub-tile-arrow">→</span>
+        </div>
       </button>
     </div>
   </div>
