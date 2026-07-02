@@ -61,7 +61,14 @@ header, .grid-wrap, .howto, .footer-note, .hero { position:relative; z-index:1; 
 @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
 @keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
 
-header { text-align:center; padding:36px 20px 8px; }
+header { text-align:center; padding:36px 20px 8px; position:relative; }
+.menu-back-btn {
+  position:absolute; top:12px; left:16px;
+  background:var(--surface2); border:1px solid var(--border); color:var(--text);
+  border-radius:12px; padding:7px 12px; font-size:13px; font-weight:600;
+  cursor:pointer; font-family:inherit; display:none;
+}
+.menu-back-btn.show { display:block; }
 .logo-row { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:6px; }
 .logo-badge { width:46px; height:46px; box-sizing:border-box; border-radius:13px; background:linear-gradient(145deg,#5aa6ff,#2563d6); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(90,166,255,0.35); overflow:hidden; }
 .logo-badge svg { width:24px; height:24px; }
@@ -632,6 +639,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 </div>
 
 <header>
+  <button class="menu-back-btn" id="menuBackBtn" onclick="backToMenu()">← Menu</button>
   <div id="userGreeting" class="greeting"></div>
   <div class="logo-row">
     <div class="logo-badge">
@@ -938,6 +946,17 @@ function unlock() {
 
 function enterApps() {
   document.getElementById('subHub').classList.add('hidden');
+  document.getElementById('menuBackBtn').classList.add('show');
+}
+
+function backToMenu() {
+  document.getElementById('menuBackBtn').classList.remove('show');
+  const saved = loadModel();
+  if (saved) {
+    showSubHub(saved);
+  } else {
+    document.getElementById('hub').classList.remove('hidden');
+  }
 }
 
 if (loadSession() > Date.now()) {
