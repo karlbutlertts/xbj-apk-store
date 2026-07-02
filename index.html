@@ -438,20 +438,21 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   .lock-msg { font-size:17px; }
 }
 
-/* ── HUB SCREEN (post-unlock launcher) ── */
-#hub {
+/* ── HUB SCREENS (model picker + sub-hub) ── */
+#hub, #subHub {
   position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:999;
   display:flex; align-items:center; justify-content:center;
   background:radial-gradient(ellipse at top, #1c3a6e 0%, #0b1220 55%), var(--bg);
   padding:24px; overflow:hidden;
 }
-#hub.hidden { display:none; }
-#hub::before, #hub::after {
+#hub.hidden, #subHub.hidden { display:none; }
+#hub::before, #hub::after, #subHub::before, #subHub::after {
   content:''; position:absolute; border-radius:50%; pointer-events:none; filter:blur(80px);
   opacity:0.35;
 }
-#hub::before { width:480px; height:480px; top:-160px; left:-160px; background:radial-gradient(circle, #5aa6ff, transparent 70%); }
-#hub::after { width:560px; height:560px; bottom:-200px; right:-200px; background:radial-gradient(circle, #2563d6, transparent 70%); }
+#hub::before, #subHub::before { width:480px; height:480px; top:-160px; left:-160px; background:radial-gradient(circle, #5aa6ff, transparent 70%); }
+#hub::after, #subHub::after { width:560px; height:560px; bottom:-200px; right:-200px; background:radial-gradient(circle, #2563d6, transparent 70%); }
+.hub-change { margin-top:16px; font-size:12px; color:var(--text3); background:none; border:none; cursor:pointer; font-family:inherit; text-decoration:underline; }
 .hub-card {
   position:relative; z-index:1;
   background:var(--surface); border:1px solid var(--border); border-radius:26px;
@@ -556,8 +557,42 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 <div id="hub" class="hidden">
   <div class="hub-card">
     <div class="lock-badge"><img src="icon-512.png" alt="App icon"></div>
-    <div class="lock-title">TikTok shop projector guy 🎬🍿</div>
-    <div class="lock-sub">Where do you want to go?</div>
+    <div class="lock-title">Which projector do you have?</div>
+    <div class="lock-sub">We'll show the right apps and guides for your model.</div>
+    <div class="hub-tiles">
+      <button class="hub-tile" onclick="selectModel('a5pro')">
+        <span class="hub-tile-icon">📺</span>
+        <span class="hub-tile-text">
+          <span class="hub-tile-title">XBJ A5 Pro</span>
+          <span class="hub-tile-sub">Touchscreen projector · Android 12</span>
+        </span>
+        <span class="hub-tile-arrow">→</span>
+      </button>
+      <button class="hub-tile" onclick="selectModel('360')">
+        <span class="hub-tile-icon">🎯</span>
+        <span class="hub-tile-text">
+          <span class="hub-tile-title">XBJ 360</span>
+          <span class="hub-tile-sub">360° projector · Android 14</span>
+        </span>
+        <span class="hub-tile-arrow">→</span>
+      </button>
+      <button class="hub-tile" onclick="selectModel('other')">
+        <span class="hub-tile-icon">📦</span>
+        <span class="hub-tile-text">
+          <span class="hub-tile-title">Other / Not sure</span>
+          <span class="hub-tile-sub">Works for any XBJ projector model</span>
+        </span>
+        <span class="hub-tile-arrow">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="subHub" class="hidden">
+  <div class="hub-card">
+    <div class="lock-badge"><img src="icon-512.png" alt="App icon"></div>
+    <div class="lock-title" id="subHubTitle">Your Projector</div>
+    <div class="lock-sub">What do you need help with?</div>
     <div class="hub-tiles">
       <button class="hub-tile" onclick="enterApps()">
         <span class="hub-tile-icon">📱</span>
@@ -567,7 +602,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
         </span>
         <span class="hub-tile-arrow">→</span>
       </button>
-      <a class="hub-tile" href="tools.html">
+      <a class="hub-tile" id="subHubTools" href="tools.html">
         <span class="hub-tile-icon">🛠️</span>
         <span class="hub-tile-text">
           <span class="hub-tile-title">Secret Menus</span>
@@ -575,7 +610,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
         </span>
         <span class="hub-tile-arrow">→</span>
       </a>
-      <a class="hub-tile" href="fix.html">
+      <a class="hub-tile" id="subHubFix" href="fix.html">
         <span class="hub-tile-icon">⚡</span>
         <span class="hub-tile-text">
           <span class="hub-tile-title">XBJ Firmware Restore</span>
@@ -583,7 +618,16 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
         </span>
         <span class="hub-tile-arrow">→</span>
       </a>
+      <a class="hub-tile" id="subHubTutorials" href="tutorials.html">
+        <span class="hub-tile-icon">🎬</span>
+        <span class="hub-tile-text">
+          <span class="hub-tile-title">Tutorials</span>
+          <span class="hub-tile-sub">Step-by-step video guides for your projector</span>
+        </span>
+        <span class="hub-tile-arrow">→</span>
+      </a>
     </div>
+    <button class="hub-change" onclick="changeModel()">Not your projector? Change →</button>
   </div>
 </div>
 
@@ -845,21 +889,66 @@ function loadSession() {
   return 0;
 }
 
+const MODEL_KEY = 'xbj_model';
+const MODEL_LABELS = { a5pro: 'XBJ A5 Pro', '360': 'XBJ 360', other: 'Your Projector' };
+
+function saveModel(model) {
+  try { localStorage.setItem(MODEL_KEY, model); } catch(e) {}
+  document.cookie = `${MODEL_KEY}=${model}; max-age=31536000; path=/; SameSite=Lax`;
+}
+
+function loadModel() {
+  const ls = localStorage.getItem(MODEL_KEY);
+  if (ls) return ls;
+  const match = document.cookie.split(';').map(c => c.trim()).find(c => c.startsWith(MODEL_KEY + '='));
+  return match ? match.split('=')[1] : null;
+}
+
+function showSubHub(model) {
+  const label = MODEL_LABELS[model] || 'Your Projector';
+  document.getElementById('subHubTitle').textContent = label;
+  document.getElementById('subHubTools').href = 'tools.html?model=' + model;
+  document.getElementById('subHubFix').href = 'fix.html?model=' + model;
+  document.getElementById('subHubTutorials').href = 'tutorials.html?model=' + model;
+  document.getElementById('hub').classList.add('hidden');
+  document.getElementById('subHub').classList.remove('hidden');
+}
+
+function selectModel(model) {
+  saveModel(model);
+  showSubHub(model);
+}
+
+function changeModel() {
+  document.getElementById('subHub').classList.add('hidden');
+  document.getElementById('hub').classList.remove('hidden');
+}
+
 function unlock() {
   saveSession();
   lock.classList.add('hidden');
   showGreeting();
-  document.getElementById('hub').classList.remove('hidden');
+  const saved = loadModel();
+  if (saved) {
+    showSubHub(saved);
+  } else {
+    document.getElementById('hub').classList.remove('hidden');
+  }
 }
 
 function enterApps() {
-  document.getElementById('hub').classList.add('hidden');
+  document.getElementById('subHub').classList.add('hidden');
 }
 
 if (loadSession() > Date.now()) {
   lock.classList.add('hidden');
   showGreeting();
-  document.getElementById('hub').classList.remove('hidden');
+  const saved = loadModel();
+  if (saved) {
+    showSubHub(saved);
+  } else {
+    document.getElementById('hub').classList.remove('hidden');
+  }
 }
 
 async function tryUnlock() {
