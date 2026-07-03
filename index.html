@@ -48,15 +48,8 @@ body::after {
 @keyframes driftB { 0%{ transform:translate(0,0) scale(1);} 100%{ transform:translate(-100px,-60px) scale(1.2);} }
 header, .grid-wrap, .howto, .footer-note, .hero { position:relative; z-index:1; }
 
-/* ambient blurred backdrop shown behind highlighted app */
-#ambientBg {
-  position:fixed; inset:-5%; z-index:0; pointer-events:none;
-  background-size:cover; background-position:center;
-  filter:blur(60px) brightness(0.55) saturate(1.3);
-  opacity:0; transform:scale(1.08);
-  transition:opacity 0.5s ease, transform 6s ease;
-}
-#ambientBg.show { opacity:0.55; transform:scale(1.18); }
+/* ambient bg disabled for TV performance */
+#ambientBg { display:none; }
 
 @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
 @keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
@@ -312,20 +305,11 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   overflow:hidden;
   opacity:0; animation:fadeUp 0.55s cubic-bezier(.2,.7,.3,1) forwards;
 }
-.app-tile::before {
-  content:''; position:absolute; inset:0; z-index:0;
-  background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
-  background-size:200% 100%; background-position:200% 0;
-  opacity:0; transition:opacity 0.2s ease;
-  pointer-events:none;
-}
-.app-tile:hover::before, .app-tile:focus-visible::before { opacity:1; animation:shimmer 1.1s ease; }
+.app-tile::before { display:none; }
 .app-tile > * { position:relative; z-index:1; }
 .app-tile:hover, .app-tile:focus-visible {
-  transform:translateY(-7px) scale(1.045);
-  background:rgba(255,255,255,0.11);
   border-color:rgba(90,166,255,0.55);
-  box-shadow:0 20px 48px rgba(0,0,0,0.4), 0 0 0 3px rgba(90,166,255,0.28), 0 0 32px rgba(90,166,255,0.25);
+  box-shadow:0 0 0 2px rgba(90,166,255,0.4);
 }
 .app-tile:active { transform:scale(0.97); }
 
@@ -1106,21 +1090,6 @@ function renderGrid(apps) {
     </a>
   `).join('');
 
-  // ── Ambient backdrop on hover/focus ──
-  const ambientBg = document.getElementById('ambientBg');
-  grid.querySelectorAll('.app-tile').forEach(tile => {
-    const bg = tile.getAttribute('data-bg');
-    if (!bg) return;
-    const activate = () => {
-      ambientBg.style.backgroundImage = `url("${bg}")`;
-      ambientBg.classList.add('show');
-    };
-    const deactivate = () => ambientBg.classList.remove('show');
-    tile.addEventListener('mouseenter', activate);
-    tile.addEventListener('mouseleave', deactivate);
-    tile.addEventListener('focus', activate);
-    tile.addEventListener('blur', deactivate);
-  });
 }
 
 fetch(MANIFEST_URL + '?nc=' + Date.now())
