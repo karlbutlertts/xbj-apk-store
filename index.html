@@ -991,6 +991,8 @@ if (loadSession() > Date.now()) {
   } else {
     document.getElementById('hub').classList.remove('hidden');
   }
+} else {
+  setTimeout(() => { try { lockUser.focus(); } catch(e) {} }, 150);
 }
 
 async function tryUnlock() {
