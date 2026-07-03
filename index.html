@@ -923,6 +923,13 @@ function loadModel() {
   return match ? match.split('=')[1] : null;
 }
 
+function focusFirstIn(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const first = el.querySelector('button, a[href]');
+  if (first) { try { first.focus(); } catch(e) {} }
+}
+
 function showSubHub(model) {
   const label = MODEL_LABELS[model] || 'Your Projector';
   document.getElementById('subHubTitle').textContent = label;
@@ -931,6 +938,7 @@ function showSubHub(model) {
   document.getElementById('subHubTutorials').href = 'tutorials.html?model=' + model;
   document.getElementById('hub').classList.add('hidden');
   document.getElementById('subHub').classList.remove('hidden');
+  setTimeout(() => focusFirstIn('subHub'), 50);
 }
 
 function selectModel(model) {
@@ -941,6 +949,7 @@ function selectModel(model) {
 function changeModel() {
   document.getElementById('subHub').classList.add('hidden');
   document.getElementById('hub').classList.remove('hidden');
+  setTimeout(() => focusFirstIn('hub'), 50);
 }
 
 function unlock() {
@@ -952,6 +961,7 @@ function unlock() {
     showSubHub(saved);
   } else {
     document.getElementById('hub').classList.remove('hidden');
+    setTimeout(() => focusFirstIn('hub'), 50);
   }
 }
 
@@ -967,6 +977,7 @@ function backToMenu() {
     showSubHub(saved);
   } else {
     document.getElementById('hub').classList.remove('hidden');
+    setTimeout(() => focusFirstIn('hub'), 50);
   }
 }
 
