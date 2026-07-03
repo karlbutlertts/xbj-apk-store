@@ -474,7 +474,8 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   transition:transform 0.1s, background 0.15s; -webkit-tap-highlight-color:transparent;
 }
 .hub-tile:active { transform:scale(0.98); }
-.hub-tile:hover, .hub-tile:focus { background:rgba(255,255,255,0.09); border-color:var(--blue); outline:none; }
+.hub-tile:hover, .hub-tile:focus { background:rgba(255,255,255,0.09); border-color:var(--blue); outline:3px solid var(--blue); outline-offset:2px; }
+.hub-tile:focus { transform:scale(1.04); }
 .hub-tile-icon {
   font-size:26px; width:48px; height:48px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
@@ -949,7 +950,7 @@ function selectModel(model) {
 function changeModel() {
   document.getElementById('subHub').classList.add('hidden');
   document.getElementById('hub').classList.remove('hidden');
-  setTimeout(() => focusFirstIn('hub'), 50);
+  setTimeout(() => focusFirstIn('hub'), 150);
 }
 
 function unlock() {
@@ -961,7 +962,7 @@ function unlock() {
     showSubHub(saved);
   } else {
     document.getElementById('hub').classList.remove('hidden');
-    setTimeout(() => focusFirstIn('hub'), 50);
+    setTimeout(() => focusFirstIn('hub'), 150);
   }
 }
 
@@ -977,7 +978,7 @@ function backToMenu() {
     showSubHub(saved);
   } else {
     document.getElementById('hub').classList.remove('hidden');
-    setTimeout(() => focusFirstIn('hub'), 50);
+    setTimeout(() => focusFirstIn('hub'), 150);
   }
 }
 
