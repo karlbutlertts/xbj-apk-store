@@ -1107,7 +1107,13 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
       hero.style.display = 'block';
     }
 
-    renderGrid(apps);
+    const currentModel = loadModel();
+    const modelApps = apps.filter(a => {
+      if (!a.models || a.models.includes('all')) return true;
+      return currentModel && a.models.includes(currentModel);
+    });
+
+    renderGrid(modelApps);
 
     // ── Category pill filtering ──
     categoryPills.addEventListener('click', e => {
@@ -1116,7 +1122,7 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
       categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       const filter = btn.dataset.filter;
-      const filtered = filter === 'all' ? apps : apps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
+      const filtered = filter === 'all' ? modelApps : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
       renderGrid(filtered);
     });
   })
