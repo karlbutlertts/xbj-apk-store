@@ -942,6 +942,11 @@ function unlock() {
 function enterApps() {
   document.getElementById('subHub').classList.add('hidden');
   document.getElementById('menuBackBtn').classList.add('show');
+  window._activeFilter = 'all';
+  categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+  const allPill = categoryPills.querySelector('[data-filter="all"]');
+  if (allPill) allPill.classList.add('active');
+  renderModelGrid();
   window.scrollTo(0, 0);
 }
 
@@ -1061,6 +1066,18 @@ const grid = document.getElementById('appGrid');
 const gridLabel = document.getElementById('gridLabel');
 const categoryPills = document.getElementById('categoryPills');
 
+function renderModelGrid() {
+  const apps = window._allApps || [];
+  const model = loadModel();
+  const filter = window._activeFilter || 'all';
+  const modelApps = apps.filter(a => {
+    if (!a.models || a.models.includes('all')) return true;
+    return model && a.models.includes(model);
+  });
+  const filtered = filter === 'all' ? modelApps : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
+  renderGrid(filtered);
+}
+
 function renderGrid(apps) {
   gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
 
@@ -1107,13 +1124,8 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
       hero.style.display = 'block';
     }
 
-    const currentModel = loadModel();
-    const modelApps = apps.filter(a => {
-      if (!a.models || a.models.includes('all')) return true;
-      return currentModel && a.models.includes(currentModel);
-    });
-
-    renderGrid(modelApps);
+    window._allApps = apps;
+    renderModelGrid();
 
     // ── Category pill filtering ──
     categoryPills.addEventListener('click', e => {
@@ -1121,9 +1133,8 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
       if (!btn) return;
       categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      const filtered = filter === 'all' ? modelApps : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
-      renderGrid(filtered);
+      window._activeFilter = btn.dataset.filter;
+      renderModelGrid();
     });
   })
   .catch(() => {
