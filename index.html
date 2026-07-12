@@ -1073,7 +1073,7 @@ function renderGrid(apps) {
   gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
 
   grid.innerHTML = apps.map((a, i) => `
-    <a class="app-tile" style="animation-delay:${0.06 * i}s" href="${APK_BASE_URL}${a.file}" download="${a.file}" data-bg="${a.bg || a.icon || ''}">
+    <a class="app-tile" style="animation-delay:${0.06 * i}s" href="${a.url || APK_BASE_URL + a.file}" download="${a.file}" data-bg="${a.bg || a.icon || ''}">
       <div class="tile-icon" style="background:${a.color}">
         ${a.icon
           ? `<img src="${a.icon}" alt="${a.name}" loading="lazy" onerror="this.parentElement.textContent='${a.abbr}';this.remove();">`
