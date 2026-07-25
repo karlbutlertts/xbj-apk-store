@@ -921,6 +921,12 @@ function unlock() {
   saveSession();
   lock.classList.add('hidden');
   showGreeting();
+  // Tell the native Android wrapper (if we're running inside it) that the
+  // code lock just granted access, so it can run its own update check.
+  // undefined in a regular browser, so this is a no-op there.
+  if (window.AndroidBridge && typeof AndroidBridge.onUnlocked === 'function') {
+    try { AndroidBridge.onUnlocked(); } catch (e) {}
+  }
   const saved = loadModel();
   if (saved) {
     showSubHub(saved);
