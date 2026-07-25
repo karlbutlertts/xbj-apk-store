@@ -139,7 +139,7 @@
 
   <div class="native-only">
     <div class="carousel-wrap">
-      <div class="carousel-label">Tools &amp; settings</div>
+      <div class="carousel-label" id="carouselLabel">Tools &amp; settings</div>
       <div class="carousel" id="toolsCarousel" tabindex="-1"></div>
       <div class="carousel-hint">◀ ▶ on the remote to scroll · press OK to open a tile</div>
     </div>
@@ -188,11 +188,12 @@ const MODEL = detectModel();
 document.getElementById('modelBadge').textContent = '📽️ Showing tools for ' + (MODEL_LABELS[MODEL] || 'your projector');
 
 // ── Tool/setting catalog ──
-// "models" controls which tiles show for the detected projector. Only the
-// stock Android/AOSP shortcuts are known-generic ("all"); the SStar/NewLink/
-// Zhiying entries are chipset-specific packages confirmed on the A5 Pro's
-// firmware only — we don't yet have the XBJ 360's equivalent package names,
-// so they're tagged a5pro-only rather than guessed.
+// "models" controls which tiles show for the detected projector. The four
+// grouped sub-carousels below (Factory Menus, TV Testing Tools, Display &
+// Sound, System) are exact package/activity names confirmed via ADB on the
+// XBJ A5 Pro's firmware — marked tested + a5pro-only. We don't yet have the
+// XBJ 360's equivalents, so none of these show for that model rather than
+// guessing at package names that likely don't exist on different hardware.
 const TILES = [
   {
     icon: '⚙️', title: 'Android Settings', sub: 'Standard system settings', tested: true,
@@ -211,28 +212,96 @@ const TILES = [
     models: ['all'], type: 'settingsAction', action: 'android.settings.APPLICATION_SETTINGS'
   },
   {
-    icon: '🔧', title: 'Zhiying Settings', sub: "This projector's custom TV settings app", tested: true,
-    models: ['a5pro'], type: 'activity', pkg: 'com.zhiying.settings', activity: '.MainActivity'
+    icon: '🏭', title: 'Factory Menus', sub: 'Newlink & SStar factory + test-pattern menus',
+    models: ['a5pro'], type: 'group', children: [
+      {
+        icon: '📂', title: 'Newlink Factory Menu', sub: 'com.newlink.factorymenu', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.factorymenu', activity: '.MainActivity'
+      },
+      {
+        icon: '🔌', title: 'Newlink Board Test', sub: 'Board-level hardware test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.factorymenu', activity: '.BoardActivity'
+      },
+      {
+        icon: '🔨', title: 'Newlink Tools', sub: 'Newlink engineering tools', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.factorymenu', activity: '.ToolsActivity'
+      },
+      {
+        icon: '🏷️', title: 'SStar Factory Menu', sub: 'com.sstar.factorymenu', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.sstar.factorymenu', activity: '.MainActivity'
+      },
+      {
+        icon: '🖼️', title: 'Test Patterns', sub: 'Panel/PQ test pattern generator', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.sstar.factorymenu', activity: '.TestPatternsActivity'
+      }
+    ]
   },
   {
-    icon: '🏭', title: 'SStar Factory Menu', sub: 'PQ debug, gamma, panel calibration',
-    models: ['a5pro'], type: 'package', pkg: 'com.sstar.factorymenu'
+    icon: '🧪', title: 'TV Testing Tools', sub: 'Production/PCBA hardware test suite',
+    models: ['a5pro'], type: 'group', children: [
+      {
+        icon: '🧪', title: 'Main Test Suite', sub: 'com.newlink.tvtestingtools', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.MainActivity_main'
+      },
+      {
+        icon: '🔩', title: 'PCBA Test', sub: 'Board-level production test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.PCBAActivity'
+      },
+      {
+        icon: '⚙️', title: 'PCBA MTK Test', sub: 'MTK-chipset variant of the PCBA test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.PCBAActivity_MTK'
+      },
+      {
+        icon: '📡', title: 'BT Single Test', sub: 'Bluetooth hardware test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.BTSingleActivity'
+      },
+      {
+        icon: '👆', title: 'Touch Test', sub: 'Touch panel hardware test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.TouchTestActivity'
+      }
+    ]
   },
   {
-    icon: '🖥️', title: 'SStar System Control', sub: 'Display, output & hardware settings',
-    models: ['a5pro'], type: 'package', pkg: 'com.sstar.systemcontrol'
+    icon: '🎚️', title: 'Display & Sound', sub: 'Autofocus, picture & manufacturer settings',
+    models: ['a5pro'], type: 'group', children: [
+      {
+        icon: '🎯', title: 'Autofocus', sub: 'com.zhiying.autofocus', tested: true,
+        models: ['a5pro'], type: 'package', pkg: 'com.zhiying.autofocus'
+      },
+      {
+        icon: '🖥️', title: 'System Control', sub: 'Display, output & hardware settings', tested: true,
+        models: ['a5pro'], type: 'package', pkg: 'com.sstar.systemcontrol'
+      },
+      {
+        icon: '🧠', title: 'Smart Hardware', sub: 'com.zhixin.smarthw', tested: true,
+        models: ['a5pro'], type: 'package', pkg: 'com.zhixin.smarthw'
+      },
+      {
+        icon: '🔧', title: 'Manufacturer Settings', sub: "This projector's custom TV settings app", tested: true,
+        models: ['a5pro'], type: 'package', pkg: 'com.zhiying.settings'
+      }
+    ]
   },
   {
-    icon: '🎛️', title: 'SStar Customized Menu', sub: 'OEM settings on the SStar base firmware',
-    models: ['a5pro'], type: 'package', pkg: 'com.sstar.customizedmenu'
-  },
-  {
-    icon: '📂', title: 'NewLink Factory Menu', sub: 'Projector-specific factory menu',
-    models: ['a5pro'], type: 'package', pkg: 'com.newlink.factorymenu'
-  },
-  {
-    icon: '🎞️', title: 'NewLink Projector Service', sub: 'Manages picture profiles',
-    models: ['a5pro'], type: 'package', pkg: 'com.newlink.projector.service'
+    icon: '🧰', title: 'System', sub: 'Service management, OTA update & OEM menus',
+    models: ['a5pro'], type: 'group', children: [
+      {
+        icon: '🗂️', title: 'Service Management', sub: 'com.newlink.servicemanagement', tested: true,
+        models: ['a5pro'], type: 'package', pkg: 'com.newlink.servicemanagement'
+      },
+      {
+        icon: '🔄', title: 'OTA Update', sub: 'com.uv.droid.uota', tested: true,
+        models: ['a5pro'], type: 'package', pkg: 'com.uv.droid.uota'
+      },
+      {
+        icon: '🎛️', title: 'Customised Menu', sub: 'OEM settings on the SStar base firmware', tested: true,
+        models: ['a5pro'], type: 'package', pkg: 'com.sstar.customizedmenu'
+      },
+      {
+        icon: '🎞️', title: 'Projector Service', sub: 'Manages picture profiles', tested: true,
+        models: ['a5pro'], type: 'package', pkg: 'com.newlink.projector.service'
+      }
+    ]
   },
   {
     icon: '🔍', title: 'Browse a Package', sub: 'Look up any app by package name', tested: true,
@@ -241,11 +310,20 @@ const TILES = [
 ];
 
 const carouselEl = document.getElementById('toolsCarousel');
+const carouselLabel = document.getElementById('carouselLabel');
+const BACK_TILE = { icon: '⬅️', title: 'Back', sub: 'Return to Tools & settings', type: 'back' };
+
+// null = showing the top-level TILES; otherwise the group tile currently drilled into.
+let activeGroup = null;
 let visibleTiles = [];
 
 function renderCarousel(){
-  visibleTiles = TILES.filter(t => t.models.includes('all') || t.models.includes(MODEL));
+  const source = activeGroup ? activeGroup.children : TILES;
+  const filtered = source.filter(t => t.models.includes('all') || t.models.includes(MODEL));
+  visibleTiles = activeGroup ? [BACK_TILE, ...filtered] : filtered;
+  carouselLabel.textContent = activeGroup ? activeGroup.title : 'Tools & settings';
   carouselEl.innerHTML = '';
+  closeDetail();
 
   if (!visibleTiles.length) {
     carouselEl.innerHTML = '<div class="carousel-empty">No engineering tools are cataloged yet for this projector model.</div>';
@@ -315,6 +393,10 @@ function openDetail(title, body){
   detailPanel.classList.add('show');
 }
 
+function closeDetail(){
+  detailPanel.classList.remove('show');
+}
+
 function setStatus(msg, ok){
   detailStatus.className = 'status ' + (ok ? 'ok' : 'err');
   detailStatus.textContent = msg;
@@ -347,6 +429,11 @@ function launchActivity(pkg, activity){
 }
 
 function openTile(t){
+  // Drilling in/out of a sub-section carousel works even in a plain browser
+  // preview — it's just navigating the catalog, no native call involved.
+  if (t.type === 'group') { activeGroup = t; renderCarousel(); return; }
+  if (t.type === 'back') { activeGroup = null; renderCarousel(); return; }
+
   if (!NATIVE) {
     openDetail(t.title, 'Native app required — this only works inside the Projector Guy app.');
     return;
