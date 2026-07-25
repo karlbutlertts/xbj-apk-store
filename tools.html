@@ -19,7 +19,7 @@
     min-height:100vh; -webkit-font-smoothing:antialiased;
   }
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-  .wrap{max-width:680px;margin:0 auto;padding:18px 16px 48px;min-height:100vh}
+  .wrap{max-width:900px;margin:0 auto;padding:18px 16px 48px;min-height:100vh}
   .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
   .back{
     background:var(--surface2);border:1px solid var(--border);color:var(--text);
@@ -28,32 +28,73 @@
   .back:active{transform:scale(.97)}
   .title-lg{font-size:22px;font-weight:700;margin:4px 0 2px}
   .sub{color:var(--muted);font-size:14px;line-height:1.5}
+  .model-badge{
+    display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+    background:rgba(90,166,255,0.14);color:var(--blue);border:1px solid rgba(90,166,255,0.3);
+    border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:700;
+  }
 
   .card{
     background:var(--surface);border:1px solid var(--border);
     border-radius:18px;padding:16px;margin:14px 0;
   }
   .card.amber{border-color:rgba(249,115,22,.5);background:rgba(249,115,22,.07)}
-  .card-title{font-weight:700;font-size:16px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .card-title{font-weight:700;font-size:16px;margin-bottom:6px}
   .card-body{color:var(--muted);font-size:13.5px;line-height:1.55}
-  .card-pkg{font-size:12px;color:var(--muted);margin-top:2px}
 
-  .btn{
-    display:block;width:100%;border:none;border-radius:14px;
-    padding:13px;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;
-    transition:transform .1s ease, opacity .2s; font-family:inherit;
+  .web-warning{display:none}
+  .native-only{display:none}
+  body.native .web-warning{display:none}
+  body.native .native-only{display:block}
+  body:not(.native) .native-only{display:none}
+  body:not(.native) .web-warning{display:block}
+
+  /* ── Tile carousel ── */
+  .carousel-wrap{ position:relative; margin:22px -16px 0; }
+  .carousel-label{ font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 12px 16px; }
+  .carousel{
+    display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x proximity;
+    padding:6px 16px 16px; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;
+    scrollbar-width:none;
   }
-  .btn:active{transform:scale(.98)}
-  .btn-blue{background:var(--blue);color:#fff}
-  .btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-  .btn-sm{padding:9px 14px;font-size:13px;margin-top:0;width:auto;border-radius:10px}
+  .carousel::-webkit-scrollbar{ display:none; }
+  .tool-tile{
+    scroll-snap-align:center;
+    flex:0 0 168px;
+    background:var(--surface); border:1.5px solid var(--border); border-radius:22px;
+    padding:20px 14px 16px; display:flex; flex-direction:column; align-items:center; text-align:center;
+    cursor:pointer; color:inherit; font-family:inherit; outline:none; position:relative;
+    transition:transform .15s cubic-bezier(.2,.8,.3,1.4), border-color .15s ease, box-shadow .2s ease, background .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .tool-tile:hover, .tool-tile:focus-visible, .tool-tile.focused{
+    border-color:var(--blue); background:rgba(90,166,255,0.08);
+    box-shadow:0 0 0 3px rgba(90,166,255,.35); transform:translateY(-3px) scale(1.05);
+  }
+  .tool-tile:active{ transform:scale(.96); }
+  .tool-icon{
+    width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+    font-size:28px;background:var(--surface2);margin-bottom:12px;flex-shrink:0;
+  }
+  .tool-title{ font-weight:700;font-size:14px;line-height:1.3;margin-bottom:5px;min-height:2.6em;display:flex;align-items:center;justify-content:center; }
+  .tool-sub{ font-size:11px;color:var(--muted);line-height:1.4; }
+  .tool-badge{
+    position:absolute; top:10px; right:10px; font-size:9.5px; font-weight:800;
+    padding:2px 7px; border-radius:999px; letter-spacing:.03em; text-transform:uppercase;
+  }
+  .tool-badge.tested{ background:rgba(34,200,122,.16); color:var(--green); border:1px solid rgba(34,200,122,.4); }
+  .tool-badge.factory{ background:rgba(249,115,22,.16); color:var(--orange); border:1px solid rgba(249,115,22,.4); }
+  .carousel-empty{ color:var(--muted); font-size:13.5px; padding:10px 16px; }
+  .carousel-hint{ color:var(--muted); font-size:12px; margin:2px 16px 0; display:flex; align-items:center; gap:6px; }
 
-  .status{font-size:12.5px;font-weight:600;margin-top:8px;min-height:16px}
+  /* ── Detail / result panel ── */
+  .detail-panel{ display:none; }
+  .detail-panel.show{ display:block; }
+  .status{font-size:12.5px;font-weight:600;margin-top:6px;min-height:16px}
   .status.ok{color:var(--green)}
   .status.err{color:#ff5a5a}
 
-  .activity-list{list-style:none;margin:10px 0 0;padding:0;display:none}
-  .activity-list.show{display:block}
+  .activity-list{list-style:none;margin:10px 0 0;padding:0}
   .activity-list li{
     display:flex;align-items:center;justify-content:space-between;gap:10px;
     background:var(--surface2);border:1px solid var(--border);border-radius:10px;
@@ -63,19 +104,22 @@
   .activity-list .disabled{opacity:.45}
   .activity-list .badge{font-size:10px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:1px 5px}
 
-  .browse-row{display:flex;gap:8px;margin-top:10px}
+  .btn{
+    display:inline-block;border:none;border-radius:14px;
+    padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;
+    transition:transform .1s ease, opacity .2s; font-family:inherit;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn-blue{background:var(--blue);color:#fff}
+  .btn-blue:focus-visible{ outline:3px solid #fff; outline-offset:2px; }
+  .btn-sm{padding:8px 13px;font-size:12.5px;border-radius:10px}
+
+  .browse-row{display:flex;gap:8px;margin-top:6px}
   .browse-row input{
     flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);
     border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;
   }
   .browse-row input:focus{border-color:var(--blue)}
-
-  .web-warning{display:none}
-  .native-only{display:none}
-  body.native .web-warning{display:none}
-  body.native .native-only{display:block}
-  body:not(.native) .native-only{display:none}
-  body:not(.native) .web-warning{display:block}
 </style>
 </head>
 <body>
@@ -85,7 +129,8 @@
   </div>
 
   <h1 class="title-lg">🛠️ Engineering Tools</h1>
-  <div class="sub">Direct access to hidden factory menus, picture-quality (PQ) settings and system activities on the XBJ A5 Pro. For advanced users only — some menus can change low-level display calibration.</div>
+  <div class="sub">Direct access to hidden factory menus, picture-quality (PQ) settings and system activities on your projector. For advanced users only — some menus can change low-level display calibration.</div>
+  <div class="model-badge" id="modelBadge">📽️ Showing tools for your projector</div>
 
   <div class="card web-warning amber">
     <div class="card-title">Native app required</div>
@@ -93,31 +138,22 @@
   </div>
 
   <div class="native-only">
-
-  <div class="card greenline" style="border-color:rgba(34,200,122,.5);background:rgba(34,200,122,.07)">
-    <div class="card-title">✅ Confirmed working shortcuts</div>
-    <div class="card-body">These were tested over ADB and are known to work on this firmware.</div>
-    <button class="btn btn-blue" onclick="quickLaunch('settings')">Android Settings</button>
-    <button class="btn btn-blue" onclick="quickLaunch('tvsettings')">Android TV Settings (MainSettings)</button>
-    <button class="btn btn-blue" onclick="quickLaunch('zhiying')">Zhiying Settings</button>
-    <button class="btn btn-blue" onclick="quickLaunch('accessibility')">Accessibility Settings</button>
-    <button class="btn btn-blue" onclick="quickLaunch('appinfo')">Application / App Info Settings</button>
-    <div class="status" id="status-quick"></div>
-  </div>
-
-  <div id="menuCards"></div>
-
-  <div class="card">
-    <div class="card-title">Browse any package</div>
-    <div class="card-body">Enter a package name to list its activities, then tap one to launch it directly. Useful for exploring unfamiliar factory/service apps.</div>
-    <div class="browse-row">
-      <input id="customPkg" type="text" placeholder="e.g. com.sstar.factorymenu" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <button class="btn btn-blue btn-sm" onclick="browseCustom()">Browse</button>
+    <div class="carousel-wrap">
+      <div class="carousel-label">Tools &amp; settings</div>
+      <div class="carousel" id="toolsCarousel" tabindex="-1"></div>
+      <div class="carousel-hint">◀ ▶ on the remote to scroll · press OK to open a tile</div>
     </div>
-    <div class="status" id="status-custom"></div>
-    <ul class="activity-list" id="customList"></ul>
-  </div>
 
+    <div class="card detail-panel" id="detailPanel">
+      <div class="card-title" id="detailTitle"></div>
+      <div class="card-body" id="detailBody"></div>
+      <div class="browse-row" id="browseRow" style="display:none">
+        <input id="customPkg" type="text" placeholder="e.g. com.sstar.factorymenu" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button class="btn btn-blue btn-sm" onclick="browseCustom()">Browse</button>
+      </div>
+      <div class="status" id="detailStatus"></div>
+      <ul class="activity-list" id="detailList"></ul>
+    </div>
   </div>
 </div>
 
@@ -131,98 +167,163 @@ function goBack(){
   location.href = 'index.html';
 }
 
-// Shortcuts confirmed working over ADB on this firmware (see investigation notes)
-function quickLaunch(which){
-  const statusId = 'status-quick';
-  if (!NATIVE) { setStatus(statusId, 'Native app required.', false); return; }
+// ── Which projector model are we running on? ──
+// Prefer the ?model= query param (set by index.html's subHub links), fall
+// back to whatever selectModel() saved to localStorage/cookie, same as the
+// other model-aware pages (tutorials.html).
+const MODEL_LABELS = { a5pro: 'XBJ A5 Pro', '360': 'XBJ 360', other: 'your projector' };
 
-  let ok = false;
-  switch (which) {
-    case 'settings':
-      ok = window.AndroidBridge.openSettingsAction('android.settings.SETTINGS');
-      break;
-    case 'tvsettings':
-      ok = window.AndroidBridge.launchActivity('com.android.tv.settings', '.MainSettings');
-      break;
-    case 'zhiying':
-      ok = window.AndroidBridge.launchActivity('com.zhiying.settings', '.MainActivity');
-      break;
-    case 'accessibility':
-      ok = window.AndroidBridge.openSettingsAction('android.settings.ACCESSIBILITY_SETTINGS');
-      break;
-    case 'appinfo':
-      ok = window.AndroidBridge.openSettingsAction('android.settings.APPLICATION_SETTINGS');
-      break;
-  }
-  setStatus(statusId, ok ? 'Opening…' : 'Could not open — not available on this build.', ok);
+function detectModel(){
+  const fromQuery = new URLSearchParams(location.search).get('model');
+  if (fromQuery) return fromQuery;
+  try {
+    const ls = localStorage.getItem('xbj_model');
+    if (ls) return ls;
+  } catch (e) {}
+  const match = document.cookie.split(';').map(c => c.trim()).find(c => c.startsWith('xbj_model='));
+  return match ? match.split('=')[1] : 'other';
 }
 
-// Known hidden/factory menu packages discovered via ADB on this firmware.
-// "launch" tries the package's normal launcher activity first; if that
-// fails (most factory menus have no launcher), we list its activities so
-// you can pick the right entry point manually.
-const MENUS = [
+const MODEL = detectModel();
+document.getElementById('modelBadge').textContent = '📽️ Showing tools for ' + (MODEL_LABELS[MODEL] || 'your projector');
+
+// ── Tool/setting catalog ──
+// "models" controls which tiles show for the detected projector. Only the
+// stock Android/AOSP shortcuts are known-generic ("all"); the SStar/NewLink/
+// Zhiying entries are chipset-specific packages confirmed on the A5 Pro's
+// firmware only — we don't yet have the XBJ 360's equivalent package names,
+// so they're tagged a5pro-only rather than guessed.
+const TILES = [
   {
-    pkg: 'com.sstar.factorymenu',
-    title: 'SStar Factory Menu',
-    desc: 'SStar/MStar chipset engineering menu — likely contains PQ debug, gamma and panel calibration.'
+    icon: '⚙️', title: 'Android Settings', sub: 'Standard system settings', tested: true,
+    models: ['all'], type: 'settingsAction', action: 'android.settings.SETTINGS'
   },
   {
-    pkg: 'com.newlink.factorymenu',
-    title: 'NewLink Factory Menu',
-    desc: 'Projector-specific factory menu from the NewLink firmware layer.'
+    icon: '📺', title: 'Android TV Settings', sub: 'MainSettings', tested: true,
+    models: ['all'], type: 'activity', pkg: 'com.android.tv.settings', activity: '.MainSettings'
   },
   {
-    pkg: 'com.sstar.systemcontrol',
-    title: 'SStar System Control',
-    desc: 'Low-level system control service — display, output and hardware settings.'
+    icon: '♿', title: 'Accessibility', sub: 'Accessibility settings', tested: true,
+    models: ['all'], type: 'settingsAction', action: 'android.settings.ACCESSIBILITY_SETTINGS'
   },
   {
-    pkg: 'com.sstar.customizedmenu',
-    title: 'SStar Customized Menu',
-    desc: 'Custom OEM settings menu layered on top of the SStar base firmware.'
+    icon: '📱', title: 'App Info', sub: 'Application settings', tested: true,
+    models: ['all'], type: 'settingsAction', action: 'android.settings.APPLICATION_SETTINGS'
   },
   {
-    pkg: 'com.zhiying.settings',
-    title: 'Zhiying Settings',
-    desc: 'Custom settings app used by this projector\'s Android TV build.'
+    icon: '🔧', title: 'Zhiying Settings', sub: "This projector's custom TV settings app", tested: true,
+    models: ['a5pro'], type: 'activity', pkg: 'com.zhiying.settings', activity: '.MainActivity'
   },
   {
-    pkg: 'com.newlink.projector.service',
-    title: 'NewLink Projector Service',
-    desc: 'Background service that manages picture profiles — likely enforces PQ values. Browsing this can help find its settings UI.'
+    icon: '🏭', title: 'SStar Factory Menu', sub: 'PQ debug, gamma, panel calibration',
+    models: ['a5pro'], type: 'package', pkg: 'com.sstar.factorymenu'
+  },
+  {
+    icon: '🖥️', title: 'SStar System Control', sub: 'Display, output & hardware settings',
+    models: ['a5pro'], type: 'package', pkg: 'com.sstar.systemcontrol'
+  },
+  {
+    icon: '🎛️', title: 'SStar Customized Menu', sub: 'OEM settings on the SStar base firmware',
+    models: ['a5pro'], type: 'package', pkg: 'com.sstar.customizedmenu'
+  },
+  {
+    icon: '📂', title: 'NewLink Factory Menu', sub: 'Projector-specific factory menu',
+    models: ['a5pro'], type: 'package', pkg: 'com.newlink.factorymenu'
+  },
+  {
+    icon: '🎞️', title: 'NewLink Projector Service', sub: 'Manages picture profiles',
+    models: ['a5pro'], type: 'package', pkg: 'com.newlink.projector.service'
+  },
+  {
+    icon: '🔍', title: 'Browse a Package', sub: 'Look up any app by package name', tested: true,
+    models: ['all'], type: 'browse'
   }
 ];
 
-function renderMenus(){
-  const container = document.getElementById('menuCards');
-  MENUS.forEach((m, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="card-title">
-        <div>${m.title}<div class="card-pkg mono">${m.pkg}</div></div>
-        <button class="btn btn-ghost btn-sm" onclick="launchOrBrowse(${i})">Open</button>
-      </div>
-      <div class="card-body">${m.desc}</div>
-      <div class="status" id="status-${i}"></div>
-      <ul class="activity-list" id="list-${i}"></ul>
+const carouselEl = document.getElementById('toolsCarousel');
+let visibleTiles = [];
+
+function renderCarousel(){
+  visibleTiles = TILES.filter(t => t.models.includes('all') || t.models.includes(MODEL));
+  carouselEl.innerHTML = '';
+
+  if (!visibleTiles.length) {
+    carouselEl.innerHTML = '<div class="carousel-empty">No engineering tools are cataloged yet for this projector model.</div>';
+    return;
+  }
+
+  visibleTiles.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tool-tile';
+    b.dataset.index = i;
+    const badge = t.tested
+      ? '<div class="tool-badge tested">Tested</div>'
+      : (t.type === 'package' ? '<div class="tool-badge factory">Factory</div>' : '');
+    b.innerHTML = `
+      ${badge}
+      <div class="tool-icon">${t.icon}</div>
+      <div class="tool-title">${t.title}</div>
+      <div class="tool-sub">${t.sub}</div>
     `;
-    container.appendChild(card);
+    b.addEventListener('click', () => openTile(t));
+    b.addEventListener('focus', () => b.classList.add('focused'));
+    b.addEventListener('blur', () => b.classList.remove('focused'));
+    carouselEl.appendChild(b);
   });
+
+  // Land focus on the first tile so a remote can drive it immediately.
+  setTimeout(() => { const first = carouselEl.querySelector('.tool-tile'); if (first) first.focus(); }, 150);
 }
 
-function setStatus(id, msg, ok){
-  const el = document.getElementById(id);
-  el.className = 'status ' + (ok ? 'ok' : 'err');
-  el.textContent = msg;
+// D-pad left/right moves focus between tiles and keeps the focused one
+// scrolled into view. Enter/OK on a focused <button> triggers its native
+// click event already, so no extra handling is needed for "select".
+document.addEventListener('keydown', e => {
+  if (!carouselEl.contains(document.activeElement)) return;
+  const isLeft = e.key === 'ArrowLeft' || e.keyCode === 37;
+  const isRight = e.key === 'ArrowRight' || e.keyCode === 39;
+  if (!isLeft && !isRight) return;
+
+  const tiles = Array.from(carouselEl.querySelectorAll('.tool-tile'));
+  if (!tiles.length) return;
+  e.preventDefault();
+
+  let idx = tiles.indexOf(document.activeElement);
+  if (idx < 0) idx = 0;
+  idx = isRight ? Math.min(idx + 1, tiles.length - 1) : Math.max(idx - 1, 0);
+  tiles[idx].focus();
+  tiles[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+});
+
+// ── Detail panel (opened when a tile is selected) ──
+const detailPanel = document.getElementById('detailPanel');
+const detailTitle = document.getElementById('detailTitle');
+const detailBody = document.getElementById('detailBody');
+const detailStatus = document.getElementById('detailStatus');
+const detailList = document.getElementById('detailList');
+const browseRow = document.getElementById('browseRow');
+let currentBrowsePkg = null;
+
+function openDetail(title, body){
+  detailTitle.textContent = title;
+  detailBody.textContent = body || '';
+  detailStatus.textContent = '';
+  detailStatus.className = 'status';
+  detailList.innerHTML = '';
+  browseRow.style.display = 'none';
+  detailPanel.classList.add('show');
 }
 
-function renderActivityList(listEl, pkg, activities, statusId){
-  listEl.innerHTML = '';
+function setStatus(msg, ok){
+  detailStatus.className = 'status ' + (ok ? 'ok' : 'err');
+  detailStatus.textContent = msg;
+}
+
+function renderActivityList(pkg, activities){
+  detailList.innerHTML = '';
   if (!activities.length) {
-    listEl.classList.remove('show');
-    setStatus(statusId, 'No activities found — package may not be installed.', false);
+    setStatus('No activities found — package may not be installed.', false);
     return;
   }
   activities.forEach(a => {
@@ -234,60 +335,79 @@ function renderActivityList(listEl, pkg, activities, statusId){
       <span class="badge">${a.exported ? 'exported' : 'internal'}</span>
       <button class="btn btn-blue btn-sm" onclick='launchActivity("${pkg}", ${JSON.stringify(a.name)})'>Launch</button>
     `;
-    listEl.appendChild(li);
+    detailList.appendChild(li);
   });
-  listEl.classList.add('show');
-  setStatus(statusId, `Found ${activities.length} activities. Tap one to launch.`, true);
-}
-
-function launchOrBrowse(i){
-  const m = MENUS[i];
-  const statusId = `status-${i}`;
-  const listEl = document.getElementById(`list-${i}`);
-
-  if (!NATIVE) { setStatus(statusId, 'Native app required.', false); return; }
-
-  if (!window.AndroidBridge.isPackageInstalled(m.pkg)) {
-    setStatus(statusId, 'Package not found on this device.', false);
-    listEl.classList.remove('show');
-    return;
-  }
-
-  // Try the normal launcher first (rare for factory menus, but quick if it works)
-  if (window.AndroidBridge.launchApp(m.pkg)) {
-    setStatus(statusId, 'Launching…', true);
-    return;
-  }
-
-  // No launcher — list activities so the user can pick one
-  let activities = [];
-  try { activities = JSON.parse(window.AndroidBridge.listActivities(m.pkg) || '[]'); } catch (e) {}
-  renderActivityList(listEl, m.pkg, activities, statusId);
+  setStatus(`Found ${activities.length} activities. Tap one to launch.`, true);
 }
 
 function launchActivity(pkg, activity){
   if (!NATIVE) return;
   const ok = window.AndroidBridge.launchActivity(pkg, activity);
-  if (!ok) alert('Could not launch ' + activity + '\n\nIt may require system permissions this app does not have.');
+  if (!ok) setStatus('Could not launch ' + activity + ' — it may require system permissions this app does not have.', false);
+}
+
+function openTile(t){
+  if (!NATIVE) {
+    openDetail(t.title, 'Native app required — this only works inside the Projector Guy app.');
+    return;
+  }
+
+  switch (t.type) {
+    case 'settingsAction': {
+      openDetail(t.title, t.sub);
+      const ok = window.AndroidBridge.openSettingsAction(t.action);
+      setStatus(ok ? 'Opening…' : 'Could not open — not available on this build.', ok);
+      break;
+    }
+    case 'activity': {
+      openDetail(t.title, t.sub);
+      const ok = window.AndroidBridge.launchActivity(t.pkg, t.activity);
+      setStatus(ok ? 'Opening…' : 'Could not open — not available on this build.', ok);
+      break;
+    }
+    case 'package': {
+      openDetail(t.title, t.sub + ' — ' + t.pkg);
+      if (!window.AndroidBridge.isPackageInstalled(t.pkg)) {
+        setStatus('Package not found on this device.', false);
+        return;
+      }
+      if (window.AndroidBridge.launchApp(t.pkg)) {
+        setStatus('Launching…', true);
+        return;
+      }
+      // No normal launcher (typical for factory menus) — list its
+      // activities instead so the user can pick the right entry point.
+      let activities = [];
+      try { activities = JSON.parse(window.AndroidBridge.listActivities(t.pkg) || '[]'); } catch (e) {}
+      renderActivityList(t.pkg, activities);
+      break;
+    }
+    case 'browse': {
+      openDetail(t.title, 'Enter a package name to list its activities, then tap one to launch it directly.');
+      browseRow.style.display = 'flex';
+      setTimeout(() => { const inp = document.getElementById('customPkg'); if (inp) inp.focus(); }, 50);
+      break;
+    }
+  }
 }
 
 function browseCustom(){
   const pkg = document.getElementById('customPkg').value.trim();
-  const listEl = document.getElementById('customList');
-  if (!pkg) { setStatus('status-custom', 'Enter a package name first.', false); return; }
-  if (!NATIVE) { setStatus('status-custom', 'Native app required.', false); return; }
+  if (!pkg) { setStatus('Enter a package name first.', false); return; }
+  if (!NATIVE) { setStatus('Native app required.', false); return; }
 
+  currentBrowsePkg = pkg;
   if (!window.AndroidBridge.isPackageInstalled(pkg)) {
-    setStatus('status-custom', 'Package not found on this device.', false);
-    listEl.classList.remove('show');
+    setStatus('Package not found on this device.', false);
+    detailList.innerHTML = '';
     return;
   }
   let activities = [];
   try { activities = JSON.parse(window.AndroidBridge.listActivities(pkg) || '[]'); } catch (e) {}
-  renderActivityList(listEl, pkg, activities, 'status-custom');
+  renderActivityList(pkg, activities);
 }
 
-renderMenus();
+renderCarousel();
 </script>
 </body>
 </html>
