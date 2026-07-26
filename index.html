@@ -31,7 +31,7 @@ body {
 }
 /* slow drifting glow blobs behind everything */
 body::before, body::after { display:none; }
-header, .grid-wrap, .howto, .footer-note, .hero { position:relative; z-index:1; }
+header, .grid-wrap, .howto, .footer-note { position:relative; z-index:1; }
 
 /* ambient bg disabled for TV performance */
 #ambientBg { display:none; }
@@ -57,147 +57,6 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 .greeting { font-size:14px; font-weight:700; color:var(--blue); margin-bottom:4px; display:none; }
 .greeting.show { display:block; }
 
-/* ── URGENT FIX BANNER ── */
-.fixban {
-  max-width:1100px; margin:18px auto 0; padding:0 24px;
-  opacity:0; animation:fadeUp 0.6s cubic-bezier(.2,.7,.3,1) forwards;
-}
-.fixban-card {
-  position:relative; overflow:hidden;
-  background:linear-gradient(120deg, rgba(255,107,107,0.16), rgba(255,177,68,0.10));
-  border:1px solid rgba(255,140,90,0.35);
-  border-radius:28px; padding:26px 28px;
-  box-shadow:0 20px 60px rgba(120,40,20,0.3);
-}
-.fixban-badge {
-  display:inline-flex; align-items:center; gap:7px;
-  font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
-  color:#ffb648; background:rgba(255,182,72,0.16); border:1px solid rgba(255,182,72,0.35);
-  padding:5px 14px; border-radius:20px; margin-bottom:14px;
-}
-.fixban-dot {
-  width:8px; height:8px; border-radius:50%; background:#ff6b6b;
-  animation:pulseDot 1.6s ease-out infinite;
-}
-@keyframes pulseDot {
-  0%   { box-shadow:0 0 0 0 rgba(255,107,107,0.55); }
-  70%  { box-shadow:0 0 0 9px rgba(255,107,107,0); }
-  100% { box-shadow:0 0 0 0 rgba(255,107,107,0); }
-}
-.fixban-title { font-size:20px; font-weight:800; margin-bottom:8px; }
-.fixban-desc { font-size:14px; color:var(--text2); line-height:1.6; max-width:720px; margin-bottom:20px; }
-.fixban-desc strong { color:var(--text); }
-.fixban-actions { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:22px; }
-.fixban-btn {
-  display:inline-flex; align-items:center; gap:8px;
-  background:linear-gradient(145deg,#ff8a4c,#e8632a); color:#fff; font-weight:800; font-size:14px;
-  padding:14px 24px; border-radius:16px; text-decoration:none;
-  box-shadow:0 10px 28px rgba(232,99,42,0.4);
-  transition:transform 0.15s ease, box-shadow 0.15s ease;
-}
-.fixban-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 14px 36px rgba(232,99,42,0.55); }
-.fixban-btn.secondary {
-  background:rgba(255,255,255,0.08); color:var(--text); border:1px solid var(--border);
-  box-shadow:none;
-}
-.fixban-btn.secondary:hover { background:rgba(255,255,255,0.14); box-shadow:0 8px 20px rgba(0,0,0,0.25); }
-.fixban-steps {
-  background:rgba(11,18,32,0.4); border:1px solid rgba(255,255,255,0.08);
-  border-radius:20px; padding:6px 20px;
-}
-.fixban-step {
-  display:flex; gap:14px; align-items:flex-start; padding:14px 0;
-  border-bottom:1px solid rgba(255,255,255,0.06);
-}
-.fixban-step:last-child { border-bottom:none; }
-.fixban-num {
-  width:28px; height:28px; border-radius:50%; flex-shrink:0;
-  background:rgba(255,140,90,0.18); color:#ffb648; font-weight:800; font-size:13px;
-  display:flex; align-items:center; justify-content:center; margin-top:1px;
-}
-.fixban-step-title { font-size:14px; font-weight:700; margin-bottom:2px; }
-.fixban-step-desc { font-size:13px; color:var(--text2); line-height:1.55; }
-.fixban-step-desc code {
-  background:rgba(255,255,255,0.08); padding:2px 7px; border-radius:6px;
-  font-size:12px; font-family:ui-monospace,monospace; color:#ffd9a8;
-}
-.fixban-warn {
-  margin-top:16px; display:flex; gap:10px; align-items:flex-start;
-  background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.3);
-  border-radius:16px; padding:14px 16px; font-size:13px; color:#ffb3b3; line-height:1.55;
-}
-.fixban-warn strong { color:#fff; }
-.fixban-dl-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
-.fixban-dl-grid .fixban-btn { text-align:center; justify-content:center; font-size:13px; padding:12px 14px; }
-@media (max-width:480px) { .fixban-dl-grid { grid-template-columns:1fr; } }
-.fixban-dl-tip { font-size:12.5px; color:var(--text2); background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:14px; padding:10px 14px; margin-bottom:18px; line-height:1.5; }
-.fixban-trigger { cursor:pointer; transition:transform 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease; }
-.fixban-trigger:hover, .fixban-trigger:focus-visible {
-  transform:translateY(-3px);
-  border-color:rgba(255,140,90,0.6);
-  box-shadow:0 24px 64px rgba(120,40,20,0.4), 0 0 0 3px rgba(255,140,90,0.22);
-  outline:none;
-}
-.fixban-trigger .fixban-desc { margin-bottom:0; }
-
-/* ── FIX MODAL ── */
-.fix-modal-overlay {
-  position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:2000;
-  display:flex; align-items:flex-start; justify-content:center;
-  background:rgba(5,10,20,0.72); backdrop-filter:blur(6px);
-  padding:32px 18px; overflow-y:auto;
-  opacity:1; transition:opacity 0.2s ease;
-}
-.fix-modal-overlay.hidden { opacity:0; pointer-events:none; }
-.fix-modal {
-  position:relative; max-width:680px; width:100%;
-  background:linear-gradient(160deg, #1c2540, #0f1626);
-  border:1px solid rgba(255,140,90,0.3);
-  border-radius:28px; padding:32px 28px 28px;
-  box-shadow:0 30px 90px rgba(0,0,0,0.55);
-  margin:auto;
-  transform:translateY(0); transition:transform 0.25s ease;
-}
-.fix-modal-overlay.hidden .fix-modal { transform:translateY(24px); }
-.fix-modal-close {
-  position:absolute; top:18px; right:18px;
-  width:36px; height:36px; border-radius:50%; border:1px solid var(--border);
-  background:rgba(255,255,255,0.06); color:var(--text);
-  font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center;
-  transition:background 0.15s ease, transform 0.15s ease;
-}
-.fix-modal-close:hover { background:rgba(255,255,255,0.14); transform:scale(1.08); }
-.fix-modal .fixban-steps, .fix-modal .fixban-warn { margin-top: 4px; }
-
-.updates-banner {
-  max-width:1100px; margin:18px auto 0; padding:0 24px;
-  opacity:0; animation:fadeUp 0.6s cubic-bezier(.2,.7,.3,1) 0.02s forwards;
-}
-.updates-banner a {
-  display:flex; align-items:center; gap:14px; flex-wrap:nowrap;
-  text-decoration:none; color:inherit;
-  background:linear-gradient(120deg, rgba(60,220,150,0.14), rgba(90,166,255,0.10));
-  border:1px solid rgba(80,220,160,0.32);
-  border-radius:20px; padding:14px 22px;
-  transition:transform 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
-}
-.updates-banner a:hover {
-  transform:translateY(-2px);
-  border-color:rgba(80,220,160,0.55);
-  box-shadow:0 14px 40px rgba(30,120,80,0.28);
-}
-.updates-pill {
-  flex-shrink:0; font-size:11px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase;
-  color:#3fe0a0; background:rgba(63,224,160,0.14); border:1px solid rgba(63,224,160,0.35);
-  border-radius:999px; padding:5px 12px; white-space:nowrap;
-}
-.updates-text {
-  font-size:14px; color:var(--text2); line-height:1.4;
-  flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.updates-text strong { color:var(--text); }
-.updates-arrow { margin-left:auto; font-size:18px; color:#3fe0a0; flex-shrink:0; }
 
 .install-bar {
   max-width:1100px; margin:14px auto 0; padding:0 24px;
@@ -216,40 +75,6 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   margin-right:24px;
 }
 .install-btn:hover { transform:translateY(-2px); box-shadow:0 14px 36px rgba(90,166,255,0.5); }
-
-.hero {
-  max-width:1100px; margin:18px auto 0; padding:0 24px;
-  opacity:0; animation:fadeUp 0.6s cubic-bezier(.2,.7,.3,1) 0.05s forwards;
-}
-.hero-card {
-  display:flex; align-items:center; gap:24px; flex-wrap:wrap;
-  background:linear-gradient(120deg, rgba(90,166,255,0.16), rgba(138,90,255,0.12));
-  border:1px solid rgba(90,166,255,0.28);
-  border-radius:28px; padding:26px 28px;
-  box-shadow:0 20px 60px rgba(20,40,90,0.35);
-}
-.hero-icon {
-  width:76px; height:76px; border-radius:20px; flex-shrink:0; overflow:hidden;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.35);
-}
-.hero-icon img { width:100%; height:100%; object-fit:cover; display:block; }
-.hero-text { flex:1; min-width:200px; }
-.hero-tag {
-  display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
-  color:#ffd166; background:rgba(255,209,102,0.14); border:1px solid rgba(255,209,102,0.3);
-  padding:4px 12px; border-radius:20px; margin-bottom:10px;
-}
-.hero-title { font-size:21px; font-weight:800; margin-bottom:4px; }
-.hero-desc { font-size:13.5px; color:var(--text2); line-height:1.5; }
-.hero-dl {
-  flex-shrink:0; display:inline-flex; align-items:center; gap:8px;
-  background:var(--blue); color:#0b1220; font-weight:800; font-size:14px;
-  padding:13px 24px; border-radius:18px; text-decoration:none;
-  transition:transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow:0 8px 24px rgba(90,166,255,0.35);
-}
-.hero-dl:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 12px 32px rgba(90,166,255,0.5); }
 
 .category-pills {
   max-width:1100px; margin:18px auto 0; padding:0 24px;
@@ -634,14 +459,6 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   <div class="subtitle">Tap an app to download it straight to your XBJ projector and install... easy! 🍿 🎬 ⚽️</div>
 </header>
 
-<div class="updates-banner">
-  <a href="#appGrid">
-    <span class="updates-pill">🆕 Latest updates</span>
-    <span class="updates-text" id="updatesText">Loading the latest update&hellip;</span>
-    <span class="updates-arrow">↓</span>
-  </a>
-</div>
-
 <div class="category-pills" id="categoryPills">
   <button class="category-pill active" data-filter="all">All apps</button>
   <button class="category-pill" data-filter="livetv">📺 Live TV apps</button>
@@ -660,90 +477,6 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   <div class="app-grid" id="appGrid" tabindex="-1"></div>
   <div class="grid-hint">◀ ▶ on the remote to scroll · press OK to download</div>
 </div>
-
-<div class="hero" id="hero" style="display:none;">
-  <div class="hero-card">
-    <div class="hero-icon" id="heroIcon"></div>
-    <div class="hero-text">
-      <div class="hero-tag">★ Featured update</div>
-      <div class="hero-title" id="heroTitle"></div>
-      <div class="hero-desc" id="heroDesc"></div>
-    </div>
-    <a class="hero-dl" id="heroDl" href="#">⬇ Get it now</a>
-  </div>
-</div>
-
-<div class="fixban">
-  <div class="fixban-card fixban-trigger" id="fixOpenBtn" role="button" tabindex="0">
-    <div class="fixban-badge"><span class="fixban-dot"></span> Urgent · Latest A5 Pro update</div>
-    <div class="fixban-title">⚠️ DON'T update to the latest firmware!</div>
-    <div class="fixban-desc">
-      XBJ removed Google Play Store in their newest update. Tap here for the fix — a backup firmware image you can flash via USB in about 10 minutes.
-    </div>
-    <div class="fixban-actions">
-      <span class="fixban-btn">📋 View the fix &amp; instructions</span>
-    </div>
-  </div>
-</div>
-
-<div id="fixModalOverlay" class="fix-modal-overlay hidden">
-  <div class="fix-modal">
-    <button class="fix-modal-close" id="fixCloseBtn" aria-label="Close">✕</button>
-    <div class="fixban-badge"><span class="fixban-dot"></span> Urgent fix · Latest A5 Pro update</div>
-    <div class="fixban-title">⚠️ DON'T update to the latest firmware!</div>
-    <div class="fixban-desc">
-      Loads of you have messaged saying Play Store vanished after updating your XBJ A5 Pro. I've got a <strong>backup firmware image</strong> that restores it. Takes about 10 minutes with a USB stick.
-    </div>
-    <a class="fixban-btn" href="fix.html" style="display:block;text-align:center;background:#f97316;color:#1a0e00;font-weight:700;margin-bottom:8px;">⚡ Automatic USB Fix — do it all on the projector</a>
-    <div class="fixban-dl-tip">📺 No laptop needed. Just plug a USB stick into the projector and tap the button above — it formats the stick and copies all 4 files for you, right here on the device.</div>
-
-    <div class="fixban-steps">
-      <div class="fixban-step">
-        <div class="fixban-num">1</div>
-        <div>
-          <div class="fixban-step-title">Plug a USB stick into the projector</div>
-          <div class="fixban-step-desc">Any USB drive with at least 2&nbsp;GB free. Anything already on it will be wiped, so use a spare or back it up first.</div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">2</div>
-        <div>
-          <div class="fixban-step-title">Tap “Automatic USB Fix” above</div>
-          <div class="fixban-step-desc">It formats the stick to FAT32 and downloads all 4 firmware files straight onto it — no computer, no dragging files about. Just wait for the green tick.</div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">3</div>
-        <div>
-          <div class="fixban-step-title">Go to Settings → System → Local Upgrade</div>
-          <div class="fixban-step-desc">With the USB still plugged in, open <strong>Settings</strong> on the projector, go to <strong>System</strong>, then tap <strong>Local Upgrade</strong> (also shown as System Update → Local Update). <strong>Do NOT</strong> tap Online Update — that reinstalls the broken firmware.</div>
-        </div>
-      </div>
-      <div class="fixban-step">
-        <div class="fixban-num">4</div>
-        <div>
-          <div class="fixban-step-title">Tap Upgrade and wait</div>
-          <div class="fixban-step-desc">It'll find the files on the USB and update itself — takes about 5–10 minutes. Keep the USB plugged in and don't power it off during the update.</div>
-        </div>
-      </div>
-    </div>
-
-    <details class="fixban-manual">
-      <summary style="cursor:pointer;color:#9aa0b0;font-size:13px;margin:6px 0;">Prefer to do it manually? Download the 4 files</summary>
-      <div class="fixban-dl-grid" style="margin-top:10px;">
-        <a class="fixban-btn" href="https://drive.google.com/uc?id=1tNgwDK8LelYYdzWimXnm7f1zfr04c3pz" target="_blank" rel="noopener">⬇ bootloader.img</a>
-        <a class="fixban-btn" href="https://drive.google.com/uc?id=1urewSdpVX62pD_Qxthx2fVRyS2TZcZqx" target="_blank" rel="noopener">⬇ emmc_boot.bin</a>
-        <a class="fixban-btn" href="https://drive.google.com/uc?id=1lN_BYiHZacYu-zf9UGMQTOxcp1LnjvbG" target="_blank" rel="noopener">⬇ IPL_PRE.bin</a>
-        <a class="fixban-btn" href="https://drive.google.com/uc?id=13L3ya_0zHhmFkWMKG9kPrK7vTsHgKMfi" target="_blank" rel="noopener">⬇ DY_8D196_026.bin</a>
-      </div>
-      <div class="fixban-dl-tip" style="margin-top:8px;">Copy all 4 files to the <strong>root</strong> of a <strong>FAT32</strong> USB stick (not in a subfolder), then follow steps 3–4 above.<br><br>💡 No computer? You can format the stick on the projector itself: <strong>Settings → Storage</strong>, select the USB drive, then <strong>Format / Erase</strong> (choose FAT32 if asked). Then download the 4 files above straight onto it.</div>
-    </details>
-    <div class="fixban-warn">
-      ⚠️ <span><strong>Important:</strong> always use <strong>Local Upgrade</strong> — never Online Update. Once this is done, please don't update your projector again until I've spoken to XBJ about why Google Play went missing. I'll let you know on TikTok as soon as it's safe.</span>
-    </div>
-  </div>
-</div>
-
 
 <div class="howto">
   <div class="howto-card">
@@ -1051,17 +784,6 @@ window.addEventListener('appinstalled', () => {
   installBar.classList.add('hidden');
 });
 
-// ── Firmware fix modal ──
-const fixOpenBtn = document.getElementById('fixOpenBtn');
-const fixModalOverlay = document.getElementById('fixModalOverlay');
-const fixCloseBtn = document.getElementById('fixCloseBtn');
-function openFixModal() { fixModalOverlay.classList.remove('hidden'); }
-function closeFixModal() { fixModalOverlay.classList.add('hidden'); }
-fixOpenBtn.addEventListener('click', openFixModal);
-fixOpenBtn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFixModal(); } });
-fixCloseBtn.addEventListener('click', closeFixModal);
-fixModalOverlay.addEventListener('click', e => { if (e.target === fixModalOverlay) closeFixModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFixModal(); });
 lockBtn.addEventListener('click', tryUnlock);
 lockInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
 lockInput.addEventListener('input', () => { lockInput.value = lockInput.value.replace(/\D/g, '').slice(0, 6); });
@@ -1135,30 +857,6 @@ function renderGrid(apps) {
 fetch(MANIFEST_URL + '?nc=' + Date.now())
   .then(r => r.json())
   .then(apps => {
-    // ── "Latest updates" banner: highlight the most recently updated app ──
-    const newest = [...apps].sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0))[0];
-    if (newest) {
-      const others = apps.filter(a => a.name !== newest.name).slice(0, 5).map(a => a.name).join(', ');
-      document.getElementById('updatesText').innerHTML =
-        `${newest.name} just got a fresh update, plus ${others} &amp; more — all refreshed for <strong>${newest.updated}</strong> and ready to download.`;
-    }
-
-    // Feature the top-rated app in the hero banner
-    const featured = apps.find(a => a.name === 'Google Play Store') || [...apps].sort((a, b) => (b.rating||0) - (a.rating||0))[0];
-    if (featured) {
-      const hero = document.getElementById('hero');
-      document.getElementById('heroIcon').innerHTML = featured.icon
-        ? `<img src="${featured.icon}" alt="${featured.name}">`
-        : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:${featured.color};font-weight:800;color:#fff;">${featured.abbr}</div>`;
-      document.getElementById('heroIcon').style.background = 'transparent';
-      document.getElementById('heroTitle').textContent = featured.name;
-      document.getElementById('heroDesc').textContent = `★ ${featured.rating} · ${featured.size} · Updated ${featured.updated}`;
-      const heroDl = document.getElementById('heroDl');
-      heroDl.href = APK_BASE_URL + featured.file;
-      heroDl.setAttribute('download', featured.file);
-      hero.style.display = 'block';
-    }
-
     window._allApps = apps;
     renderModelGrid();
 
