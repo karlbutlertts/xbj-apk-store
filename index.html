@@ -270,14 +270,22 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 
 .grid-wrap { max-width:1100px; margin:0 auto; padding:30px 24px 20px; }
 .grid-label { font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); margin-bottom:18px; padding-left:4px; }
+.grid-hint { color:var(--text3); font-size:12px; margin:2px 0 0 4px; display:flex; align-items:center; gap:6px; }
 
+/* Horizontal tile carousel — same pattern as the engineering-tools carousel
+   (tools.html): scroll-snap flex row, D-pad left/right moves focus between
+   tiles (see the keydown handler below), OK/select works for free since
+   tiles are real <a href> elements. */
 .app-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
-  gap:20px;
+  display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x proximity;
+  padding:6px 4px 16px; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;
+  scrollbar-width:none;
 }
+.app-grid::-webkit-scrollbar{ display:none; }
 .app-tile {
   position:relative;
+  scroll-snap-align:center;
+  flex:0 0 180px;
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:26px;
@@ -649,7 +657,8 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 
 <div class="grid-wrap">
   <div class="grid-label" id="gridLabel">Available apps</div>
-  <div class="app-grid" id="appGrid"></div>
+  <div class="app-grid" id="appGrid" tabindex="-1"></div>
+  <div class="grid-hint">◀ ▶ on the remote to scroll · press OK to download</div>
 </div>
 
 <div class="hero" id="hero" style="display:none;">
@@ -944,6 +953,7 @@ function enterApps() {
   const allPill = categoryPills.querySelector('[data-filter="all"]');
   if (allPill) allPill.classList.add('active');
   renderModelGrid();
+  focusFirstAppTile();
   window.scrollTo(0, 0);
 }
 
@@ -1075,6 +1085,34 @@ function renderModelGrid() {
   renderGrid(filtered);
 }
 
+// D-pad left/right moves focus between tiles and keeps the focused one
+// scrolled into view — same pattern as the engineering-tools carousel.
+// OK/select needs no extra handling: tiles are <a href> elements, so Enter
+// on a focused one triggers its native navigation (the download) already.
+document.addEventListener('keydown', e => {
+  if (!grid.contains(document.activeElement)) return;
+  const isLeft = e.key === 'ArrowLeft' || e.keyCode === 37;
+  const isRight = e.key === 'ArrowRight' || e.keyCode === 39;
+  if (!isLeft && !isRight) return;
+
+  const tiles = Array.from(grid.querySelectorAll('.app-tile'));
+  if (!tiles.length) return;
+  e.preventDefault();
+
+  let idx = tiles.indexOf(document.activeElement);
+  if (idx < 0) idx = 0;
+  idx = isRight ? Math.min(idx + 1, tiles.length - 1) : Math.max(idx - 1, 0);
+  tiles[idx].focus();
+  tiles[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+});
+
+// Only called once the apps carousel is actually the active screen
+// (entering it, or re-filtering within it) — never on the initial
+// background render, so it can't steal focus from the lock/hub screens.
+function focusFirstAppTile(){
+  setTimeout(() => { const first = grid.querySelector('.app-tile'); if (first) first.focus(); }, 150);
+}
+
 function renderGrid(apps) {
   gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
 
@@ -1132,10 +1170,11 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
       btn.classList.add('active');
       window._activeFilter = btn.dataset.filter;
       renderModelGrid();
+      focusFirstAppTile();
     });
   })
   .catch(() => {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text2);padding:40px;">Couldn\'t load the app list — refresh, or message @karlsmidlifecrisis on TikTok.</div>';
+    grid.innerHTML = '<div style="width:100%;text-align:center;color:var(--text2);padding:40px;">Couldn\'t load the app list — refresh, or message @karlsmidlifecrisis on TikTok.</div>';
   });
 </script>
 
