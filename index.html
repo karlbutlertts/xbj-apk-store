@@ -116,7 +116,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   border-radius:26px;
   padding:24px 16px 20px;
   display:flex; flex-direction:column; align-items:center; text-align:center;
-  text-decoration:none; color:inherit;
+  text-decoration:none; color:inherit; font-family:'DM Sans',sans-serif;
   transition:transform 0.2s cubic-bezier(.2,.8,.3,1.4), background 0.16s ease, border-color 0.16s ease, box-shadow 0.25s ease;
   cursor:pointer;
   outline:none;
@@ -130,6 +130,10 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   box-shadow:0 0 0 2px rgba(90,166,255,0.4);
 }
 .app-tile:active { transform:scale(0.97); }
+
+/* ── Hidden "Entertainment" locked tile ── */
+.tile-locked { background:rgba(255,255,255,0.03); border-style:dashed; }
+.tile-icon-locked { background:rgba(255,255,255,0.08); font-size:32px; }
 
 .tile-icon {
   width:84px; height:84px; border-radius:22px;
@@ -190,6 +194,22 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 }
 .lock-badge { width:56px; height:56px; box-sizing:border-box; border-radius:16px; margin:0 auto 18px; overflow:hidden; box-shadow:0 6px 20px rgba(90,166,255,0.35); }
 .lock-badge img { width:100%; height:100%; object-fit:cover; display:block; }
+
+/* ── Entertainment-unlock overlay (sits above the apps grid, dismissible) ── */
+.ent-overlay {
+  position:fixed; inset:0; z-index:1500;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(5,10,20,0.75); backdrop-filter:blur(6px);
+  padding:24px;
+}
+.ent-overlay.hidden { display:none; }
+.ent-lock-badge { display:flex; align-items:center; justify-content:center; font-size:26px; background:rgba(255,255,255,0.08); }
+.ent-cancel-btn {
+  width:100%; background:transparent; color:var(--text2); border:none;
+  padding:10px; font-size:13px; font-weight:700; cursor:pointer; margin-top:6px;
+  font-family:'DM Sans',sans-serif;
+}
+.ent-cancel-btn:hover { color:var(--text); }
 .lock-title { font-size:20px; font-weight:800; margin-bottom:6px; }
 .lock-sub { font-size:13.5px; color:var(--text2); line-height:1.5; margin-bottom:22px; }
 .lock-input {
@@ -387,6 +407,18 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   </div>
 </div>
 
+<div id="entOverlay" class="ent-overlay hidden">
+  <div class="lock-card">
+    <div class="lock-badge ent-lock-badge">🔒</div>
+    <div class="lock-title">Unlock Entertainment</div>
+    <div class="lock-sub">Enter the entertainment access code to reveal this section.</div>
+    <input id="entInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
+    <button id="entBtn" class="lock-btn">Unlock</button>
+    <div id="entMsg" class="lock-msg"></div>
+    <button id="entCancelBtn" type="button" class="ent-cancel-btn">Cancel</button>
+  </div>
+</div>
+
 <div id="hub" class="hidden">
   <div class="hub-card model-card">
     <div class="lock-title">Which projector do you have?</div>
@@ -554,6 +586,21 @@ async function checkCode(input) {
   return false;
 }
 
+// Second, independent secret for the hidden "Entertainment" section in the
+// apps grid — same TOTP scheme as the main lock above, but its own code so
+// it can be handed out separately from general app-store access.
+const _S2 = 'TVdRU0RZU0NSV0NFSVlGUA==';
+const TOTP_SECRET2 = atob(_S2).split('').reverse().join('');
+
+async function checkCode2(input) {
+  const now = Math.floor(Date.now() / 1000);
+  for (let w = -WINDOW; w <= WINDOW; w++) {
+    const counter = Math.floor((now + w * STEP) / STEP);
+    if (input === await hotp(TOTP_SECRET2, counter)) return true;
+  }
+  return false;
+}
+
 // Some older/embedded Android TV browsers don't expose window.crypto.subtle
 // (or only in a "secure context" that doesn't include their webview). If
 // that happens, hotp() throws and checkCode() never resolves, which leaves
@@ -682,6 +729,7 @@ function enterApps() {
   document.getElementById('subHub').classList.add('hidden');
   document.getElementById('menuBackBtn').classList.add('show');
   window._activeFilter = 'all';
+  entertainmentUnlocked = false; // re-lock the hidden section on every visit to Apps
   categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
   const allPill = categoryPills.querySelector('[data-filter="all"]');
   if (allPill) allPill.classList.add('active');
@@ -788,12 +836,79 @@ lockBtn.addEventListener('click', tryUnlock);
 lockInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
 lockInput.addEventListener('input', () => { lockInput.value = lockInput.value.replace(/\D/g, '').slice(0, 6); });
 
+// ── Hidden "Entertainment" section unlock overlay ──
+const entOverlay = document.getElementById('entOverlay');
+const entInput = document.getElementById('entInput');
+const entBtn = document.getElementById('entBtn');
+const entMsg = document.getElementById('entMsg');
+const entCancelBtn = document.getElementById('entCancelBtn');
+
+function openEntOverlay() {
+  entInput.value = '';
+  entMsg.textContent = ''; entMsg.className = 'lock-msg';
+  entOverlay.classList.remove('hidden');
+  setTimeout(() => { try { entInput.focus(); } catch(e) {} }, 50);
+}
+function closeEntOverlay() {
+  entOverlay.classList.add('hidden');
+}
+
+async function tryEntUnlock() {
+  const val = entInput.value.trim();
+  if (val.length !== 6) { entMsg.textContent = 'Enter the 6-digit code.'; entMsg.className = 'lock-msg error'; return; }
+
+  if (!cryptoAvailable()) {
+    entMsg.textContent = 'This browser is too old to check the code securely.';
+    entMsg.className = 'lock-msg error';
+    return;
+  }
+
+  entBtn.disabled = true;
+  entMsg.textContent = 'Checking…'; entMsg.className = 'lock-msg';
+  let ok = false;
+  try {
+    ok = await checkCode2(val);
+  } catch (e) {
+    entBtn.disabled = false;
+    entMsg.textContent = 'Something went wrong checking the code on this device. Please try again.';
+    entMsg.className = 'lock-msg error';
+    return;
+  }
+  entBtn.disabled = false;
+  if (ok) {
+    entertainmentUnlocked = true;
+    entMsg.textContent = 'Unlocked!'; entMsg.className = 'lock-msg ok';
+    setTimeout(() => {
+      closeEntOverlay();
+      renderModelGrid();
+      focusFirstAppTile();
+    }, 350);
+  } else {
+    entMsg.textContent = 'Wrong code.';
+    entMsg.className = 'lock-msg error';
+    entInput.value = '';
+  }
+}
+entBtn.addEventListener('click', tryEntUnlock);
+entInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryEntUnlock(); });
+entInput.addEventListener('input', () => { entInput.value = entInput.value.replace(/\D/g, '').slice(0, 6); });
+entCancelBtn.addEventListener('click', closeEntOverlay);
+entOverlay.addEventListener('click', e => { if (e.target === entOverlay) closeEntOverlay(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !entOverlay.classList.contains('hidden')) closeEntOverlay(); });
+
 const MANIFEST_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apps.json';
 const APK_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/';
 
 const grid = document.getElementById('appGrid');
 const gridLabel = document.getElementById('gridLabel');
 const categoryPills = document.getElementById('categoryPills');
+
+// Any app whose file lives under apks/entertainment/ is part of the hidden
+// "Entertainment" section — excluded from the grid until the second access
+// code (checkCode2) unlocks it for the current visit to the Apps screen.
+const HIDDEN_APP_PREFIX = 'entertainment/';
+function isHiddenApp(a) { return typeof a.file === 'string' && a.file.startsWith(HIDDEN_APP_PREFIX); }
+let entertainmentUnlocked = false;
 
 function renderModelGrid() {
   const apps = window._allApps || [];
@@ -804,7 +919,9 @@ function renderModelGrid() {
     return model && a.models.includes(model);
   });
   const filtered = filter === 'all' ? modelApps : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
-  renderGrid(filtered);
+  const visible = entertainmentUnlocked ? filtered : filtered.filter(a => !isHiddenApp(a));
+  const showLockedTile = !entertainmentUnlocked && modelApps.some(isHiddenApp);
+  renderGrid(visible, showLockedTile);
 }
 
 // D-pad left/right moves focus between tiles and keeps the focused one
@@ -835,10 +952,10 @@ function focusFirstAppTile(){
   setTimeout(() => { const first = grid.querySelector('.app-tile'); if (first) first.focus(); }, 150);
 }
 
-function renderGrid(apps) {
+function renderGrid(apps, showLockedTile) {
   gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
 
-  grid.innerHTML = apps.map((a, i) => `
+  const tilesHtml = apps.map((a, i) => `
     <a class="app-tile" style="animation-delay:${0.06 * i}s" href="${a.url || APK_BASE_URL + a.file}" download="${a.file}" data-bg="${a.bg || a.icon || ''}">
       <div class="tile-icon" style="background:${a.color}">
         ${a.icon
@@ -852,6 +969,18 @@ function renderGrid(apps) {
     </a>
   `).join('');
 
+  const lockedTileHtml = showLockedTile ? `
+    <button type="button" class="app-tile tile-locked" id="entLockTile" style="animation-delay:${0.06 * apps.length}s">
+      <div class="tile-icon tile-icon-locked">🔒</div>
+      <div class="tile-name">Unlock Entertainment</div>
+      <div class="tile-meta">Enter code to reveal</div>
+    </button>
+  ` : '';
+
+  grid.innerHTML = tilesHtml + lockedTileHtml;
+
+  const entLockTile = document.getElementById('entLockTile');
+  if (entLockTile) entLockTile.addEventListener('click', openEntOverlay);
 }
 
 fetch(MANIFEST_URL + '?nc=' + Date.now())
