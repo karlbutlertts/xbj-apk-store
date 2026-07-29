@@ -206,6 +206,7 @@
   <!-- STATE 5: downloading -->
   <section class="state" id="s5">
     <h1 class="title-lg">Copying firmware to USB</h1>
+    <div class="sub" id="usbGreeting"></div>
     <div class="sub" id="dlStatus">Starting…</div>
     <div id="fileRows"></div>
     <div class="overall">
@@ -489,6 +490,9 @@ function setOverall(done, total){
 let completed = 0;
 async function downloadAll(){
   show('s5');
+  const user = localStorage.getItem('xbj_username');
+  document.getElementById('usbGreeting').textContent =
+    (user ? `Welcome back, @${user} 👋 — ` : '') + 'grab a brew, this will take a few minutes.';
   buildFileRows();
   completed = 0;
   setOverall(0, FILES.length);
