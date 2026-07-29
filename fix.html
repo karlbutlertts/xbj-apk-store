@@ -98,6 +98,7 @@
   .file-status.done{color:var(--green)}
   .file-status.fail{color:#ff5a5a}
   .file-status.active{color:var(--blue)}
+  .file-progress-detail{font-size:11px;color:var(--muted);margin-top:6px;text-align:right}
   .bar{height:8px;border-radius:999px;background:#0c0c12;overflow:hidden}
   .bar > i{display:block;height:100%;width:0;background:var(--blue);border-radius:999px;transition:width .2s ease}
   .file-status.done ~ .bar > i, .file-row.done .bar > i{background:var(--green)}
@@ -129,10 +130,6 @@
     background:var(--blue);color:#fff;font-size:13px;font-weight:700;
     display:flex;align-items:center;justify-content:center;
   }
-  .updchoice{display:flex;gap:10px;margin:12px 0}
-  .updchoice .opt{flex:1;border-radius:12px;padding:12px;text-align:center;font-weight:700;font-size:14px;border:2px solid}
-  .updchoice .bad{border-color:#ff5a5a;background:rgba(255,90,90,.1);color:#ff8a8a}
-  .updchoice .good{border-color:var(--green);background:rgba(34,200,122,.1);color:var(--green)}
   .keepusb{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--orange);justify-content:center;margin-top:10px}
 
   .errbox{display:none;color:#ff8a8a;background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.4);border-radius:12px;padding:12px;font-size:14px;margin-top:12px}
@@ -161,6 +158,15 @@
       <div class="title-lg">Insert USB Drive</div>
       <div class="sub">Plug a USB drive into the back of the projector.<br>We'll detect it automatically.</div>
     </div>
+  </section>
+
+  <!-- STATE 0: no firmware published yet for this model -->
+  <section class="state" id="s0">
+    <div class="card amber">
+      <div class="card-title">No update available yet</div>
+      <div class="card-body">There's no firmware fix published for this projector model yet. Message @karlsmidlifecrisis on TikTok and check back soon.</div>
+    </div>
+    <button class="btn btn-ghost" onclick="goBack()">Back to Menu</button>
   </section>
 
   <!-- STATE 3: confirm format -->
@@ -213,8 +219,8 @@
   <section class="state" id="s6">
     <div class="center">
       <div class="check">✓</div>
-      <h1 class="title-lg">USB Ready — Start Your Update</h1>
-      <div class="sub">All 4 firmware files have been copied to your USB drive.</div>
+      <h1 class="title-lg">All files ready on USB drive</h1>
+      <div class="sub" id="successSub">All firmware files have been copied to your USB drive.</div>
     </div>
     <div class="card greenline">
       <ul class="verify-list" id="verifyList"></ul>
@@ -223,25 +229,17 @@
     <div class="card">
       <div class="card-title">How to install the update</div>
       <ol class="steps">
-        <li>Go to <strong>Settings</strong> on your projector home screen</li>
-        <li>Tap <strong>About</strong></li>
-        <li>Tap <strong>System Update</strong></li>
-        <li>Tap <strong>LOCAL UPDATE</strong> — do <strong>NOT</strong> tap Online Update
-          <div class="updchoice">
-            <div class="opt bad">❌ Online Update</div>
-            <div class="opt good">✅ Local Update</div>
-          </div>
-        </li>
-        <li>Tap <strong>Upgrade</strong> and wait 5–10 minutes</li>
-        <li>Do <strong>NOT</strong> remove the USB during the update</li>
+        <li>Leave the USB drive plugged in</li>
+        <li>Go to <strong>Settings → About → Local Update</strong></li>
+        <li>Select the update file</li>
+        <li>Press <strong>OK</strong> and wait — projector will reboot automatically</li>
+        <li>Do <strong>not</strong> unplug the USB until the update is complete</li>
       </ol>
     </div>
 
-    <div class="card amber">
-      <div class="card-body" style="color:#ffc089">⚠️ Do not tap <strong>Online Update</strong> — this will reinstall the broken firmware that removes Google Play Store.</div>
-    </div>
-
     <div class="keepusb">🔌 Keep the USB plugged in!</div>
+
+    <button class="btn btn-green" onclick="goBack()">Done</button>
   </section>
 </div>
 
@@ -256,12 +254,27 @@ const MIN_FREE   = 1.1 * 1024 * 1024 * 1024;   // need ≥ 1.1 GB free
 const POLL_MS    = 2000;
 
 // Download order: small files first (verify USB writes work), 1 GB file last.
-const FILES = [
-  { name:'bootloader.img',   id:'1tNgwDK8LelYYdzWimXnm7f1zfr04c3pz', approx:524288,     label:'~500 KB' },
-  { name:'emmc_boot.bin',    id:'1urewSdpVX62pD_Qxthx2fVRyS2TZcZqx', approx:10240,      label:'~10 KB'  },
-  { name:'IPL_PRE.bin',      id:'1lN_BYiHZacYu-zf9UGMQTOxcp1LnjvbG', approx:10240,      label:'~10 KB'  },
-  { name:'DY_8D196_026.bin', id:'13L3ya_0zHhmFkWMKG9kPrK7vTsHgKMfi', approx:1073741824, label:'~1 GB'   },
-];
+// Firmware differs per projector model, so the file set is keyed by the
+// ?model= query param the hub tile links here with (index.html's
+// subHubFix.href = 'fix.html?model=' + model).
+const FILES_BY_MODEL = {
+  a5pro: [
+    { name:'bootloader.img',   id:'1GZMWdUc-Vn5HBh6Uf143jHkX7XzTpkg4', approx:524288,     label:'~500 KB' },
+    { name:'emmc_boot.bin',    id:'1SHff0VfLRC0SMV7mOt39v3JIQ6wmbLbN', approx:10240,      label:'~10 KB'  },
+    { name:'IPL_PRE.bin',      id:'1pznPQMv_MgTJ6ikyo2OYiGtcURF47YI2', approx:10240,      label:'~10 KB'  },
+    { name:'DY_8D196_026.bin', id:'1QiUv8hx0ULZbodGnzoAQx8o6eNlFcXBK', approx:1073741824, label:'~1 GB'   },
+  ],
+  '360': [], // no firmware files published for this model yet
+};
+
+// No ?model= at all means an old bookmark/link from before this page
+// supported multiple models, back when it only ever served the A5 Pro —
+// keep that working. An unrecognised or "other" model gets no files rather
+// than silently falling back to A5 Pro firmware, since flashing the wrong
+// board's image can brick the device.
+const modelParam = new URLSearchParams(location.search).get('model');
+const FILES = modelParam == null ? FILES_BY_MODEL.a5pro : (FILES_BY_MODEL[modelParam] || []);
+
 const driveUrl = id => `https://drive.google.com/uc?export=download&id=${id}&confirm=t`;
 
 /* ───────────────────────────────────────────────────────────────────────
@@ -440,14 +453,16 @@ function buildFileRows(){
         <span class="file-status" id="st${i}">Pending</span>
       </div>
       <div class="bar"><i id="pb${i}"></i></div>
+      <div class="file-progress-detail" id="pd${i}"></div>
       <button class="retry" id="rt${i}" onclick="retryFile(${i})">Retry this file</button>
     </div>`).join('');
 }
-function setRow(i, pct, status, cls){
+function setRow(i, pct, status, cls, detail){
   document.getElementById('pb'+i).style.width = Math.max(0,Math.min(100,pct)) + '%';
   const st = document.getElementById('st'+i);
   st.textContent = status;
   st.className = 'file-status' + (cls ? ' ' + cls : '');
+  document.getElementById('pd'+i).textContent = detail || '';
   const row = document.getElementById('row'+i);
   row.classList.toggle('done', cls === 'done');
   row.classList.toggle('fail', cls === 'fail');
@@ -506,8 +521,12 @@ async function downloadOne(i){
 
   // Browser preview: simulate streaming
   if (!NATIVE){
-    for (let p = 0; p <= 100; p += 5){ setRow(i, p, p+'%', 'active'); await sleep(40); }
-    setRow(i, 100, '✓ Done', 'done');
+    for (let p = 0; p <= 100; p += 5){
+      const received = Math.round(f.approx * p / 100);
+      setRow(i, p, p+'%', 'active', fmtBytes(received) + ' of ' + fmtBytes(f.approx));
+      await sleep(40);
+    }
+    setRow(i, 100, '✓ Done', 'done', fmtBytes(f.approx) + ' of ' + fmtBytes(f.approx));
     return true;
   }
 
@@ -543,7 +562,7 @@ async function downloadOne(i){
         if (!Bridge.appendChunk(token, toBase64(chunk))) throw new Error('USB write failed');
       }
       const pct = Math.min(99, Math.round(received/total*100));
-      setRow(i, pct, pct + '%', 'active');
+      setRow(i, pct, pct + '%', 'active', fmtBytes(received) + ' of ' + fmtBytes(total));
       document.getElementById('dlStatus').textContent =
         'Downloading ' + f.name + ' — ' + pct + '%';
     }
@@ -554,7 +573,7 @@ async function downloadOne(i){
     }
     if (!Bridge.closeWriteSession(token)) throw new Error('Could not finalise file');
 
-    setRow(i, 100, '✓ Done', 'done');
+    setRow(i, 100, '✓ Done', 'done', fmtBytes(total) + ' of ' + fmtBytes(total));
     return true;
 
   } catch (err){
@@ -581,11 +600,11 @@ async function downloadOneNative(i){
 
       const denom = total > 0 ? total : f.approx;
       const pct = state === 1 ? 100 : Math.min(99, Math.round(received/denom*100));
-      setRow(i, pct, pct + '%', 'active');
+      setRow(i, pct, pct + '%', 'active', fmtBytes(received) + ' of ' + fmtBytes(denom));
       document.getElementById('dlStatus').textContent =
         'Downloading ' + f.name + ' — ' + pct + '%';
 
-      if (state === 1){ setRow(i, 100, '✓ Done', 'done'); return true; }
+      if (state === 1){ setRow(i, 100, '✓ Done', 'done', fmtBytes(denom) + ' of ' + fmtBytes(denom)); return true; }
       if (state === 2) throw new Error('download/write error');
     }
   } catch (err){
@@ -599,6 +618,8 @@ async function downloadOneNative(i){
 /* ── STATE 6 : success ── */
 function enterSuccess(){
   document.getElementById('dlStatus').textContent = 'All files copied.';
+  document.getElementById('successSub').textContent =
+    `All ${FILES.length} firmware file${FILES.length === 1 ? '' : 's'} ${FILES.length === 1 ? 'has' : 'have'} been copied to your USB drive.`;
   document.getElementById('verifyList').innerHTML =
     FILES.map(f => `<li><span class="tick">✓</span> <span class="mono">${f.name}</span></li>`).join('');
   show('s6');
@@ -623,7 +644,8 @@ function toBase64(bytes){
 }
 
 /* boot */
-checkUsb();
+if (FILES.length === 0) show('s0');
+else checkUsb();
 </script>
 </body>
 </html>
