@@ -257,18 +257,21 @@ const POLL_MS    = 2000;
 // Firmware differs per projector model, so the file set is keyed by the
 // ?model= query param the hub tile links here with (index.html's
 // subHubFix.href = 'fix.html?model=' + model).
-// The 3 small files are hosted straight from this repo (see /firmware);
-// the ~1GB image stays on Google Drive since GitHub blocks files that size
-// without LFS. fileUrl() below resolves either kind of entry.
-const FIRMWARE_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/firmware/';
+// All 4 files are now hosted from this repo — the 3 small ones straight
+// from the repo tree (see /firmware), and the ~1GB image as a GitHub
+// Release asset instead (GitHub blocks files that size in the repo tree
+// itself without LFS, but Release assets have no such limit).
+const GH_RAW = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/firmware/';
+const GH_REL = 'https://github.com/karlbutlertts/xbj-apk-store/releases/download/v1-a5pro/';
+
 const FILES_BY_MODEL = {
   a5pro: [
-    { name:'bootloader.img',   url:FIRMWARE_BASE_URL + 'bootloader.img', approx:527168,     label:'~515 KB' },
-    { name:'emmc_boot.bin',    url:FIRMWARE_BASE_URL + 'emmc_boot.bin',  approx:9616,       label:'~9.4 KB' },
-    { name:'IPL_PRE.bin',      url:FIRMWARE_BASE_URL + 'IPL_PRE.bin',    approx:9616,       label:'~9.4 KB' },
-    { name:'DY_8D196_026.bin', id:'1QiUv8hx0ULZbodGnzoAQx8o6eNlFcXBK',   approx:1073741824, label:'~1 GB'   },
+    { name:'bootloader.img',   url: GH_RAW + 'bootloader.img',   approx:524288,     label:'~500 KB' },
+    { name:'emmc_boot.bin',    url: GH_RAW + 'emmc_boot.bin',    approx:10240,      label:'~10 KB'  },
+    { name:'IPL_PRE.bin',      url: GH_RAW + 'IPL_PRE.bin',      approx:10240,      label:'~10 KB'  },
+    { name:'DY_8D196_026.bin', url: GH_REL + 'DY_8D196_026.bin', approx:1073741824, label:'~1 GB'   },
   ],
-  '360': [], // no firmware files published for this model yet
+  '360': [],
 };
 
 // No ?model= at all means an old bookmark/link from before this page
@@ -278,9 +281,6 @@ const FILES_BY_MODEL = {
 // board's image can brick the device.
 const modelParam = new URLSearchParams(location.search).get('model');
 const FILES = modelParam == null ? FILES_BY_MODEL.a5pro : (FILES_BY_MODEL[modelParam] || []);
-
-const driveUrl = id => `https://drive.google.com/uc?export=download&id=${id}&confirm=t`;
-const fileUrl = f => f.url || driveUrl(f.id);
 
 /* ───────────────────────────────────────────────────────────────────────
    BRIDGE WRAPPER — real native calls with browser mocks for testing
@@ -554,7 +554,7 @@ async function downloadOne(i){
     token = Bridge.openWriteSessionRoot(f.name);
     if (!token) throw new Error('Could not open USB file for writing');
 
-    const resp = await fetch(fileUrl(f));
+    const resp = await fetch(f.url);
     if (!resp.ok || !resp.body) throw new Error('HTTP ' + resp.status);
     const total = +resp.headers.get('content-length') || f.approx;
 
@@ -601,7 +601,7 @@ async function downloadOne(i){
 async function downloadOneNative(i){
   const f = FILES[i];
   try {
-    const token = Bridge.startDownloadToUsb(fileUrl(f), f.name);
+    const token = Bridge.startDownloadToUsb(f.url, f.name);
     if (!token) throw new Error('Could not start download');
 
     while (true){
