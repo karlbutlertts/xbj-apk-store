@@ -257,12 +257,16 @@ const POLL_MS    = 2000;
 // Firmware differs per projector model, so the file set is keyed by the
 // ?model= query param the hub tile links here with (index.html's
 // subHubFix.href = 'fix.html?model=' + model).
+// The 3 small files are hosted straight from this repo (see /firmware);
+// the ~1GB image stays on Google Drive since GitHub blocks files that size
+// without LFS. fileUrl() below resolves either kind of entry.
+const FIRMWARE_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/firmware/';
 const FILES_BY_MODEL = {
   a5pro: [
-    { name:'bootloader.img',   id:'1GZMWdUc-Vn5HBh6Uf143jHkX7XzTpkg4', approx:524288,     label:'~500 KB' },
-    { name:'emmc_boot.bin',    id:'1SHff0VfLRC0SMV7mOt39v3JIQ6wmbLbN', approx:10240,      label:'~10 KB'  },
-    { name:'IPL_PRE.bin',      id:'1pznPQMv_MgTJ6ikyo2OYiGtcURF47YI2', approx:10240,      label:'~10 KB'  },
-    { name:'DY_8D196_026.bin', id:'1QiUv8hx0ULZbodGnzoAQx8o6eNlFcXBK', approx:1073741824, label:'~1 GB'   },
+    { name:'bootloader.img',   url:FIRMWARE_BASE_URL + 'bootloader.img', approx:527168,     label:'~515 KB' },
+    { name:'emmc_boot.bin',    url:FIRMWARE_BASE_URL + 'emmc_boot.bin',  approx:9616,       label:'~9.4 KB' },
+    { name:'IPL_PRE.bin',      url:FIRMWARE_BASE_URL + 'IPL_PRE.bin',    approx:9616,       label:'~9.4 KB' },
+    { name:'DY_8D196_026.bin', id:'1QiUv8hx0ULZbodGnzoAQx8o6eNlFcXBK',   approx:1073741824, label:'~1 GB'   },
   ],
   '360': [], // no firmware files published for this model yet
 };
@@ -276,6 +280,7 @@ const modelParam = new URLSearchParams(location.search).get('model');
 const FILES = modelParam == null ? FILES_BY_MODEL.a5pro : (FILES_BY_MODEL[modelParam] || []);
 
 const driveUrl = id => `https://drive.google.com/uc?export=download&id=${id}&confirm=t`;
+const fileUrl = f => f.url || driveUrl(f.id);
 
 /* ───────────────────────────────────────────────────────────────────────
    BRIDGE WRAPPER — real native calls with browser mocks for testing
@@ -549,7 +554,7 @@ async function downloadOne(i){
     token = Bridge.openWriteSessionRoot(f.name);
     if (!token) throw new Error('Could not open USB file for writing');
 
-    const resp = await fetch(driveUrl(f.id));
+    const resp = await fetch(fileUrl(f));
     if (!resp.ok || !resp.body) throw new Error('HTTP ' + resp.status);
     const total = +resp.headers.get('content-length') || f.approx;
 
@@ -596,7 +601,7 @@ async function downloadOne(i){
 async function downloadOneNative(i){
   const f = FILES[i];
   try {
-    const token = Bridge.startDownloadToUsb(driveUrl(f.id), f.name);
+    const token = Bridge.startDownloadToUsb(fileUrl(f), f.name);
     if (!token) throw new Error('Could not start download');
 
     while (true){
