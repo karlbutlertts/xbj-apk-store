@@ -283,6 +283,23 @@ const TILES = [
     ]
   },
   {
+    icon: '🎨', title: 'Picture Presets', sub: 'One-tap picture mode shortcuts',
+    models: ['a5pro'], type: 'group', children: [
+      {
+        icon: '🎬', title: 'Cinema', sub: 'Office mode — best for movies in a dark room',
+        models: ['a5pro'], type: 'picturePreset', preset: 'cinema'
+      },
+      {
+        icon: '☀️', title: 'Bright Room', sub: 'Music mode — punchier picture for daylight viewing',
+        models: ['a5pro'], type: 'picturePreset', preset: 'bright'
+      },
+      {
+        icon: '🎮', title: 'Gaming', sub: 'Game mode — lower input lag',
+        models: ['a5pro'], type: 'picturePreset', preset: 'gaming'
+      }
+    ]
+  },
+  {
     icon: '🧰', title: 'System', sub: 'Service management, OTA update & OEM menus',
     models: ['a5pro'], type: 'group', children: [
       {
@@ -450,6 +467,16 @@ function openTile(t){
       openDetail(t.title, t.sub);
       const ok = window.AndroidBridge.launchActivity(t.pkg, t.activity);
       setStatus(ok ? 'Opening…' : 'Could not open — not available on this build.', ok);
+      break;
+    }
+    case 'picturePreset': {
+      openDetail(t.title, t.sub);
+      setStatus('Applying…', true);
+      // Synchronous native call — takes ~2-3s (it navigates the vendor
+      // picture-mode menu with injected key presses), so the status text
+      // above sits on "Applying…" until this returns.
+      const ok = window.AndroidBridge.applyPicturePreset(t.preset);
+      setStatus(ok ? 'Applied!' : 'Could not apply — not available on this build.', ok);
       break;
     }
     case 'package': {
