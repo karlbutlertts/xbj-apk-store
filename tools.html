@@ -19,25 +19,7 @@
     min-height:100vh; -webkit-font-smoothing:antialiased;
   }
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-
-  /* ── Live preview background (Picture Presets only) ──
-     Picture-mode processing on this hardware applies to actual video
-     content, not the plain UI — so a real looping test clip behind the
-     preset buttons is what actually lets you see a difference as you
-     switch modes, without needing to leave the app or have your own
-     content playing. Hidden/paused for every other screen. */
-  .picture-preview-video{
-    position:fixed; inset:0; width:100%; height:100%; object-fit:cover;
-    z-index:0; display:none;
-  }
-  .picture-preview-video.show{ display:block; }
-  .picture-preview-scrim{
-    position:fixed; inset:0; background:rgba(10,10,15,0.6); z-index:0; display:none;
-  }
-  .picture-preview-scrim.show{ display:block; }
-  body.picture-preview-active{ background:transparent; }
-
-  .wrap{max-width:900px;margin:0 auto;padding:18px 16px 48px;min-height:100vh;position:relative;z-index:1}
+  .wrap{max-width:900px;margin:0 auto;padding:18px 16px 48px;min-height:100vh}
   .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
   .back{
     background:var(--surface2);border:1px solid var(--border);color:var(--text);
@@ -141,8 +123,6 @@
 </style>
 </head>
 <body>
-<video id="picturePreviewVideo" class="picture-preview-video" src="videos/picture-test-pattern.mp4" muted loop playsinline></video>
-<div id="picturePreviewScrim" class="picture-preview-scrim"></div>
 <div class="wrap">
   <div class="topbar">
     <button class="back" onclick="goBack()">← Back to Menu</button>
@@ -303,19 +283,19 @@ const TILES = [
     ]
   },
   {
-    icon: '🎨', title: 'Picture Presets', sub: 'One-tap picture mode shortcuts',
-    models: ['a5pro'], type: 'group', previewVideo: true, children: [
+    icon: '🎨', title: 'Picture Presets', sub: 'Jump straight to the picture mode menu',
+    models: ['a5pro'], type: 'group', children: [
       {
-        icon: '🎬', title: 'Cinema', sub: 'Film mode — best for movies in a dark room',
-        models: ['a5pro'], type: 'picturePreset', preset: 'cinema'
+        icon: '🎬', title: 'Cinema', sub: 'Opens the picture mode menu — select Film for movies in a dark room',
+        models: ['a5pro'], type: 'activity', pkg: 'com.zhiying.settings', activity: '.picturemode.PictureModeActivity'
       },
       {
-        icon: '☀️', title: 'Bright Room', sub: 'Dynamic mode — punchier picture for daylight viewing',
-        models: ['a5pro'], type: 'picturePreset', preset: 'bright'
+        icon: '☀️', title: 'Bright Room', sub: 'Opens the picture mode menu — select Dynamic for daylight viewing',
+        models: ['a5pro'], type: 'activity', pkg: 'com.zhiying.settings', activity: '.picturemode.PictureModeActivity'
       },
       {
-        icon: '🎮', title: 'Gaming', sub: 'Game mode — lower input lag',
-        models: ['a5pro'], type: 'picturePreset', preset: 'gaming'
+        icon: '🎮', title: 'Gaming', sub: 'Opens the picture mode menu — select Game for lower input lag',
+        models: ['a5pro'], type: 'activity', pkg: 'com.zhiying.settings', activity: '.picturemode.PictureModeActivity'
       }
     ]
   },
@@ -354,22 +334,6 @@ const BACK_TILE = { icon: '⬅️', title: 'Back', sub: 'Return to Tools & setti
 let activeGroup = null;
 let visibleTiles = [];
 
-// ── Live preview background (see .picture-preview-video CSS comment) ──
-const previewVideo = document.getElementById('picturePreviewVideo');
-const previewScrim = document.getElementById('picturePreviewScrim');
-
-function setPreviewVideoActive(active){
-  previewVideo.classList.toggle('show', active);
-  previewScrim.classList.toggle('show', active);
-  document.body.classList.toggle('picture-preview-active', active);
-  if (active) {
-    previewVideo.currentTime = 0;
-    previewVideo.play().catch(() => {}); // ignored: autoplay can be blocked in a plain browser preview
-  } else {
-    previewVideo.pause();
-  }
-}
-
 function renderCarousel(){
   const source = activeGroup ? activeGroup.children : TILES;
   const filtered = source.filter(t => t.models.includes('all') || t.models.includes(MODEL));
@@ -377,7 +341,6 @@ function renderCarousel(){
   carouselLabel.textContent = activeGroup ? activeGroup.title : 'Tools & settings';
   carouselEl.innerHTML = '';
   closeDetail();
-  setPreviewVideoActive(!!(activeGroup && activeGroup.previewVideo));
 
   if (!visibleTiles.length) {
     carouselEl.innerHTML = '<div class="carousel-empty">No engineering tools are cataloged yet for this projector model.</div>';
@@ -504,16 +467,6 @@ function openTile(t){
       openDetail(t.title, t.sub);
       const ok = window.AndroidBridge.launchActivity(t.pkg, t.activity);
       setStatus(ok ? 'Opening…' : 'Could not open — not available on this build.', ok);
-      break;
-    }
-    case 'picturePreset': {
-      openDetail(t.title, t.sub);
-      setStatus('Applying…', true);
-      // Synchronous native call — takes ~2-3s (it navigates the vendor
-      // picture-mode menu with injected key presses), so the status text
-      // above sits on "Applying…" until this returns.
-      const ok = window.AndroidBridge.applyPicturePreset(t.preset);
-      setStatus(ok ? 'Applied!' : 'Could not apply — not available on this build.', ok);
       break;
     }
     case 'package': {
