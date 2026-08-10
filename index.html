@@ -287,7 +287,23 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   background:var(--surface); border:1px solid var(--border); border-radius:26px;
   padding:36px 28px; max-width:360px; width:100%; text-align:center;
 }
-.hub-tiles { display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin-top:8px; }
+/* Sub-hub menu (Apps/Hidden Features/Firmware Update/Tutorials): same
+   visual style as the model-picker tiles below, but always in a single
+   row that scrolls horizontally if it doesn't fit, rather than wrapping
+   or stacking to a column. */
+.hub-tiles {
+  display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x proximity;
+  padding:4px 2px 10px; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;
+  scrollbar-width:none; margin-top:8px;
+}
+.hub-tiles::-webkit-scrollbar{ display:none; }
+.hub-tile.menu-tile {
+  flex:0 0 150px; scroll-snap-align:center;
+  flex-direction:column; align-items:center; text-align:center;
+  padding:12px 12px 16px; gap:0;
+  background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.1);
+}
+.hub-tile.menu-tile .hub-tile-title { font-size:14px; font-weight:800; }
 .hub-tile {
   display:flex; align-items:center; gap:14px;
   background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:16px;
@@ -445,25 +461,21 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
     <div class="lock-title" id="subHubTitle">Your Projector</div>
     <div class="lock-sub">What do you need help with?</div>
     <div class="hub-tiles" id="hubTiles">
-      <button class="app-tile" type="button" onclick="enterApps()" style="animation-delay:0s">
-        <div class="tile-icon" style="background:linear-gradient(145deg,#5aa6ff,#2563d6)">📱</div>
-        <div class="tile-name">Apps</div>
-        <div class="tile-meta">Netflix, BBC iPlayer, Disney+ &amp; more</div>
+      <button class="hub-tile menu-tile" type="button" onclick="enterApps()">
+        <div class="hub-tile-img"><img src="img/hub-apps.png" alt="Apps"></div>
+        <span class="hub-tile-title">Apps</span>
       </button>
-      <a class="app-tile" id="subHubTools" href="tools.html" style="animation-delay:0.06s">
-        <div class="tile-icon" style="background:linear-gradient(145deg,#8a5aff,#5a2ce6)">🛠️</div>
-        <div class="tile-name">Hidden Features</div>
-        <div class="tile-meta">Factory menus &amp; engineering settings</div>
+      <a class="hub-tile menu-tile" id="subHubTools" href="tools.html">
+        <div class="hub-tile-img"><img src="img/hub-hidden-features.png" alt="Hidden Features"></div>
+        <span class="hub-tile-title">Hidden Features</span>
       </a>
-      <a class="app-tile" id="subHubFix" href="fix.html" style="animation-delay:0.12s">
-        <div class="tile-icon" style="background:linear-gradient(145deg,#ff9f43,#e8632a)">⚡</div>
-        <div class="tile-name">Firmware Update</div>
-        <div class="tile-meta">Fix Google Play via USB</div>
+      <a class="hub-tile menu-tile" id="subHubFix" href="fix.html">
+        <div class="hub-tile-img"><img src="img/hub-firmware-update.png" alt="Firmware Update"></div>
+        <span class="hub-tile-title">Firmware Update</span>
       </a>
-      <a class="app-tile" id="subHubTutorials" href="tutorials.html" style="animation-delay:0.18s">
-        <div class="tile-icon" style="background:linear-gradient(145deg,#34c759,#1f9e44)">🎬</div>
-        <div class="tile-name">Tutorials</div>
-        <div class="tile-meta">Step-by-step video guides</div>
+      <a class="hub-tile menu-tile" id="subHubTutorials" href="tutorials.html">
+        <div class="hub-tile-img"><img src="img/hub-tutorials.png" alt="Tutorials"></div>
+        <span class="hub-tile-title">Tutorials</span>
       </a>
     </div>
     <button class="hub-change" onclick="changeModel()">Not your projector? Change →</button>
@@ -922,7 +934,7 @@ document.addEventListener('keydown', e => {
   const isRight = e.key === 'ArrowRight' || e.keyCode === 39;
   if (!isLeft && !isRight) return;
 
-  const tiles = Array.from(hubTiles.querySelectorAll('.app-tile'));
+  const tiles = Array.from(hubTiles.querySelectorAll('.hub-tile'));
   if (!tiles.length) return;
   e.preventDefault();
 
@@ -930,6 +942,7 @@ document.addEventListener('keydown', e => {
   if (idx < 0) idx = 0;
   idx = isRight ? Math.min(idx + 1, tiles.length - 1) : Math.max(idx - 1, 0);
   tiles[idx].focus();
+  tiles[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 });
 
 // D-pad left/right moves focus between tiles and keeps the focused one
