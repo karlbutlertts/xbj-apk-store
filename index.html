@@ -287,7 +287,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   background:var(--surface); border:1px solid var(--border); border-radius:26px;
   padding:36px 28px; max-width:360px; width:100%; text-align:center;
 }
-.hub-tiles { display:flex; flex-direction:column; gap:14px; margin-top:8px; }
+.hub-tiles { display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin-top:8px; }
 .hub-tile {
   display:flex; align-items:center; gap:14px;
   background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:16px;
@@ -444,38 +444,26 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   <div class="hub-card">
     <div class="lock-title" id="subHubTitle">Your Projector</div>
     <div class="lock-sub">What do you need help with?</div>
-    <div class="hub-tiles">
-      <button class="hub-tile" onclick="enterApps()">
-        <span class="hub-tile-icon">📱</span>
-        <span class="hub-tile-text">
-          <span class="hub-tile-title">Apps</span>
-          <span class="hub-tile-sub">Netflix, BBC iPlayer, Disney+ and more — download &amp; install</span>
-        </span>
-        <span class="hub-tile-arrow">→</span>
+    <div class="hub-tiles" id="hubTiles">
+      <button class="app-tile" type="button" onclick="enterApps()" style="animation-delay:0s">
+        <div class="tile-icon" style="background:linear-gradient(145deg,#5aa6ff,#2563d6)">📱</div>
+        <div class="tile-name">Apps</div>
+        <div class="tile-meta">Netflix, BBC iPlayer, Disney+ &amp; more</div>
       </button>
-      <a class="hub-tile" id="subHubTools" href="tools.html">
-        <span class="hub-tile-icon">🛠️</span>
-        <span class="hub-tile-text">
-          <span class="hub-tile-title">Secret Menus</span>
-          <span class="hub-tile-sub">Hidden factory menus &amp; engineering settings</span>
-        </span>
-        <span class="hub-tile-arrow">→</span>
+      <a class="app-tile" id="subHubTools" href="tools.html" style="animation-delay:0.06s">
+        <div class="tile-icon" style="background:linear-gradient(145deg,#8a5aff,#5a2ce6)">🛠️</div>
+        <div class="tile-name">Hidden Features</div>
+        <div class="tile-meta">Factory menus &amp; engineering settings</div>
       </a>
-      <a class="hub-tile" id="subHubFix" href="fix.html">
-        <span class="hub-tile-icon">⚡</span>
-        <span class="hub-tile-text">
-          <span class="hub-tile-title">XBJ Firmware Restore</span>
-          <span class="hub-tile-sub">Fix Google Play &amp; Play Services via USB</span>
-        </span>
-        <span class="hub-tile-arrow">→</span>
+      <a class="app-tile" id="subHubFix" href="fix.html" style="animation-delay:0.12s">
+        <div class="tile-icon" style="background:linear-gradient(145deg,#ff9f43,#e8632a)">⚡</div>
+        <div class="tile-name">Firmware Update</div>
+        <div class="tile-meta">Fix Google Play via USB</div>
       </a>
-      <a class="hub-tile" id="subHubTutorials" href="tutorials.html">
-        <span class="hub-tile-icon">🎬</span>
-        <span class="hub-tile-text">
-          <span class="hub-tile-title">Tutorials</span>
-          <span class="hub-tile-sub">Step-by-step video guides for your projector</span>
-        </span>
-        <span class="hub-tile-arrow">→</span>
+      <a class="app-tile" id="subHubTutorials" href="tutorials.html" style="animation-delay:0.18s">
+        <div class="tile-icon" style="background:linear-gradient(145deg,#34c759,#1f9e44)">🎬</div>
+        <div class="tile-name">Tutorials</div>
+        <div class="tile-meta">Step-by-step video guides</div>
       </a>
     </div>
     <button class="hub-change" onclick="changeModel()">Not your projector? Change →</button>
@@ -923,6 +911,26 @@ function renderModelGrid() {
   const showLockedTile = !entertainmentUnlocked && modelApps.some(isHiddenApp);
   renderGrid(visible, showLockedTile);
 }
+
+// D-pad left/right moves focus between the hub menu tiles (Apps/Hidden
+// Features/Firmware Update/Tutorials) — same pattern as the apps grid and
+// engineering-tools carousel below.
+const hubTiles = document.getElementById('hubTiles');
+document.addEventListener('keydown', e => {
+  if (!hubTiles.contains(document.activeElement)) return;
+  const isLeft = e.key === 'ArrowLeft' || e.keyCode === 37;
+  const isRight = e.key === 'ArrowRight' || e.keyCode === 39;
+  if (!isLeft && !isRight) return;
+
+  const tiles = Array.from(hubTiles.querySelectorAll('.app-tile'));
+  if (!tiles.length) return;
+  e.preventDefault();
+
+  let idx = tiles.indexOf(document.activeElement);
+  if (idx < 0) idx = 0;
+  idx = isRight ? Math.min(idx + 1, tiles.length - 1) : Math.max(idx - 1, 0);
+  tiles[idx].focus();
+});
 
 // D-pad left/right moves focus between tiles and keeps the focused one
 // scrolled into view — same pattern as the engineering-tools carousel.
