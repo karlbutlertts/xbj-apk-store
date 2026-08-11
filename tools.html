@@ -196,20 +196,8 @@ document.getElementById('modelBadge').textContent = '📽️ Showing tools for '
 // guessing at package names that likely don't exist on different hardware.
 const TILES = [
   {
-    icon: '⚙️', title: 'Android Settings', sub: 'Standard system settings', tested: true,
-    models: ['all'], type: 'settingsAction', action: 'android.settings.SETTINGS'
-  },
-  {
-    icon: '📺', title: 'Android TV Settings', sub: 'MainSettings', tested: true,
-    models: ['all'], type: 'activity', pkg: 'com.android.tv.settings', activity: '.MainSettings'
-  },
-  {
-    icon: '♿', title: 'Accessibility', sub: 'Accessibility settings', tested: true,
-    models: ['all'], type: 'settingsAction', action: 'android.settings.ACCESSIBILITY_SETTINGS'
-  },
-  {
-    icon: '📱', title: 'App Info', sub: 'Application settings', tested: true,
-    models: ['all'], type: 'settingsAction', action: 'android.settings.APPLICATION_SETTINGS'
+    icon: '🎮', title: 'Enable Gaming Mode', sub: 'Opens Display & Sound — go to Advanced display settings and toggle "Allow game mode" on', tested: true,
+    models: ['a5pro'], type: 'activity', pkg: 'com.android.tv.settings', activity: '.device.displaysound.DisplaySoundActivity'
   },
   {
     icon: '🏭', title: 'Factory Menus', sub: 'Newlink & SStar factory + test-pattern menus',
@@ -233,31 +221,6 @@ const TILES = [
       {
         icon: '🖼️', title: 'Test Patterns', sub: 'Panel/PQ test pattern generator', tested: true,
         models: ['a5pro'], type: 'activity', pkg: 'com.sstar.factorymenu', activity: '.TestPatternsActivity'
-      }
-    ]
-  },
-  {
-    icon: '🧪', title: 'TV Testing Tools', sub: 'Production/PCBA hardware test suite',
-    models: ['a5pro'], type: 'group', children: [
-      {
-        icon: '🧪', title: 'Main Test Suite', sub: 'com.newlink.tvtestingtools', tested: true,
-        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.MainActivity_main'
-      },
-      {
-        icon: '🔩', title: 'PCBA Test', sub: 'Board-level production test', tested: true,
-        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.PCBAActivity'
-      },
-      {
-        icon: '⚙️', title: 'PCBA MTK Test', sub: 'MTK-chipset variant of the PCBA test', tested: true,
-        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.PCBAActivity_MTK'
-      },
-      {
-        icon: '📡', title: 'BT Single Test', sub: 'Bluetooth hardware test', tested: true,
-        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.BTSingleActivity'
-      },
-      {
-        icon: '👆', title: 'Touch Test', sub: 'Touch panel hardware test', tested: true,
-        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.TouchTestActivity'
       }
     ]
   },
@@ -296,6 +259,47 @@ const TILES = [
       {
         icon: '🎮', title: 'Gaming', sub: 'Opens the picture mode menu — select Game for lower input lag',
         models: ['a5pro'], type: 'activity', pkg: 'com.zhiying.settings', activity: '.picturemode.PictureModeActivity'
+      }
+    ]
+  },
+  {
+    icon: '⚙️', title: 'Android Settings', sub: 'Standard system settings', tested: true,
+    models: ['all'], type: 'settingsAction', action: 'android.settings.SETTINGS'
+  },
+  {
+    icon: '📺', title: 'Android TV Settings', sub: 'MainSettings', tested: true,
+    models: ['all'], type: 'activity', pkg: 'com.android.tv.settings', activity: '.MainSettings'
+  },
+  {
+    icon: '♿', title: 'Accessibility', sub: 'Accessibility settings', tested: true,
+    models: ['all'], type: 'settingsAction', action: 'android.settings.ACCESSIBILITY_SETTINGS'
+  },
+  {
+    icon: '📱', title: 'App Info', sub: 'Application settings', tested: true,
+    models: ['all'], type: 'settingsAction', action: 'android.settings.APPLICATION_SETTINGS'
+  },
+  {
+    icon: '🧪', title: 'TV Testing Tools', sub: 'Production/PCBA hardware test suite',
+    models: ['a5pro'], type: 'group', children: [
+      {
+        icon: '🧪', title: 'Main Test Suite', sub: 'com.newlink.tvtestingtools', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.MainActivity_main'
+      },
+      {
+        icon: '🔩', title: 'PCBA Test', sub: 'Board-level production test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.PCBAActivity'
+      },
+      {
+        icon: '⚙️', title: 'PCBA MTK Test', sub: 'MTK-chipset variant of the PCBA test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.PCBAActivity_MTK'
+      },
+      {
+        icon: '📡', title: 'BT Single Test', sub: 'Bluetooth hardware test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.BTSingleActivity'
+      },
+      {
+        icon: '👆', title: 'Touch Test', sub: 'Touch panel hardware test', tested: true,
+        models: ['a5pro'], type: 'activity', pkg: 'com.newlink.tvtestingtools', activity: '.acticity.TouchTestActivity'
       }
     ]
   },
