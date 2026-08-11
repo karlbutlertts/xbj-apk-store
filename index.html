@@ -987,6 +987,22 @@ function focusFirstAppTile(){
   setTimeout(() => { const first = grid.querySelector('.app-tile'); if (first) first.focus(); }, 150);
 }
 
+// Inside the native Projector Guy App wrapper, hand app-tile downloads to
+// AndroidBridge.downloadApp() instead of letting the plain <a href download>
+// fall through to the WebView's DownloadListener — that kicks the user out
+// to the system browser/Downloads app to install, then back to the home
+// screen, instead of installing in place without ever leaving the app.
+// Regular browsers have no AndroidBridge, so the <a download> keeps working
+// there unchanged.
+grid.addEventListener('click', e => {
+  if (!window.AndroidBridge || typeof AndroidBridge.downloadApp !== 'function') return;
+  const tile = e.target.closest('.app-tile');
+  if (!tile || !tile.hasAttribute('href')) return; // the locked tile is a <button>, no href
+  e.preventDefault();
+  const nameEl = tile.querySelector('.tile-name');
+  try { AndroidBridge.downloadApp(tile.getAttribute('href'), nameEl ? nameEl.textContent : 'app'); } catch (err) {}
+});
+
 function renderGrid(apps, showLockedTile) {
   gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
 
