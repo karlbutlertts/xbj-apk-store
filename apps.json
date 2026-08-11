@@ -245,5 +245,39 @@
     "updated": "June 2026",
     "downloads": "1.3k",
     "updatedAt": "2026-06-08T00:00:00Z"
+  },
+  {
+    "models": ["all"],
+    "name": "NetMirrorTV",
+    "abbr": "NM",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/netmirrortv.png",
+    "file": "entertainment/netmirrortv.apk",
+    "packageName": "app.netmirror.newtv",
+    "versionCode": 1,
+    "category": "Entertainment",
+    "tags": ["streaming"],
+    "size": "58 MB",
+    "rating": 4.6,
+    "color": "linear-gradient(145deg,#c2185b,#6a0d33)",
+    "updated": "August 2026",
+    "downloads": "New",
+    "updatedAt": "2026-08-11T00:00:00Z"
+  },
+  {
+    "models": ["all"],
+    "name": "Fluid Video Player",
+    "abbr": "FV",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/fluidvideoplayer.png",
+    "file": "entertainment/fluidvideoplayer.apk",
+    "packageName": "com.player.bear",
+    "versionCode": 2019046,
+    "category": "Tools",
+    "tags": ["tools"],
+    "size": "17 MB",
+    "rating": 4.5,
+    "color": "linear-gradient(145deg,#00acc1,#00636f)",
+    "updated": "August 2026",
+    "downloads": "New",
+    "updatedAt": "2026-08-11T00:00:00Z"
   }
 ]
