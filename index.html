@@ -879,12 +879,12 @@ async function tryEntUnlock() {
       if (subHubEl && !subHubEl.classList.contains('hidden')) {
         subHubEl.classList.add('hidden');
         document.getElementById('menuBackBtn').classList.add('show');
-        window._activeFilter = 'all';
-        categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-        const allPill = categoryPills.querySelector('[data-filter="all"]');
-        if (allPill) allPill.classList.add('active');
         window.scrollTo(0, 0);
       }
+      // Show just the newly-unlocked hidden apps, not the whole catalogue —
+      // none of the visible category pills map to this, so none stay active.
+      window._activeFilter = 'entertainment';
+      categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
       renderModelGrid();
       focusFirstAppTile();
     }, 350);
@@ -923,7 +923,9 @@ function renderModelGrid() {
     if (!a.models || a.models.includes('all')) return true;
     return model && a.models.includes(model);
   });
-  const filtered = filter === 'all' ? modelApps : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
+  const filtered = filter === 'all' ? modelApps
+    : filter === 'entertainment' ? modelApps.filter(isHiddenApp)
+    : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
   const visible = entertainmentUnlocked ? filtered : filtered.filter(a => !isHiddenApp(a));
   const showLockedTile = !entertainmentUnlocked && modelApps.some(isHiddenApp);
   renderGrid(visible, showLockedTile);
