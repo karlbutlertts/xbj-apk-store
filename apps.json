@@ -24,7 +24,7 @@
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
     "file": "ProjectorGuyApp.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 8,
+    "versionCode": 9,
     "category": "Tools",
     "tags": [
       "tools"
