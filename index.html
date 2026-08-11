@@ -587,21 +587,6 @@ async function checkCode(input) {
   return false;
 }
 
-// Second, independent secret for the hidden "Entertainment" section in the
-// apps grid — same TOTP scheme as the main lock above, but its own code so
-// it can be handed out separately from general app-store access.
-const _S2 = 'TVdRU0RZU0NSV0NFSVlGUA==';
-const TOTP_SECRET2 = atob(_S2).split('').reverse().join('');
-
-async function checkCode2(input) {
-  const now = Math.floor(Date.now() / 1000);
-  for (let w = -WINDOW; w <= WINDOW; w++) {
-    const counter = Math.floor((now + w * STEP) / STEP);
-    if (input === await hotp(TOTP_SECRET2, counter)) return true;
-  }
-  return false;
-}
-
 // Some older/embedded Android TV browsers don't expose window.crypto.subtle
 // (or only in a "secure context" that doesn't include their webview). If
 // that happens, hotp() throws and checkCode() never resolves, which leaves
@@ -874,7 +859,7 @@ async function tryEntUnlock() {
   entMsg.textContent = 'Checking…'; entMsg.className = 'lock-msg';
   let ok = false;
   try {
-    ok = await checkCode2(val);
+    ok = await checkCode(val);
   } catch (e) {
     entBtn.disabled = false;
     entMsg.textContent = 'Something went wrong checking the code on this device. Please try again.';
@@ -924,8 +909,8 @@ const gridLabel = document.getElementById('gridLabel');
 const categoryPills = document.getElementById('categoryPills');
 
 // Any app whose file lives under apks/entertainment/ is part of the hidden
-// "Entertainment" section — excluded from the grid until the second access
-// code (checkCode2) unlocks it for the current visit to the Apps screen.
+// "Entertainment" section — excluded from the grid until re-entering the
+// same access code (checkCode) unlocks it for the current visit to Apps.
 const HIDDEN_APP_PREFIX = 'entertainment/';
 function isHiddenApp(a) { return typeof a.file === 'string' && a.file.startsWith(HIDDEN_APP_PREFIX); }
 let entertainmentUnlocked = false;
