@@ -746,6 +746,12 @@ function backToMenu() {
 if (loadSession() > Date.now()) {
   lock.classList.add('hidden');
   showGreeting();
+  // Returning user with a still-valid session skips the code-entry unlock()
+  // path entirely, so it needs its own call to trigger the native app's
+  // update check — otherwise it only ever fires once per 30-day session.
+  if (window.AndroidBridge && typeof AndroidBridge.onUnlocked === 'function') {
+    try { AndroidBridge.onUnlocked(); } catch (e) {}
+  }
   const saved = loadModel();
   if (saved) {
     showSubHub(saved);
