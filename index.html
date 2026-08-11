@@ -480,6 +480,10 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
         <div class="hub-tile-img"><img src="img/hub-tutorials.png" alt="Tutorials"></div>
         <span class="hub-tile-title">Tutorials</span>
       </a>
+      <button class="hub-tile menu-tile" type="button" onclick="checkForAppUpdates()">
+        <div class="hub-tile-img"><span class="hub-tile-emoji">🔄</span></div>
+        <span class="hub-tile-title">Check for Updates</span>
+      </button>
     </div>
     <button class="hub-change" onclick="changeModel()">Not your projector? Change →</button>
   </div>
@@ -830,6 +834,15 @@ window.addEventListener('appinstalled', () => {
 lockBtn.addEventListener('click', tryUnlock);
 lockInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
 lockInput.addEventListener('input', () => { lockInput.value = lockInput.value.replace(/\D/g, '').slice(0, 6); });
+
+// ── "Check for Updates" hub tile — hands off to the native app's own
+// update-check overlay. No-op outside the native wrapper: there's nothing
+// meaningful to check against in a plain browser.
+function checkForAppUpdates() {
+  if (window.AndroidBridge && typeof AndroidBridge.checkForUpdates === 'function') {
+    try { AndroidBridge.checkForUpdates(); } catch (e) {}
+  }
+}
 
 // ── Hidden "Entertainment" section unlock overlay ──
 const entOverlay = document.getElementById('entOverlay');
