@@ -715,7 +715,8 @@ function enterApps() {
   document.getElementById('subHub').classList.add('hidden');
   document.getElementById('menuBackBtn').classList.add('show');
   window._activeFilter = 'all';
-  entertainmentUnlocked = false; // re-lock the hidden section on every visit to Apps
+  // No forced re-lock here — entertainmentIsUnlocked() already expires the
+  // unlock on its own after ENTERTAINMENT_UNLOCK_MS.
   categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
   const allPill = categoryPills.querySelector('[data-filter="all"]');
   if (allPill) allPill.classList.add('active');
@@ -868,13 +869,12 @@ async function tryEntUnlock() {
   }
   entBtn.disabled = false;
   if (ok) {
-    entertainmentUnlocked = true;
+    entertainmentUnlockedUntil = Date.now() + ENTERTAINMENT_UNLOCK_MS;
     entMsg.textContent = 'Unlocked!'; entMsg.className = 'lock-msg ok';
     setTimeout(() => {
       closeEntOverlay();
       // Opened straight from the hub menu tile rather than the locked tile
-      // inside the Apps grid — navigate into Apps too, without the usual
-      // entertainmentUnlocked reset that enterApps() does on a normal visit.
+      // inside the Apps grid — navigate into Apps too.
       const subHubEl = document.getElementById('subHub');
       if (subHubEl && !subHubEl.classList.contains('hidden')) {
         subHubEl.classList.add('hidden');
@@ -910,10 +910,16 @@ const categoryPills = document.getElementById('categoryPills');
 
 // Any app whose file lives under apks/entertainment/ is part of the hidden
 // "Entertainment" section — excluded from the grid until re-entering the
-// same access code (checkCode) unlocks it for the current visit to Apps.
+// same access code (checkCode) unlocks it. Unlike the main 30-day login
+// session, this unlock is never written to localStorage: it's a plain
+// in-memory timestamp that expires on its own after a couple of minutes —
+// just long enough to find and download the app — and disappears entirely
+// on reload/app relaunch either way.
 const HIDDEN_APP_PREFIX = 'entertainment/';
+const ENTERTAINMENT_UNLOCK_MS = 2 * 60 * 1000; // 2 minutes
 function isHiddenApp(a) { return typeof a.file === 'string' && a.file.startsWith(HIDDEN_APP_PREFIX); }
-let entertainmentUnlocked = false;
+let entertainmentUnlockedUntil = 0;
+function entertainmentIsUnlocked() { return Date.now() < entertainmentUnlockedUntil; }
 
 function renderModelGrid() {
   const apps = window._allApps || [];
@@ -926,8 +932,9 @@ function renderModelGrid() {
   const filtered = filter === 'all' ? modelApps
     : filter === 'entertainment' ? modelApps.filter(isHiddenApp)
     : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
-  const visible = entertainmentUnlocked ? filtered : filtered.filter(a => !isHiddenApp(a));
-  const showLockedTile = !entertainmentUnlocked && modelApps.some(isHiddenApp);
+  const unlocked = entertainmentIsUnlocked();
+  const visible = unlocked ? filtered : filtered.filter(a => !isHiddenApp(a));
+  const showLockedTile = !unlocked && modelApps.some(isHiddenApp);
   renderGrid(visible, showLockedTile);
 }
 
