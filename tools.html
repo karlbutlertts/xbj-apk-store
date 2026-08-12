@@ -254,6 +254,10 @@ const TILES = [
       {
         icon: 'ℹ️', title: 'About Device', sub: 'Model, firmware & storage info', tested: true,
         models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.AboutDeviceActivity'
+      },
+      {
+        icon: '🔓', title: 'Unlock Theme Settings', sub: 'Opens the About page — press OK 6 times on your remote, we\'ll detect it live', tested: true,
+        models: ['360'], type: 'unlockDebug', pkg: 'com.mylove.setting', activity: '.ui.activity.AboutDeviceActivity', propKey: 'persist.sys.debug'
       }
     ]
   },
@@ -462,7 +466,10 @@ const detailList = document.getElementById('detailList');
 const browseRow = document.getElementById('browseRow');
 let currentBrowsePkg = null;
 
+let activePoll = null;
+
 function openDetail(title, body){
+  if (activePoll) { clearInterval(activePoll); activePoll = null; }
   detailTitle.textContent = title;
   detailBody.textContent = body || '';
   detailStatus.textContent = '';
@@ -529,6 +536,27 @@ function openTile(t){
       openDetail(t.title, t.sub);
       const ok = window.AndroidBridge.launchActivity(t.pkg, t.activity);
       setStatus(ok ? 'Opening…' : 'Could not open — not available on this build.', ok);
+      break;
+    }
+    case 'unlockDebug': {
+      openDetail(t.title, t.sub);
+      const ok = window.AndroidBridge.launchActivity(t.pkg, t.activity);
+      if (!ok) { setStatus('Could not open — not available on this build.', false); break; }
+      setStatus('Opened. Press OK 6 times on your remote now…', true);
+      let polls = 0;
+      const maxPolls = 90; // ~3 minutes at 2s
+      activePoll = setInterval(() => {
+        polls++;
+        let val = '';
+        try { val = window.AndroidBridge.getSystemProperty(t.propKey); } catch (e) {}
+        if (val === '1') {
+          clearInterval(activePoll); activePoll = null;
+          setStatus('✅ Unlocked! Now reboot your projector — the Theme Settings icon (the ? in a circle, top-right on the home screen) will appear once it restarts.', true);
+        } else if (polls >= maxPolls) {
+          clearInterval(activePoll); activePoll = null;
+          setStatus('Still not detected after 3 minutes — make sure you\'re pressing OK on the About page itself, 6 times.', false);
+        }
+      }, 2000);
       break;
     }
     case 'package': {
