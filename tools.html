@@ -188,16 +188,74 @@ const MODEL = detectModel();
 document.getElementById('modelBadge').textContent = '📽️ Showing tools for ' + (MODEL_LABELS[MODEL] || 'your projector');
 
 // ── Tool/setting catalog ──
-// "models" controls which tiles show for the detected projector. The four
-// grouped sub-carousels below (Factory Menus, TV Testing Tools, Display &
-// Sound, System) are exact package/activity names confirmed via ADB on the
-// XBJ A5 Pro's firmware — marked tested + a5pro-only. We don't yet have the
-// XBJ 360's equivalents, so none of these show for that model rather than
-// guessing at package names that likely don't exist on different hardware.
+// "models" controls which tiles show for the detected projector. The a5pro
+// groups below are exact package/activity names confirmed via ADB on the
+// XBJ A5 Pro's firmware. The 360 entries are confirmed via ADB on the XBJ
+// 360's Allwinner/Android 14 firmware — a completely different chipset and
+// launcher (com.mylove.*), so none of the a5pro package names apply there.
+//
+// Deliberately NOT cataloged for the 360: com.softwinner.tv.factorymenu,
+// com.softwinner.dragonbox, com.softwinner.agingdragonbox and
+// com.bsw.producttest. These are genuine production-line test tools (panel
+// color-cycle tests, serial-number writing, hardware test suites with
+// result upload to a factory server) — one of them blanked the screen red
+// and required a power cycle to recover from. Not worth the risk of
+// surfacing to end users as a "hidden feature."
 const TILES = [
   {
     icon: '🎮', title: 'Enable Gaming Mode', sub: 'Opens Display & Sound — go to Advanced display settings and toggle "Allow game mode" on', tested: true,
     models: ['a5pro'], type: 'activity', pkg: 'com.android.tv.settings', activity: '.device.displaysound.DisplaySoundActivity'
+  },
+  {
+    icon: '🎚️', title: 'Display & Sound', sub: 'Picture quality, EQ, keystone and video settings',
+    models: ['360'], type: 'group', children: [
+      {
+        icon: '🖼️', title: 'Display Mode', sub: 'Preset picture modes, plus brightness/contrast/saturation/hue/sharpness', tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.DisplayModeActivity'
+      },
+      {
+        icon: '🔊', title: 'Sound Mode', sub: '7-band EQ (100Hz–16kHz), select User to unlock the sliders', tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.SoundModeActivity'
+      },
+      {
+        icon: '📐', title: 'Keystone', sub: 'Correct a trapezoidal/skewed image', tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.KeystoneActivity'
+      },
+      {
+        icon: '📹', title: 'Video Settings', sub: 'Additional video/source settings', tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.VideoSettingsActivity'
+      }
+    ]
+  },
+  {
+    icon: '🎨', title: 'Picture & Sound Presets', sub: 'Jump straight to the picture/sound mode menus',
+    models: ['360'], type: 'group', children: [
+      {
+        icon: '✨', title: 'Vivid Picture', sub: 'Opens Display Mode — select Vivid for a brighter, punchier image', tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.DisplayModeActivity'
+      },
+      {
+        icon: '🎬', title: 'Cinema Picture', sub: 'Opens Display Mode — select Cinema for movies in a dark room', tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.DisplayModeActivity'
+      },
+      {
+        icon: '🔉', title: 'Clearer Sound', sub: 'Opens Sound Mode — select User, then raise the 2–8kHz bands for clarity', tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.SoundModeActivity'
+      }
+    ]
+  },
+  {
+    icon: '🧰', title: 'System', sub: 'App manager & device info',
+    models: ['360'], type: 'group', children: [
+      {
+        icon: '📱', title: 'App Manager', sub: "This launcher's own app management screen", tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.AppManagerActivity'
+      },
+      {
+        icon: 'ℹ️', title: 'About Device', sub: 'Model, firmware & storage info', tested: true,
+        models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.AboutDeviceActivity'
+      }
+    ]
   },
   {
     icon: '🏭', title: 'Factory Menus', sub: 'Newlink & SStar factory + test-pattern menus',
