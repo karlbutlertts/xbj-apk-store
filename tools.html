@@ -258,6 +258,10 @@ const TILES = [
       {
         icon: '🔓', title: 'Unlock Theme Settings', sub: 'Opens the About page — press OK 6 times on your remote, we\'ll detect it live', tested: true,
         models: ['360'], type: 'unlockDebug', pkg: 'com.mylove.setting', activity: '.ui.activity.AboutDeviceActivity', propKey: 'persist.sys.debug'
+      },
+      {
+        icon: '🎨', title: 'Change Homepage Theme', sub: 'Opens the home-screen theme picker automatically (needs Unlock Theme Settings done first, plus a one-time Accessibility permission)', tested: true,
+        models: ['360'], type: 'themeAuto', propKey: 'persist.sys.debug'
       }
     ]
   },
@@ -557,6 +561,23 @@ function openTile(t){
           setStatus('Still not detected after 3 minutes — make sure you\'re pressing OK on the About page itself, 6 times.', false);
         }
       }, 2000);
+      break;
+    }
+    case 'themeAuto': {
+      openDetail(t.title, t.sub);
+      let debugVal = '';
+      try { debugVal = window.AndroidBridge.getSystemProperty(t.propKey); } catch (e) {}
+      if (debugVal !== '1') {
+        setStatus('Not unlocked yet — run "Unlock Theme Settings" first (press OK 6 times on the About page), then reboot.', false);
+        break;
+      }
+      if (!window.AndroidBridge.isThemeUnlockServiceEnabled()) {
+        setStatus('One-time setup needed: opening Accessibility settings — turn on "Projector Guy" in the list, then come back and tap this tile again.', false);
+        window.AndroidBridge.openSettingsAction('android.settings.ACCESSIBILITY_SETTINGS');
+        break;
+      }
+      const started = window.AndroidBridge.openThemeSettings();
+      setStatus(started ? 'Opening the theme picker…' : 'Could not start — try re-enabling the Accessibility permission.', started);
       break;
     }
     case 'package': {
