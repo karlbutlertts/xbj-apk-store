@@ -203,6 +203,10 @@ document.getElementById('modelBadge').textContent = '📽️ Showing tools for '
 // surfacing to end users as a "hidden feature."
 const TILES = [
   {
+    icon: '🔓', title: 'Unlock Theme Settings', sub: 'Opens the About page — press OK 6 times on your remote, we\'ll detect it live', tested: true,
+    models: ['360'], type: 'unlockDebug', pkg: 'com.mylove.setting', activity: '.ui.activity.AboutDeviceActivity', propKey: 'persist.sys.debug'
+  },
+  {
     icon: '🎮', title: 'Enable Gaming Mode', sub: 'Opens Display & Sound — go to Advanced display settings and toggle "Allow game mode" on', tested: true,
     models: ['a5pro'], type: 'activity', pkg: 'com.android.tv.settings', activity: '.device.displaysound.DisplaySoundActivity'
   },
@@ -254,10 +258,6 @@ const TILES = [
       {
         icon: 'ℹ️', title: 'About Device', sub: 'Model, firmware & storage info', tested: true,
         models: ['360'], type: 'activity', pkg: 'com.mylove.setting', activity: '.ui.activity.AboutDeviceActivity'
-      },
-      {
-        icon: '🔓', title: 'Unlock Theme Settings', sub: 'Opens the About page — press OK 6 times on your remote, we\'ll detect it live', tested: true,
-        models: ['360'], type: 'unlockDebug', pkg: 'com.mylove.setting', activity: '.ui.activity.AboutDeviceActivity', propKey: 'persist.sys.debug'
       }
     ]
   },
