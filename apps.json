@@ -256,12 +256,12 @@
     "versionCode": 1,
     "category": "Entertainment",
     "tags": ["streaming"],
-    "size": "58 MB",
+    "size": "59 MB",
     "rating": 4.6,
     "color": "linear-gradient(145deg,#c2185b,#6a0d33)",
     "updated": "August 2026",
     "downloads": "New",
-    "updatedAt": "2026-08-11T00:00:00Z"
+    "updatedAt": "2026-08-12T00:00:00Z"
   },
   {
     "models": ["all"],
