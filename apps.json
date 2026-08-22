@@ -306,7 +306,7 @@
     "packageName": "com.rmedia.rplayer",
     "versionCode": 35,
     "category": "Entertainment",
-    "tags": ["movies"],
+    "tags": ["livetv"],
     "size": "26 MB",
     "rating": 4.3,
     "color": "linear-gradient(145deg,#ff6b6b,#a11d1d)",
