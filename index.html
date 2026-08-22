@@ -505,6 +505,14 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   <button class="category-pill" data-filter="tools">🛠️ Tools</button>
 </div>
 
+<div class="category-pills hidden" id="entCategoryPills">
+  <button class="category-pill active" data-entfilter="entertainment">All</button>
+  <button class="category-pill" data-entfilter="ent-streaming">🎬 Streaming Services</button>
+  <button class="category-pill" data-entfilter="ent-movies">🍿 Movies</button>
+  <button class="category-pill" data-entfilter="ent-sports">⚽ Sports</button>
+  <button class="category-pill" data-entfilter="ent-tools">🛠️ Tools</button>
+</div>
+
 <div id="installBar" class="install-bar hidden">
   <span class="install-icon">📲</span>
   <span class="install-text">Add this app to your projector's home screen for one-tap access</span>
@@ -723,6 +731,8 @@ function enterApps() {
   window._activeFilter = 'all';
   // No forced re-lock here — entertainmentIsUnlocked() already expires the
   // unlock on its own after ENTERTAINMENT_UNLOCK_MS.
+  entCategoryPills.classList.add('hidden');
+  categoryPills.classList.remove('hidden');
   categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
   const allPill = categoryPills.querySelector('[data-filter="all"]');
   if (allPill) allPill.classList.add('active');
@@ -897,9 +907,14 @@ async function tryEntUnlock() {
         window.scrollTo(0, 0);
       }
       // Show just the newly-unlocked hidden apps, not the whole catalogue —
-      // none of the visible category pills map to this, so none stay active.
+      // swap in the Entertainment-only filter pills (Streaming/Movies/
+      // Sports/Tools) in place of the normal All/Live TV/Streaming/Tools row.
       window._activeFilter = 'entertainment';
-      categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+      categoryPills.classList.add('hidden');
+      entCategoryPills.classList.remove('hidden');
+      entCategoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+      const entAllPill = entCategoryPills.querySelector('[data-entfilter="entertainment"]');
+      if (entAllPill) entAllPill.classList.add('active');
       renderModelGrid();
       focusFirstAppTile();
     }, 350);
@@ -922,6 +937,7 @@ const APK_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-st
 const grid = document.getElementById('appGrid');
 const gridLabel = document.getElementById('gridLabel');
 const categoryPills = document.getElementById('categoryPills');
+const entCategoryPills = document.getElementById('entCategoryPills');
 
 // Any app whose file lives under apks/entertainment/ is part of the hidden
 // "Entertainment" section — excluded from the grid until re-entering the
@@ -946,6 +962,7 @@ function renderModelGrid() {
   });
   const filtered = filter === 'all' ? modelApps
     : filter === 'entertainment' ? modelApps.filter(isHiddenApp)
+    : filter.startsWith('ent-') ? modelApps.filter(a => isHiddenApp(a) && Array.isArray(a.tags) && a.tags.includes(filter.slice(4)))
     : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
   const unlocked = entertainmentIsUnlocked();
   const visible = unlocked ? filtered : filtered.filter(a => !isHiddenApp(a));
@@ -1062,6 +1079,17 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
       categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       window._activeFilter = btn.dataset.filter;
+      renderModelGrid();
+      focusFirstAppTile();
+    });
+
+    // ── Entertainment-only pill filtering (Streaming/Movies/Sports/Tools) ──
+    entCategoryPills.addEventListener('click', e => {
+      const btn = e.target.closest('.category-pill');
+      if (!btn) return;
+      entCategoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      window._activeFilter = btn.dataset.entfilter;
       renderModelGrid();
       focusFirstAppTile();
     });
