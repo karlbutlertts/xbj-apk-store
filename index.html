@@ -508,6 +508,7 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 
 <div class="category-pills hidden" id="entCategoryPills">
   <button class="category-pill active" data-entfilter="entertainment">All</button>
+  <button class="category-pill" data-entfilter="ent-livetv">📺 Live TV apps</button>
   <button class="category-pill" data-entfilter="ent-streaming">🎬 Streaming Services</button>
   <button class="category-pill" data-entfilter="ent-movies">🍿 Movies</button>
   <button class="category-pill" data-entfilter="ent-sports">⚽ Sports</button>
@@ -909,13 +910,14 @@ async function tryEntUnlock() {
       }
       // Show just the newly-unlocked hidden apps, not the whole catalogue —
       // swap in the Entertainment-only filter pills (Streaming/Movies/
-      // Sports/Tools) in place of the normal All/Live TV/Streaming/Tools row.
-      window._activeFilter = 'entertainment';
+      // Sports/Tools) in place of the normal All/Live TV/Streaming/Tools row,
+      // defaulting to the Streaming Services pill rather than "All".
+      window._activeFilter = 'ent-streaming';
       categoryPills.classList.add('hidden');
       entCategoryPills.classList.remove('hidden');
       entCategoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-      const entAllPill = entCategoryPills.querySelector('[data-entfilter="entertainment"]');
-      if (entAllPill) entAllPill.classList.add('active');
+      const entDefaultPill = entCategoryPills.querySelector('[data-entfilter="ent-streaming"]');
+      if (entDefaultPill) entDefaultPill.classList.add('active');
       renderModelGrid();
       focusFirstAppTile();
     }, 350);
