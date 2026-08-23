@@ -26,6 +26,7 @@
   --accent:#5aa6ff; --accent-deep:#2563d6;
   --accent-ink:#07111f;
   --rail:210px;
+  --content-max:1600px;
 }
 body {
   font-family:'DM Sans',-apple-system,sans-serif;
@@ -267,6 +268,22 @@ body {
 .legal strong { color:var(--text2); }
 .hint-bar { padding:6px 32px 0; font-size:11.5px; color:var(--text3); }
 
+/* ── Centre the stage column on wide screens (pills, rows of cards, hero,
+   locked/preferences panels) so content doesn't hug the left edge —
+   existing padding/margin still gives the min gutter on narrower screens. ── */
+.topbar, .row-head, .rail, .grid, .search-wrap, .section-note, .hint-bar, .empty-note {
+  max-width:var(--content-max); margin-left:auto; margin-right:auto;
+}
+.legal { margin-left:auto; margin-right:auto; }
+.hero {
+  margin-left:max(32px, calc((100% - var(--content-max)) / 2));
+  margin-right:max(32px, calc((100% - var(--content-max)) / 2));
+}
+.panel {
+  margin-left:max(32px, calc((100% - 760px) / 2));
+  margin-right:max(32px, calc((100% - 760px) / 2));
+}
+
 /* ── How-to-install modal ── */
 .modal { position:fixed; inset:0; z-index:1400; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(4,7,13,0.93); }
 .modal.hidden { display:none !important; }
@@ -306,7 +323,11 @@ body {
   .side-logo-text { font-size:15px; }
   .topbar { padding:22px 48px 16px; }
   .chip { font-size:15px; padding:11px 24px; }
-  .hero { margin:8px 48px 10px; min-height:380px; border-radius:32px; }
+  .hero {
+    margin-top:8px; margin-bottom:10px; min-height:380px; border-radius:32px;
+    margin-left:max(48px, calc((100% - var(--content-max)) / 2));
+    margin-right:max(48px, calc((100% - var(--content-max)) / 2));
+  }
   .hero-inner { padding:40px 46px; gap:32px; }
   .hero-icon { width:132px; height:132px; border-radius:32px; }
   .hero-title { font-size:50px; }
@@ -321,7 +342,11 @@ body {
   .card-blurb { font-size:13px; }
   .grid { grid-template-columns:repeat(auto-fill,minmax(206px,1fr)); }
   .grid-wide { grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); }
-  .panel { margin-left:48px; max-width:900px; }
+  .panel {
+    max-width:900px;
+    margin-left:max(48px, calc((100% - 900px) / 2));
+    margin-right:max(48px, calc((100% - 900px) / 2));
+  }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -366,6 +391,9 @@ body {
 .ent-cancel-btn:hover { color:var(--text); }
 .lock-title { font-size:20px; font-weight:800; margin-bottom:6px; }
 .lock-sub { font-size:13.5px; color:var(--text2); line-height:1.5; margin-bottom:22px; }
+/* #lock's sub text sits after the fields/button (see markup), not before —
+   flip its gap to margin-top so the keyboard covers the help text, not the inputs. */
+#lock .lock-sub { margin-bottom:0; margin-top:22px; }
 .lock-input {
   width:100%; background:rgba(255,255,255,0.07); border:1.5px solid var(--border);
   border-radius:16px; padding:16px; font-size:28px; font-weight:800; letter-spacing:0.3em;
@@ -397,6 +425,7 @@ body {
   .lock-badge { width:72px; height:72px; border-radius:20px; margin-bottom:22px; }
   .lock-title { font-size:30px; margin-bottom:10px; }
   .lock-sub { font-size:17px; margin-bottom:30px; }
+  #lock .lock-sub { margin-bottom:0; margin-top:30px; }
   .lock-input-row {
     flex-direction:row; align-items:stretch; gap:16px; margin-bottom:14px;
   }
@@ -415,6 +444,7 @@ body {
   .lock-badge { width:100px; height:100px; border-radius:28px; margin-bottom:28px; }
   .lock-title { font-size:42px; margin-bottom:14px; }
   .lock-sub { font-size:20px; margin-bottom:36px; max-width:620px; margin-left:auto; margin-right:auto; }
+  #lock .lock-sub { margin-bottom:0; margin-top:36px; }
   .lock-input { font-size:28px; padding:24px 22px; }
   .lock-input-text { font-size:21px; padding:24px 26px; }
   .lock-btn { font-size:22px; padding:22px; }
@@ -521,6 +551,7 @@ body {
   .hub-change { margin-top:10px; font-size:12px; }
   .lock-title { font-size:22px; }
   .lock-sub { font-size:13px; margin-bottom:10px; }
+  #lock .lock-sub { margin-bottom:0; margin-top:10px; }
 }
 
 /* ── SPLASH SCREEN ── */
@@ -566,13 +597,13 @@ body {
 <div id="lock">
   <div class="lock-card">
     <div class="lock-title"><svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:300px;display:block;margin:0 auto"><defs><linearGradient id="a2-beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5aa6ff" stop-opacity="0.18"/><stop offset="100%" stop-color="#5aa6ff" stop-opacity="0"/></linearGradient><linearGradient id="a2-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a3550"/><stop offset="100%" stop-color="#161e30"/></linearGradient><linearGradient id="a2-lens" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5aa6ff"/><stop offset="100%" stop-color="#2563d6"/></linearGradient><clipPath id="a2-clip"><rect x="118" y="0" height="300" width="0"><animate attributeName="width" from="0" to="330" dur="0.7s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0 0.2 1"/></rect></clipPath></defs><polygon points="118,150 440,52 440,248" fill="url(#a2-beam)" clip-path="url(#a2-clip)"/><rect x="30" y="118" width="90" height="64" rx="14" fill="url(#a2-body)" stroke="#2a3a5c" stroke-width="1.5"/><circle cx="118" cy="150" r="28" fill="#0f1828" stroke="#2a3a5c" stroke-width="1.5"/><circle cx="118" cy="150" r="20" fill="url(#a2-lens)" opacity="0.9"><animate attributeName="r" values="20;26;20" dur="0.5s" fill="freeze"/></circle><circle cx="111" cy="143" r="5" fill="white" opacity="0.25"/><rect x="66" y="182" width="18" height="22" rx="3" fill="#1c2840"/><ellipse cx="75" cy="204" rx="22" ry="5" fill="#1c2840"/><line x1="44" y1="130" x2="44" y2="170" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><line x1="52" y1="128" x2="52" y2="172" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><line x1="60" y1="127" x2="60" y2="173" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><rect x="428" y="54" width="4" height="192" rx="2" fill="#1e2d4a"/><g opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.35s" dur="0.45s" fill="freeze"/><text x="172" y="138" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="52" font-weight="900" letter-spacing="-1" fill="#f4f4f8">PROJECTOR</text><text x="172" y="195" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="52" font-weight="900" letter-spacing="-1" fill="#5aa6ff">GUY</text><rect x="172" y="208" width="220" height="3" rx="1.5" fill="#5aa6ff" opacity="0.5"/><circle cx="404" cy="209.5" r="3" fill="#5aa6ff"/></g></svg></div>
-    <div class="lock-sub">App updates locked. Message <strong>@karlsmidlifecrisis</strong> on TikTok for the current access code if you've purchased an XBJ Projector from my lives or videos.</div>
     <div class="lock-input-row">
       <input id="lockUser" class="lock-input lock-input-text" type="text" placeholder="Your TikTok username" autocomplete="off" autocapitalize="none" maxlength="40">
       <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
     </div>
     <button id="lockBtn" class="lock-btn">Unlock</button>
     <div id="lockMsg" class="lock-msg"></div>
+    <div class="lock-sub">App updates locked. Message <strong>@karlsmidlifecrisis</strong> on TikTok for the current access code if you've purchased an XBJ Projector from my lives or videos.</div>
   </div>
 </div>
 
@@ -849,11 +880,10 @@ const APK_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-st
 // "Entertainment" section — excluded from the shelves until re-entering the
 // same access code (checkCode) unlocks it. Unlike the main 30-day login
 // session, this unlock is never written to localStorage: it's a plain
-// in-memory timestamp that expires on its own after a couple of minutes —
-// just long enough to find and download the app — and disappears entirely
-// on reload/app relaunch either way.
+// in-memory timestamp that expires on its own after 30 minutes and
+// disappears entirely on reload/app relaunch either way.
 const HIDDEN_APP_PREFIX = 'entertainment/';
-const ENTERTAINMENT_UNLOCK_MS = 2 * 60 * 1000; // 2 minutes
+const ENTERTAINMENT_UNLOCK_MS = 30 * 60 * 1000; // 30 minutes
 function isHiddenApp(a) { return typeof a.file === 'string' && a.file.startsWith(HIDDEN_APP_PREFIX); }
 let entertainmentUnlockedUntil = 0;
 function entertainmentIsUnlocked() { return Date.now() < entertainmentUnlockedUntil; }
@@ -1085,7 +1115,7 @@ function renderEntertainment() {
         <div style="font-size:44px;line-height:1;margin-bottom:14px;">🔒</div>
         <div class="modal-title" style="margin-bottom:8px;">Entertainment is locked</div>
         <div style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:22px;">
-          Enter the access code to reveal this section. It re-locks itself after a couple of minutes.
+          Enter the access code to reveal this section. It re-locks itself after 30 minutes.
         </div>
         <button class="btn btn-primary nav-focusable" type="button" data-action="unlock-ent" style="justify-content:center;">Enter code</button>
       </div>`;
@@ -1143,7 +1173,7 @@ function renderSettings() {
           <div class="panel-label"><b>Signed in as</b><span>${user ? '@' + esc(user) : 'Guest'}</span></div>
         </div>
         <div class="panel-row">
-          <div class="panel-label"><b>Entertainment section</b><span>${entertainmentIsUnlocked() ? 'Unlocked — re-locks shortly' : 'Locked'}</span></div>
+          <div class="panel-label"><b>Entertainment section</b><span>${entertainmentIsUnlocked() ? 'Unlocked — re-locks after 30 minutes' : 'Locked'}</span></div>
           <button class="panel-btn nav-focusable" type="button" data-action="unlock-ent">Enter code</button>
         </div>
         <div class="panel-row">
