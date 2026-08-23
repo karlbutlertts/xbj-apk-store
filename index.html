@@ -85,6 +85,8 @@ body {
   outline:none; white-space:nowrap;
 }
 .side-item svg { width:19px; height:19px; flex-shrink:0; stroke-width:1.9; }
+#sideEntIcon.locked { color:#ffb648; }
+#sideEntIcon.unlocked { color:#34c759; }
 .side-item .side-label { overflow:hidden; text-overflow:ellipsis; }
 .side-item:hover { color:var(--text); background:rgba(255,255,255,0.06); }
 .side-item.active { background:var(--accent); color:var(--accent-ink); }
@@ -239,10 +241,12 @@ body {
 .card:focus-visible .card-title, .card.nav-focus .card-title { color:var(--accent); }
 .card-locked .card-art { background:rgba(255,255,255,0.05); border-style:dashed; }
 
-/* Wide 16:9 card — used for the help/guide rows which have real artwork */
+/* Wide card — used for the help/guide rows which have real artwork. 4:3
+   rather than 16:9 so the (mostly portrait/square) hub art isn't cropped
+   down to a thin strip. */
 .card-wide { flex:0 0 268px; }
 .grid-wide { grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); }
-.card-wide .card-art { aspect-ratio:16/9; background:rgba(255,255,255,0.05); }
+.card-wide .card-art { aspect-ratio:4/3; background:rgba(255,255,255,0.05); }
 .card-wide .card-art img { width:100%; height:100%; aspect-ratio:auto; object-fit:cover; border-radius:0; box-shadow:none; }
 .card-wide .card-art .card-emoji { font-size:52px; position:relative; z-index:1; }
 
@@ -399,6 +403,8 @@ body {
 .ent-lock-badge.unlocked { color:#34c759; background:rgba(52,199,89,0.16); animation:lockPop 0.4s cubic-bezier(.2,.8,.3,1.4) both; }
 .ent-panel-lock { display:inline-flex; width:44px; height:44px; margin-bottom:14px; color:#ffb648; animation:lockShake 3.2s ease-in-out infinite; }
 .ent-panel-lock svg { width:100%; height:100%; }
+.ent-panel-lock.unlocked { color:#34c759; animation:lockPop 0.4s cubic-bezier(.2,.8,.3,1.4) both; }
+.ent-panel-lock-wide { width:30%; height:30%; margin-bottom:0; }
 .ent-cancel-btn {
   width:100%; background:transparent; color:var(--text2); border:none;
   padding:10px; font-size:13px; font-weight:700; cursor:pointer; margin-top:6px;
@@ -695,7 +701,7 @@ body {
     <span class="side-label">Tools</span>
   </button>
   <button class="side-item nav-focusable" type="button" data-view="entertainment">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+    <svg id="sideEntIcon" class="locked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path id="sideEntShackle" d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
     <span class="side-label">Entertainment</span>
   </button>
 
@@ -908,6 +914,25 @@ function isHiddenApp(a) { return typeof a.file === 'string' && a.file.startsWith
 let entertainmentUnlockedUntil = 0;
 function entertainmentIsUnlocked() { return Date.now() < entertainmentUnlockedUntil; }
 
+// Shared padlock icon markup — coloured amber/green via the .locked/.unlocked
+// classes on whichever element hosts it (sidebar nav item, hub card, popup
+// badge, locked-section panel).
+const LOCK_SVG_CLOSED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>';
+const LOCK_SVG_OPEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 7.4-2.2"/></svg>';
+
+// Keeps every persistent (non re-rendered) Entertainment lock indicator —
+// currently just the sidebar nav icon — in sync with entertainmentIsUnlocked().
+// Called on every setView() and right after a successful code entry.
+function syncEntLockUI() {
+  const navIcon = document.getElementById('sideEntIcon');
+  const shackle = document.getElementById('sideEntShackle');
+  if (!navIcon || !shackle) return;
+  const unlocked = entertainmentIsUnlocked();
+  shackle.setAttribute('d', unlocked ? 'M8 10.5V7a4 4 0 0 1 7.4-2.2' : 'M8 10.5V7a4 4 0 0 1 8 0v3.5');
+  navIcon.classList.toggle('locked', !unlocked);
+  navIcon.classList.toggle('unlocked', unlocked);
+}
+
 window._allApps = [];
 
 // Apps that suit the projector model the buyer picked, minus anything from
@@ -963,27 +988,36 @@ function cardHtml(a, i) {
 function lockedCardHtml() {
   return `
     <button type="button" class="card card-locked nav-focusable" data-action="unlock-ent">
-      <div class="card-art"><span class="card-abbr">🔒</span></div>
+      <div class="card-art"><div class="ent-panel-lock locked">${LOCK_SVG_CLOSED}</div></div>
       <div class="card-title">Unlock Entertainment</div>
       <div class="card-sub">Enter the code to reveal</div>
     </button>`;
 }
 
-// Wide 16:9 cards for the guide/help shelf — these have real artwork in /img
+// Wide cards for the guide/help shelf — these have real artwork in /img,
+// except Entertainment which shows a live locked/unlocked padlock instead.
 function wideCardHtml(o) {
   const model = loadModel() || 'other';
-  const art = o.img
-    ? `<img src="${o.img}" alt="" loading="lazy">`
-    : `<span class="card-emoji">${o.emoji}</span>`;
-  const attrs = o.href
-    ? `href="${o.href}${o.href.indexOf('?') > -1 ? '&' : '?'}model=${model}"`
-    : `type="button" data-action="${o.action}"`;
-  const tag = o.href ? 'a' : 'button';
+  let title = o.title, sub = o.sub, art, attrs;
+  if (o.entLock) {
+    const unlocked = entertainmentIsUnlocked();
+    art = `<div class="ent-panel-lock ent-panel-lock-wide${unlocked ? ' unlocked' : ' locked'}">${unlocked ? LOCK_SVG_OPEN : LOCK_SVG_CLOSED}</div>`;
+    sub = unlocked ? 'Unlocked — tap to browse' : 'Code-locked section';
+    attrs = `type="button" data-action="${unlocked ? 'go-entertainment' : 'unlock-ent'}"`;
+  } else {
+    art = o.img
+      ? `<img src="${o.img}" alt="" loading="lazy">`
+      : `<span class="card-emoji">${o.emoji}</span>`;
+    attrs = o.href
+      ? `href="${o.href}${o.href.indexOf('?') > -1 ? '&' : '?'}model=${model}"`
+      : `type="button" data-action="${o.action}"`;
+  }
+  const tag = (!o.entLock && o.href) ? 'a' : 'button';
   return `
     <${tag} class="card card-wide nav-focusable" ${attrs}>
       <div class="card-art">${art}</div>
-      <div class="card-title">${o.title}</div>
-      <div class="card-sub">${o.sub}</div>
+      <div class="card-title">${title}</div>
+      <div class="card-sub">${sub}</div>
     </${tag}>`;
 }
 
@@ -991,7 +1025,7 @@ const HELP_CARDS = [
   { title:'Hidden Features',   sub:'Unlock the settings XBJ hides',  img:'img/hub-hidden-features.png', href:'tools.html' },
   { title:'Firmware Update',   sub:'Flash the latest firmware',      img:'img/hub-firmware-update.png', href:'fix.html' },
   { title:'Tutorials',         sub:'Step-by-step video guides',      img:'img/hub-tutorials.png',       href:'tutorials.html' },
-  { title:'Entertainment',     sub:'Code-locked section',            emoji:'🔒',                        action:'unlock-ent' },
+  { title:'Entertainment',     entLock:true },
   { title:'Check for Updates', sub:'Update the Projector Guy app',   emoji:'🔄',                        action:'check-updates' }
 ];
 
@@ -1211,6 +1245,7 @@ function setView(view, opts) {
   sidebar.querySelectorAll('.side-item').forEach(el =>
     el.classList.toggle('active', el.dataset.view === view));
   renderTopbar(view);
+  syncEntLockUI();
 
   if (view === 'home')               viewBody.innerHTML = renderHome();
   else if (view === 'search')        viewBody.innerHTML = renderSearch();
@@ -1380,8 +1415,6 @@ const entBtn = document.getElementById('entBtn');
 const entMsg = document.getElementById('entMsg');
 const entCancelBtn = document.getElementById('entCancelBtn');
 const entLockBadge = document.getElementById('entLockBadge');
-const LOCK_SVG_CLOSED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>';
-const LOCK_SVG_OPEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 7.4-2.2"/></svg>';
 
 function openEntOverlay() {
   entInput.value = '';
@@ -1420,6 +1453,7 @@ async function tryEntUnlock() {
     entMsg.textContent = 'Unlocked!'; entMsg.className = 'lock-msg ok';
     entLockBadge.className = 'lock-badge ent-lock-badge unlocked';
     entLockBadge.innerHTML = LOCK_SVG_OPEN;
+    syncEntLockUI();
     setTimeout(() => {
       closeEntOverlay();
       // Land straight on the newly-revealed section rather than the whole
@@ -1464,11 +1498,12 @@ topbar.addEventListener('click', e => {
 });
 
 const ACTIONS = {
-  'unlock-ent':    openEntOverlay,
-  'check-updates': checkForAppUpdates,
-  'change-model':  changeModel,
-  'install':       runInstallPrompt,
-  'howto':         () => howtoModal.classList.remove('hidden')
+  'unlock-ent':      openEntOverlay,
+  'go-entertainment': () => setView('entertainment'),
+  'check-updates':   checkForAppUpdates,
+  'change-model':    changeModel,
+  'install':         runInstallPrompt,
+  'howto':           () => howtoModal.classList.remove('hidden')
 };
 
 document.addEventListener('click', e => {
