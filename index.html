@@ -38,6 +38,17 @@ body {
 .hidden { display:none !important; }
 
 @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes lockShake {
+  0%, 92%, 100% { transform:rotate(0deg); }
+  93% { transform:rotate(-10deg); }
+  94% { transform:rotate(9deg); }
+  95% { transform:rotate(-7deg); }
+  96% { transform:rotate(6deg); }
+  97% { transform:rotate(-4deg); }
+  98% { transform:rotate(3deg); }
+  99% { transform:rotate(-1deg); }
+}
+@keyframes lockPop { 0% { transform:scale(0.7); } 60% { transform:scale(1.18); } 100% { transform:scale(1); } }
 
 /* ══════════════════════════════════════════════════════
    SHELL — fixed left sidebar + scrolling stage
@@ -382,7 +393,12 @@ body {
   padding:24px;
 }
 .ent-overlay.hidden { display:none; }
-.ent-lock-badge { display:flex; align-items:center; justify-content:center; font-size:26px; background:rgba(255,255,255,0.08); }
+.ent-lock-badge { display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); }
+.ent-lock-badge svg { width:56%; height:56%; }
+.ent-lock-badge.locked { color:#ffb648; background:rgba(255,182,72,0.14); animation:lockShake 3.2s ease-in-out infinite; }
+.ent-lock-badge.unlocked { color:#34c759; background:rgba(52,199,89,0.16); animation:lockPop 0.4s cubic-bezier(.2,.8,.3,1.4) both; }
+.ent-panel-lock { display:inline-flex; width:44px; height:44px; margin-bottom:14px; color:#ffb648; animation:lockShake 3.2s ease-in-out infinite; }
+.ent-panel-lock svg { width:100%; height:100%; }
 .ent-cancel-btn {
   width:100%; background:transparent; color:var(--text2); border:none;
   padding:10px; font-size:13px; font-weight:700; cursor:pointer; margin-top:6px;
@@ -609,7 +625,7 @@ body {
 
 <div id="entOverlay" class="ent-overlay hidden">
   <div class="lock-card">
-    <div class="lock-badge ent-lock-badge">🔒</div>
+    <div class="lock-badge ent-lock-badge locked" id="entLockBadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></div>
     <div class="lock-title">Unlock Entertainment</div>
     <div class="lock-sub">Enter the entertainment access code to reveal this section.</div>
     <input id="entInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
@@ -1116,7 +1132,7 @@ function renderEntertainment() {
   if (!entertainmentIsUnlocked()) {
     return `
       <div class="panel" style="text-align:center;padding:40px 30px;">
-        <div style="font-size:44px;line-height:1;margin-bottom:14px;">🔒</div>
+        <div class="ent-panel-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></div>
         <div class="modal-title" style="margin-bottom:8px;">Entertainment is locked</div>
         <div style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:22px;">
           Enter the access code to reveal this section. It re-locks itself after 30 minutes.
@@ -1363,10 +1379,15 @@ const entInput = document.getElementById('entInput');
 const entBtn = document.getElementById('entBtn');
 const entMsg = document.getElementById('entMsg');
 const entCancelBtn = document.getElementById('entCancelBtn');
+const entLockBadge = document.getElementById('entLockBadge');
+const LOCK_SVG_CLOSED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>';
+const LOCK_SVG_OPEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 7.4-2.2"/></svg>';
 
 function openEntOverlay() {
   entInput.value = '';
   entMsg.textContent = ''; entMsg.className = 'lock-msg';
+  entLockBadge.className = 'lock-badge ent-lock-badge locked';
+  entLockBadge.innerHTML = LOCK_SVG_CLOSED;
   entOverlay.classList.remove('hidden');
   setTimeout(() => { try { entInput.focus(); } catch(e) {} }, 50);
 }
@@ -1397,6 +1418,8 @@ async function tryEntUnlock() {
   if (ok) {
     entertainmentUnlockedUntil = Date.now() + ENTERTAINMENT_UNLOCK_MS;
     entMsg.textContent = 'Unlocked!'; entMsg.className = 'lock-msg ok';
+    entLockBadge.className = 'lock-badge ent-lock-badge unlocked';
+    entLockBadge.innerHTML = LOCK_SVG_OPEN;
     setTimeout(() => {
       closeEntOverlay();
       // Land straight on the newly-revealed section rather than the whole
