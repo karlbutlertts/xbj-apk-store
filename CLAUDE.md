@@ -8,7 +8,7 @@ Built and maintained by @karlsmidlifecrisis (Karl), UK TikTok Shop affiliate, ho
 ---
 
 ## Stack
-- Frontend:  index.html — single file, two screens (verify + app store), vanilla JS, no framework
+- Frontend:  index.html — single file, sidebar-menu TV shell (see UI structure below), vanilla JS, no framework
 - Backend:   worker.js — Cloudflare Worker, handles order + pin verification
 - App data:  apps.json — Karl edits this to add/update apps, never needs to touch index.html
 - APK files: /apks/ folder — served via GitHub raw
@@ -60,16 +60,24 @@ const PAID_ACCESS_URL = 'https://ko-fi.com/YOUR_KOFI_OR_STRIPE_LINK';
 Add a new JSON object to apps.json:
 ```json
 {
-  "name":     "App Name",
-  "abbr":     "AB",
-  "file":     "AppName.apk",
-  "category": "Entertainment",
-  "size":     "XX MB",
-  "rating":   4.5,
-  "color":    "linear-gradient(145deg,#COLOUR1,#COLOUR2)",
-  "updated":  "Month Year"
+  "models":    ["all"],
+  "name":      "App Name",
+  "abbr":      "AB",
+  "icon":      "https://.../icon.png",
+  "file":      "AppName.apk",
+  "category":  "Entertainment",
+  "tags":      ["streaming"],
+  "size":      "XX MB",
+  "rating":    4.5,
+  "color":     "linear-gradient(145deg,#COLOUR1,#COLOUR2)",
+  "downloads": "New",
+  "updated":   "Month Year",
+  "updatedAt": "2026-08-23T00:00:00Z"
 }
 ```
+`tags` decides which sidebar section it lands in (`livetv` / `streaming` /
+`tools`, plus `movies` / `sports` inside Entertainment). `updatedAt` drives
+the Home hero and the "Recently updated" shelf.
 No changes needed to index.html.
 
 ---
@@ -93,15 +101,41 @@ No changes needed to index.html.
 
 ---
 
+## UI structure (index.html)
+TV-style shell modelled on Reezn/ClipBox: a fixed menu rail down the left, big
+poster cards on the right. Screens in order:
+
+1. `#splash` → `#lock` (TOTP) → `#hub` (model picker) → `#shell`
+2. `#shell` = `#sidebar` (the menu) + `#stage` (`#topbar` chips, `#viewBody`)
+
+The old sub-hub menu screen is gone — its tiles are now sidebar entries plus
+the "Your projector" shelf on Home.
+
+`setView(name)` renders everything into `#viewBody`. Views:
+`home` (hero + card shelves), `all` / `livetv` / `streaming` / `tools`
+(grids), `entertainment` (code-locked), `search`, `settings`.
+
+### Remote / D-pad
+One spatial navigator (`moveFocus`) handles the whole shell: arrow keys jump
+to the nearest `.nav-focusable` in that direction, so the sidebar, chips, hero
+buttons and every card rail work without per-component wiring. Escape/Back
+closes an overlay, else returns to Home. Focus is mirrored onto a `.nav-focus`
+class because older Android TV webviews don't all support `:focus-visible`.
+
+### apps.json quirk
+The `downloads` field holds either a count ("New", "2.5k") or a one-line
+description ("Stream movies & TV shows"). `isCountish()` decides: counts become
+a corner badge, prose becomes the card's subtitle line.
+
 ## Design spec
 - Font: DM Sans (Google Fonts)
-- Background: #f2f2f7  Surface: #ffffff
-- Blue: #007aff  Blue bg: #e8f1ff
-- Green: #34c759  Green bg: #e5ffe9
-- Red: #ff3b30  Red bg: #fff0ef
-- Amber: #ff9500  Amber bg: #fff9ed
-- Card radius: 18px  Button radius: 20px  Icon radius: 22px
-- Frosted nav: backdrop-filter blur(20px)
+- Dark TV theme. Background: #070a11  Surface: rgba(255,255,255,0.06)
+- Accent: --accent / --accent-deep in `:root` — one knob, swap both to
+  re-brand the whole shell (e.g. #e50914 / #9b1a1a for a red look)
+- Card art radius: 18px  Hero radius: 26px  Button radius: 999px
+- Rail width: 72px under 900px (icons only), 210px default, 250px at 1400px+
+- NO backdrop-filter or blur() in the shell — those layers render blank on the
+  projector's GPU. Overlays that predate the redesign still use it.
 - British English only — no Americanisms anywhere in UI copy
 
 ---

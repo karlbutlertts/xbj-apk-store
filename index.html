@@ -16,164 +16,317 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 :root {
-  --bg:#0b1220; --surface:rgba(255,255,255,0.06);
-  --text:#ffffff; --text2:rgba(255,255,255,0.6); --text3:rgba(255,255,255,0.35);
+  --bg:#070a11;
+  --surface:rgba(255,255,255,0.06);
+  --surface2:rgba(255,255,255,0.04);
+  --text:#ffffff; --text2:rgba(255,255,255,0.62); --text3:rgba(255,255,255,0.36);
   --blue:#5aa6ff; --border:rgba(255,255,255,0.1);
+  /* Single accent knob — swap these two for a different brand colour
+     (e.g. #e50914 / #9b1a1a for the red look) and the whole UI follows. */
+  --accent:#5aa6ff; --accent-deep:#2563d6;
+  --accent-ink:#07111f;
+  --rail:210px;
 }
 body {
   font-family:'DM Sans',-apple-system,sans-serif;
-  background:
-    radial-gradient(ellipse at top, #1c3a6e 0%, #0b1220 55%),
-    var(--bg);
+  background:var(--bg);
   color:var(--text); min-height:100vh;
   overflow-x:hidden;
-  position:relative;
 }
-/* slow drifting glow blobs behind everything */
-body::before, body::after { display:none; }
-header, .grid-wrap, .howto, .footer-note { position:relative; z-index:1; }
-
-/* ambient bg disabled for TV performance */
 #ambientBg { display:none; }
+.hidden { display:none !important; }
 
 @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
-@keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
 
-header { text-align:center; padding:36px 20px 8px; position:relative; }
-.menu-back-btn {
-  position:absolute; top:12px; left:16px;
-  background:var(--surface2); border:1px solid var(--border); color:var(--text);
-  border-radius:12px; padding:7px 12px; font-size:13px; font-weight:600;
-  cursor:pointer; font-family:inherit; display:none;
-}
-.menu-back-btn.show { display:block; }
-.logo-row { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:6px; }
-.logo-badge { width:46px; height:46px; box-sizing:border-box; border-radius:13px; background:linear-gradient(145deg,#5aa6ff,#2563d6); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(90,166,255,0.35); overflow:hidden; }
-.logo-badge svg { width:24px; height:24px; }
-.logo-badge img.xbj-logo { width:100%; height:100%; object-fit:cover; display:block; }
-.xbj-logo { width:30px; height:30px; object-fit:contain; filter:brightness(0) invert(1); }
-h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
-.subtitle { font-size:15px; color:var(--text2); margin-top:6px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.5; }
-.greeting { font-size:14px; font-weight:700; color:var(--blue); margin-bottom:4px; display:none; }
-.greeting.show { display:block; }
+/* ══════════════════════════════════════════════════════
+   SHELL — fixed left sidebar + scrolling stage
+   ══════════════════════════════════════════════════════ */
+#shell { display:flex; min-height:100vh; }
 
+#sidebar {
+  position:fixed; top:0; left:0; bottom:0; width:var(--rail); z-index:50;
+  display:flex; flex-direction:column;
+  padding:22px 12px 18px;
+  background:linear-gradient(90deg,#0b0f1a 0%,#0b0f1a 72%,rgba(11,15,26,0.86) 100%);
+  border-right:1px solid rgba(255,255,255,0.06);
+  overflow-y:auto; scrollbar-width:none;
+}
+#sidebar::-webkit-scrollbar { display:none; }
 
-.install-bar {
-  max-width:1100px; margin:14px auto 0; padding:0 24px;
-  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-  opacity:0; animation:fadeUp 0.6s cubic-bezier(.2,.7,.3,1) 0.03s forwards;
-}
-.install-bar.hidden { display:none; }
-.install-icon { font-size:20px; flex-shrink:0; margin-left:24px; }
-.install-text { font-size:13.5px; color:var(--text2); flex:1; min-width:180px; margin-right:24px; }
-.install-btn {
-  flex-shrink:0; font-size:13.5px; font-weight:700; color:#fff;
-  background:linear-gradient(135deg,#5aa6ff,#8a5aff);
-  border:none; border-radius:999px; padding:11px 20px; cursor:pointer;
-  box-shadow:0 10px 28px rgba(90,166,255,0.35);
-  transition:transform 0.15s ease, box-shadow 0.2s ease;
-  margin-right:24px;
-}
-.install-btn:hover { transform:translateY(-2px); box-shadow:0 14px 36px rgba(90,166,255,0.5); }
+.side-logo { display:flex; align-items:center; gap:10px; padding:0 8px 20px; }
+.side-logo img { width:34px; height:34px; border-radius:10px; flex-shrink:0; }
+.side-logo-text { font-size:13px; font-weight:800; line-height:1.15; letter-spacing:0.01em; }
+.side-logo-text span { color:var(--accent); display:block; }
 
-.category-pills {
-  max-width:1100px; margin:18px auto 0; padding:0 24px;
-  display:flex; flex-wrap:wrap; justify-content:center; gap:10px;
+.side-group-label {
+  font-size:10px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--text3); padding:14px 12px 7px;
 }
-.category-pills.hidden { display:none; }
-.category-pill {
-  font-size:13.5px; font-weight:700; color:var(--text2);
+.side-item {
+  display:flex; align-items:center; gap:12px; width:100%;
+  padding:11px 12px; margin-bottom:3px;
+  background:transparent; border:none; border-radius:12px;
+  color:var(--text2); font-family:'DM Sans',sans-serif;
+  font-size:13.5px; font-weight:700; letter-spacing:0.02em;
+  text-align:left; text-decoration:none; cursor:pointer;
+  transition:background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  outline:none; white-space:nowrap;
+}
+.side-item svg { width:19px; height:19px; flex-shrink:0; stroke-width:1.9; }
+.side-item .side-label { overflow:hidden; text-overflow:ellipsis; }
+.side-item:hover { color:var(--text); background:rgba(255,255,255,0.06); }
+.side-item.active { background:var(--accent); color:var(--accent-ink); }
+.side-item.active svg { stroke-width:2.2; }
+.side-item:focus-visible, .side-item.nav-focus {
+  color:var(--text); background:rgba(255,255,255,0.12);
+  box-shadow:inset 0 0 0 2px var(--accent);
+}
+.side-item.active:focus-visible, .side-item.active.nav-focus {
+  color:var(--accent-ink); background:var(--accent);
+  box-shadow:0 0 0 3px rgba(255,255,255,0.85);
+}
+.side-spacer { flex:1; min-height:14px; }
+.side-foot { font-size:10.5px; color:var(--text3); padding:10px 12px 0; line-height:1.5; }
+
+/* Stage */
+#stage {
+  flex:1; min-width:0; margin-left:var(--rail);
+  padding:0 0 60px;
+  background:
+    radial-gradient(1200px 620px at 22% -10%, rgba(37,99,214,0.20), transparent 60%),
+    var(--bg);
+}
+
+/* ── Top chip row ── */
+.topbar {
+  position:sticky; top:0; z-index:30;
+  display:flex; align-items:center; gap:10px;
+  padding:16px 32px 14px; overflow-x:auto; scrollbar-width:none;
+  background:var(--bg); border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.topbar::-webkit-scrollbar { display:none; }
+.chip {
+  flex:0 0 auto;
+  font-size:13px; font-weight:700; color:var(--text2);
   background:rgba(255,255,255,0.05); border:1px solid var(--border);
   border-radius:999px; padding:9px 20px; cursor:pointer;
-  transition:transform 0.12s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-  font-family:'DM Sans',sans-serif;
+  font-family:'DM Sans',sans-serif; outline:none; white-space:nowrap;
+  transition:background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
 }
-.category-pill:hover { transform:translateY(-1px); border-color:rgba(90,166,255,0.45); color:var(--text); }
-.category-pill.active {
-  color:#0b1220; background:var(--blue); border-color:var(--blue);
-  box-shadow:0 6px 18px rgba(90,166,255,0.35);
+.chip:hover { color:var(--text); border-color:rgba(90,166,255,0.45); }
+.chip.active { color:var(--accent-ink); background:var(--accent); border-color:var(--accent); }
+.chip:focus-visible, .chip.nav-focus {
+  color:var(--text); border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(90,166,255,0.45); transform:translateY(-1px);
 }
+.chip.active:focus-visible, .chip.active.nav-focus { color:var(--accent-ink); box-shadow:0 0 0 3px rgba(255,255,255,0.8); }
 
-.grid-wrap { max-width:1100px; margin:0 auto; padding:30px 24px 20px; }
-.grid-label { font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); margin-bottom:18px; padding-left:4px; }
-.grid-hint { color:var(--text3); font-size:12px; margin:2px 0 0 4px; display:flex; align-items:center; gap:6px; }
-
-/* Horizontal tile carousel — same pattern as the engineering-tools carousel
-   (tools.html): scroll-snap flex row, D-pad left/right moves focus between
-   tiles (see the keydown handler below), OK/select works for free since
-   tiles are real <a href> elements. */
-.app-grid {
-  display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x proximity;
-  padding:6px 4px 16px; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;
-  scrollbar-width:none;
-}
-.app-grid::-webkit-scrollbar{ display:none; }
-.app-tile {
-  position:relative;
-  scroll-snap-align:center;
-  flex:0 0 180px;
-  background:var(--surface);
+/* ── HERO ── */
+.hero {
+  position:relative; margin:6px 32px 8px; border-radius:26px; overflow:hidden;
+  min-height:300px; display:flex; align-items:flex-end;
   border:1px solid var(--border);
-  border-radius:26px;
-  padding:24px 16px 20px;
-  display:flex; flex-direction:column; align-items:center; text-align:center;
-  text-decoration:none; color:inherit; font-family:'DM Sans',sans-serif;
-  transition:transform 0.2s cubic-bezier(.2,.8,.3,1.4), background 0.16s ease, border-color 0.16s ease, box-shadow 0.25s ease;
-  cursor:pointer;
-  outline:none;
-  overflow:hidden;
-  opacity:0; animation:fadeUp 0.55s cubic-bezier(.2,.7,.3,1) forwards;
+  animation:fadeUp 0.5s cubic-bezier(.2,.7,.3,1) both;
 }
-.app-tile::before { display:none; }
-.app-tile > * { position:relative; z-index:1; }
-.app-tile:hover, .app-tile:focus-visible {
-  border-color:rgba(90,166,255,0.55);
-  box-shadow:0 0 0 2px rgba(90,166,255,0.4);
+.hero-bg { position:absolute; inset:0; z-index:0; }
+.hero-bg .hero-art {
+  position:absolute; top:0; right:0; bottom:0; width:52%;
+  background-size:cover; background-position:center; opacity:0.4;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 55%);
+  mask-image:linear-gradient(90deg,transparent,#000 55%);
 }
-.app-tile:active { transform:scale(0.97); }
-
-/* ── Hidden "Entertainment" locked tile ── */
-.tile-locked { background:rgba(255,255,255,0.03); border-style:dashed; }
-.tile-icon-locked { background:rgba(255,255,255,0.08); font-size:32px; }
-
-.tile-icon {
-  width:84px; height:84px; border-radius:22px;
+.hero-bg .hero-tint { position:absolute; inset:0; }
+.hero-scrim {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(90deg,rgba(7,10,17,0.94) 0%,rgba(7,10,17,0.78) 42%,rgba(7,10,17,0.25) 100%),
+             linear-gradient(0deg,rgba(7,10,17,0.9) 0%,transparent 62%);
+}
+.hero-inner { position:relative; z-index:2; padding:30px 34px; display:flex; gap:26px; align-items:flex-end; width:100%; }
+.hero-icon {
+  width:104px; height:104px; border-radius:26px; flex-shrink:0; overflow:hidden;
   display:flex; align-items:center; justify-content:center;
-  font-size:22px; font-weight:800; color:white;
-  margin-bottom:16px; overflow:hidden;
-  box-shadow:0 8px 24px rgba(0,0,0,0.3);
+  font-size:28px; font-weight:800; box-shadow:0 16px 44px rgba(0,0,0,0.55);
 }
-.tile-icon img { width:100%; height:100%; object-fit:cover; display:block; }
-.tile-name { font-size:16px; font-weight:700; line-height:1.3; margin-bottom:4px; min-height:2.6em; display:flex; align-items:center; }
-.tile-meta { font-size:12px; color:var(--text3); display:flex; align-items:center; gap:5px; }
-.tile-meta .star { color:#ffb648; }
-.tile-downloads { font-size:11px; color:var(--text3); margin-top:2px; opacity:0.75; }
+.hero-icon img { width:100%; height:100%; object-fit:cover; display:block; }
+.hero-copy { min-width:0; }
+.hero-eyebrow { font-size:11px; font-weight:800; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.hero-title { font-size:38px; font-weight:800; letter-spacing:-0.02em; line-height:1.05; margin-bottom:10px; }
+.hero-meta { display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:13.5px; color:var(--text2); margin-bottom:18px; }
+.hero-meta .dot { opacity:0.4; }
+.hero-meta .star { color:#ffb648; }
+.hero-tag { background:rgba(255,255,255,0.09); border:1px solid var(--border); border-radius:8px; padding:3px 10px; font-size:12px; font-weight:700; color:var(--text2); }
+.hero-actions { display:flex; flex-wrap:wrap; gap:12px; }
+.btn {
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:'DM Sans',sans-serif; font-size:14.5px; font-weight:800;
+  border-radius:999px; padding:13px 26px; cursor:pointer; border:1px solid transparent;
+  text-decoration:none; outline:none; white-space:nowrap;
+  transition:transform 0.14s, box-shadow 0.2s, background 0.15s;
+}
+.btn svg { width:17px; height:17px; }
+.btn-primary { background:var(--accent); color:var(--accent-ink); box-shadow:0 10px 30px rgba(90,166,255,0.32); }
+.btn-ghost { background:rgba(255,255,255,0.1); color:var(--text); border-color:var(--border); }
+.btn:hover { transform:translateY(-2px); }
+.btn:focus-visible, .btn.nav-focus { box-shadow:0 0 0 3px rgba(255,255,255,0.9); transform:translateY(-2px); }
 
-.tile-dl {
-  margin-top:14px; display:inline-flex; align-items:center; gap:6px;
-  background:rgba(90,166,255,0.16); color:var(--blue);
-  font-size:12.5px; font-weight:700; padding:8px 18px; border-radius:20px;
-  border:1px solid rgba(90,166,255,0.3);
+/* ── ROWS OF BIG CARDS ── */
+.row { margin:26px 0 0; animation:fadeUp 0.5s cubic-bezier(.2,.7,.3,1) both; }
+.row-head { display:flex; align-items:baseline; gap:12px; padding:0 32px 14px; }
+.row-title { font-size:19px; font-weight:800; letter-spacing:-0.01em; }
+.row-count { font-size:12px; font-weight:700; color:var(--text3); }
+.rail {
+  display:flex; gap:18px; overflow-x:auto; scroll-snap-type:x proximity;
+  padding:4px 32px 10px; scroll-behavior:smooth; scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
 }
-.app-tile:hover .tile-dl, .app-tile:focus-visible .tile-dl { background:var(--blue); color:#0b1220; border-color:var(--blue); }
+.rail::-webkit-scrollbar { display:none; }
+.grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(168px,1fr));
+  gap:20px 18px; padding:4px 32px 10px;
+}
 
-.howto { max-width:1100px; margin:36px auto 0; padding:0 24px 50px; }
-.howto-card {
-  background:var(--surface); border:1px solid var(--border); border-radius:24px;
-  padding:8px 24px; display:flex; flex-wrap:wrap; gap:0;
+/* Card — big poster-style tile */
+.card {
+  position:relative; flex:0 0 168px; scroll-snap-align:start;
+  display:block; text-decoration:none; color:inherit;
+  font-family:'DM Sans',sans-serif; text-align:left;
+  background:none; border:none; padding:0; cursor:pointer; outline:none;
+  transition:transform 0.18s cubic-bezier(.2,.8,.3,1.3);
 }
-.howto-step { flex:1; min-width:220px; padding:18px 12px; display:flex; gap:14px; align-items:flex-start; }
-.howto-num {
-  width:30px; height:30px; border-radius:50%; flex-shrink:0;
-  background:rgba(90,166,255,0.18); color:var(--blue); font-weight:800; font-size:14px;
+.grid .card { flex:none; width:100%; }
+.card-art {
+  position:relative; width:100%; aspect-ratio:2/3; border-radius:18px; overflow:hidden;
   display:flex; align-items:center; justify-content:center;
+  box-shadow:0 12px 34px rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.08);
+  transition:box-shadow 0.2s ease;
 }
+.card-art::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.14),transparent 45%,rgba(0,0,0,0.45));
+}
+.card-art img { width:58%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:20px; box-shadow:0 10px 26px rgba(0,0,0,0.45); position:relative; z-index:1; }
+.card-abbr { font-size:34px; font-weight:800; color:#fff; opacity:0.92; position:relative; z-index:1; }
+.card-badge {
+  position:absolute; top:9px; right:9px; z-index:2;
+  background:rgba(7,10,17,0.85);
+  border:1px solid rgba(255,255,255,0.16);
+  border-radius:8px; padding:3px 8px; font-size:10.5px; font-weight:800;
+  letter-spacing:0.04em; color:#fff;
+}
+.card-badge.is-new { background:var(--accent); color:var(--accent-ink); border-color:transparent; }
+.card-title { font-size:14px; font-weight:700; margin-top:11px; line-height:1.3; }
+.card-sub { font-size:11.5px; color:var(--text3); margin-top:3px; display:flex; align-items:center; gap:5px; }
+.card-blurb { font-size:11.5px; color:var(--text2); margin-top:3px; line-height:1.35; }
+.card-sub .star { color:#ffb648; }
+.card:hover { transform:translateY(-4px); }
+.card:focus-visible, .card.nav-focus { transform:translateY(-6px) scale(1.05); }
+.card:focus-visible .card-art, .card.nav-focus .card-art {
+  box-shadow:0 0 0 3px var(--accent), 0 20px 46px rgba(0,0,0,0.6);
+}
+.card:focus-visible .card-title, .card.nav-focus .card-title { color:var(--accent); }
+.card-locked .card-art { background:rgba(255,255,255,0.05); border-style:dashed; }
+
+/* Wide 16:9 card — used for the help/guide rows which have real artwork */
+.card-wide { flex:0 0 268px; }
+.grid-wide { grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); }
+.card-wide .card-art { aspect-ratio:16/9; background:rgba(255,255,255,0.05); }
+.card-wide .card-art img { width:100%; height:100%; aspect-ratio:auto; object-fit:cover; border-radius:0; box-shadow:none; }
+.card-wide .card-art .card-emoji { font-size:52px; position:relative; z-index:1; }
+
+/* ── Search ── */
+.search-wrap { padding:8px 32px 4px; }
+.search-input {
+  width:100%; max-width:640px;
+  background:rgba(255,255,255,0.07); border:1.5px solid var(--border);
+  border-radius:16px; padding:16px 20px; color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:16px; font-weight:600; outline:none;
+  transition:border-color 0.15s;
+}
+.search-input:focus, .search-input.nav-focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,0.25); }
+.search-input::placeholder { color:var(--text3); }
+
+/* ── Preferences panel ── */
+.panel { margin:14px 32px 0; background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:8px 22px; max-width:760px; }
+.panel-row { display:flex; align-items:center; gap:16px; padding:16px 2px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.panel-row:last-child { border-bottom:none; }
+.panel-row .panel-label { flex:1; min-width:0; }
+.panel-label b { display:block; font-size:14.5px; font-weight:700; }
+.panel-label span { display:block; font-size:12.5px; color:var(--text3); margin-top:2px; }
+.panel-btn {
+  flex-shrink:0; background:rgba(255,255,255,0.1); border:1px solid var(--border);
+  color:var(--text); border-radius:999px; padding:10px 20px;
+  font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; cursor:pointer; outline:none;
+}
+.panel-btn:hover { background:rgba(255,255,255,0.16); }
+.panel-btn:focus-visible, .panel-btn.nav-focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,0.4); }
+
+.section-note { padding:14px 32px 0; font-size:13px; color:var(--text2); }
+.empty-note { padding:40px 32px; font-size:14px; color:var(--text2); }
+.legal { padding:44px 32px 0; font-size:11.5px; color:var(--text3); line-height:1.7; max-width:900px; }
+.legal strong { color:var(--text2); }
+.hint-bar { padding:6px 32px 0; font-size:11.5px; color:var(--text3); }
+
+/* ── How-to-install modal ── */
+.modal { position:fixed; inset:0; z-index:1400; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(4,7,13,0.93); }
+.modal.hidden { display:none !important; }
+.modal-card { background:#0e1420; border:1px solid var(--border); border-radius:24px; padding:30px 30px 22px; max-width:560px; width:100%; }
+.modal-title { font-size:22px; font-weight:800; margin-bottom:18px; }
+.howto-step { display:flex; gap:14px; align-items:flex-start; padding:12px 0; }
+.howto-num { width:30px; height:30px; border-radius:50%; flex-shrink:0; background:rgba(90,166,255,0.18); color:var(--accent); font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; }
 .howto-title { font-size:14.5px; font-weight:700; margin-bottom:3px; }
 .howto-desc { font-size:13px; color:var(--text2); line-height:1.5; }
 
-.footer-note { text-align:center; font-size:13px; color:var(--text3); padding:0 20px 50px; line-height:1.7; }
-.footer-note strong { color:var(--text2); }
+/* ══════════════════════════════════════════════════════
+   Responsive — phone rail collapses to icons, TV scales up
+   ══════════════════════════════════════════════════════ */
+@media (max-width:899px) {
+  :root { --rail:72px; }
+  #sidebar { padding:16px 8px 14px; align-items:center; }
+  .side-item { justify-content:center; padding:12px 0; gap:0; }
+  .side-item .side-label { display:none; }
+  .side-logo { padding:0 0 14px; justify-content:center; }
+  .side-logo-text, .side-group-label, .side-foot { display:none; }
+  .topbar, .row-head, .rail, .grid, .search-wrap, .section-note, .legal, .hint-bar { padding-left:18px; padding-right:18px; }
+  .hero { margin-left:18px; margin-right:18px; min-height:auto; }
+  .hero-inner { flex-direction:column; align-items:flex-start; gap:16px; padding:22px; }
+  .hero-icon { width:78px; height:78px; border-radius:20px; }
+  .hero-meta .dot { display:none; }
+  .hero-title { font-size:26px; }
+  .panel { margin-left:18px; margin-right:18px; }
+  .card { flex-basis:132px; }
+  .card-wide { flex-basis:210px; }
+  .grid { grid-template-columns:repeat(auto-fill,minmax(128px,1fr)); }
+}
+@media (min-width:1400px) {
+  :root { --rail:250px; }
+  .side-item { font-size:16px; padding:13px 14px; }
+  .side-item svg { width:22px; height:22px; }
+  .side-logo img { width:42px; height:42px; }
+  .side-logo-text { font-size:15px; }
+  .topbar { padding:22px 48px 16px; }
+  .chip { font-size:15px; padding:11px 24px; }
+  .hero { margin:8px 48px 10px; min-height:380px; border-radius:32px; }
+  .hero-inner { padding:40px 46px; gap:32px; }
+  .hero-icon { width:132px; height:132px; border-radius:32px; }
+  .hero-title { font-size:50px; }
+  .hero-meta { font-size:16px; }
+  .btn { font-size:17px; padding:15px 32px; }
+  .row-head, .rail, .grid, .search-wrap, .section-note, .legal, .hint-bar { padding-left:48px; padding-right:48px; }
+  .row-title { font-size:23px; }
+  .card { flex-basis:206px; }
+  .card-wide { flex-basis:340px; }
+  .card-title { font-size:16px; }
+  .card-sub { font-size:13px; }
+  .card-blurb { font-size:13px; }
+  .grid { grid-template-columns:repeat(auto-fill,minmax(206px,1fr)); }
+  .grid-wide { grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); }
+  .panel { margin-left:48px; max-width:900px; }
+}
 
+/* ══════════════════════════════════════════════════════
+   Splash / lock / model-picker — unchanged from the original
+   ══════════════════════════════════════════════════════ */
 /* ── LOCK SCREEN ── */
 #lock {
   position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:1000;
@@ -269,19 +422,19 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
 }
 
 /* ── HUB SCREENS (model picker + sub-hub) ── */
-#hub, #subHub {
+#hub {
   position:fixed; top:0; right:0; bottom:0; left:0; inset:0; z-index:999;
   display:flex; align-items:center; justify-content:center;
   background:radial-gradient(ellipse at top, #1c3a6e 0%, #0b1220 55%), var(--bg);
   padding:16px; overflow-y:auto;
 }
-#hub.hidden, #subHub.hidden { display:none; }
-#hub::before, #hub::after, #subHub::before, #subHub::after {
+#hub.hidden { display:none; }
+#hub::before, #hub::after {
   content:''; position:absolute; border-radius:50%; pointer-events:none; filter:blur(80px);
   opacity:0.35;
 }
-#hub::before, #subHub::before { width:480px; height:480px; top:-160px; left:-160px; background:radial-gradient(circle, #5aa6ff, transparent 70%); }
-#hub::after, #subHub::after { width:560px; height:560px; bottom:-200px; right:-200px; background:radial-gradient(circle, #2563d6, transparent 70%); }
+#hub::before { width:480px; height:480px; top:-160px; left:-160px; background:radial-gradient(circle, #5aa6ff, transparent 70%); }
+#hub::after { width:560px; height:560px; bottom:-200px; right:-200px; background:radial-gradient(circle, #2563d6, transparent 70%); }
 .hub-change { margin-top:16px; font-size:12px; color:var(--text3); background:none; border:none; cursor:pointer; font-family:inherit; text-decoration:underline; }
 .hub-card {
   position:relative; z-index:1;
@@ -456,83 +609,90 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
   </div>
 </div>
 
-<div id="subHub" class="hidden">
-  <div class="hub-card menu-card">
-    <div class="lock-title" id="subHubTitle">Your Projector</div>
-    <div class="lock-sub">What do you need help with?</div>
-    <div class="hub-tiles" id="hubTiles">
-      <button class="hub-tile menu-tile" type="button" onclick="enterApps()">
-        <div class="hub-tile-img"><img src="img/hub-apps.png" alt="Apps"></div>
-        <span class="hub-tile-title">Apps</span>
-      </button>
-      <a class="hub-tile menu-tile" id="subHubTools" href="tools.html">
-        <div class="hub-tile-img"><img src="img/hub-hidden-features.png" alt="Hidden Features"></div>
-        <span class="hub-tile-title">Hidden Features</span>
-      </a>
-      <button class="hub-tile menu-tile" type="button" onclick="openEntOverlay()">
-        <div class="hub-tile-img"><span class="hub-tile-emoji">🔒</span></div>
-        <span class="hub-tile-title">Entertainment</span>
-      </button>
-      <a class="hub-tile menu-tile" id="subHubFix" href="fix.html">
-        <div class="hub-tile-img"><img src="img/hub-firmware-update.png" alt="Firmware Update"></div>
-        <span class="hub-tile-title">Firmware Update</span>
-      </a>
-      <a class="hub-tile menu-tile" id="subHubTutorials" href="tutorials.html">
-        <div class="hub-tile-img"><img src="img/hub-tutorials.png" alt="Tutorials"></div>
-        <span class="hub-tile-title">Tutorials</span>
-      </a>
-      <button class="hub-tile menu-tile" type="button" onclick="checkForAppUpdates()">
-        <div class="hub-tile-img"><span class="hub-tile-emoji">🔄</span></div>
-        <span class="hub-tile-title">Check for Updates</span>
-      </button>
-    </div>
-    <button class="hub-change" onclick="changeModel()">Not your projector? Change →</button>
+
+<!-- ══════════════════════════════════════════════════════
+     APP SHELL — left sidebar menu + card stage
+     ══════════════════════════════════════════════════════ -->
+<div id="shell" class="hidden">
+
+<nav id="sidebar">
+  <div class="side-logo">
+    <img src="icon-192.png" alt="">
+    <div class="side-logo-text">PROJECTOR<span>GUY</span></div>
   </div>
-</div>
 
-<header>
-  <button class="menu-back-btn" id="menuBackBtn" onclick="backToMenu()">← Menu</button>
-  <div class="logo-row">
-    <h1><svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:320px;display:block;margin:0 auto"><defs><linearGradient id="a3-beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5aa6ff" stop-opacity="0.18"/><stop offset="100%" stop-color="#5aa6ff" stop-opacity="0"/></linearGradient><linearGradient id="a3-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a3550"/><stop offset="100%" stop-color="#161e30"/></linearGradient><linearGradient id="a3-lens" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5aa6ff"/><stop offset="100%" stop-color="#2563d6"/></linearGradient><clipPath id="a3-clip"><rect x="118" y="0" height="300" width="0"><animate attributeName="width" from="0" to="330" dur="0.7s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0 0.2 1"/></rect></clipPath></defs><polygon points="118,150 440,52 440,248" fill="url(#a3-beam)" clip-path="url(#a3-clip)"/><rect x="30" y="118" width="90" height="64" rx="14" fill="url(#a3-body)" stroke="#2a3a5c" stroke-width="1.5"/><circle cx="118" cy="150" r="28" fill="#0f1828" stroke="#2a3a5c" stroke-width="1.5"/><circle cx="118" cy="150" r="20" fill="url(#a3-lens)" opacity="0.9"><animate attributeName="r" values="20;26;20" dur="0.5s" fill="freeze"/></circle><circle cx="111" cy="143" r="5" fill="white" opacity="0.25"/><rect x="66" y="182" width="18" height="22" rx="3" fill="#1c2840"/><ellipse cx="75" cy="204" rx="22" ry="5" fill="#1c2840"/><line x1="44" y1="130" x2="44" y2="170" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><line x1="52" y1="128" x2="52" y2="172" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><line x1="60" y1="127" x2="60" y2="173" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><rect x="428" y="54" width="4" height="192" rx="2" fill="#1e2d4a"/><g opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.35s" dur="0.45s" fill="freeze"/><text x="172" y="138" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="52" font-weight="900" letter-spacing="-1" fill="#f4f4f8">PROJECTOR</text><text x="172" y="195" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="52" font-weight="900" letter-spacing="-1" fill="#5aa6ff">GUY</text><rect x="172" y="208" width="220" height="3" rx="1.5" fill="#5aa6ff" opacity="0.5"/><circle cx="404" cy="209.5" r="3" fill="#5aa6ff"/></g></svg></h1>
+  <button class="side-item nav-focusable" type="button" data-view="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <span class="side-label">Search</span>
+  </button>
+  <button class="side-item nav-focusable active" type="button" data-view="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 20v-6h5v6"/></svg>
+    <span class="side-label">Home</span>
+  </button>
+
+  <div class="side-group-label">Apps</div>
+  <button class="side-item nav-focusable" type="button" data-view="all">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+    <span class="side-label">All apps</span>
+  </button>
+  <button class="side-item nav-focusable" type="button" data-view="livetv">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7.5" width="19" height="13" rx="2.5"/><path d="m8 3.5 4 4 4-4"/></svg>
+    <span class="side-label">Live TV</span>
+  </button>
+  <button class="side-item nav-focusable" type="button" data-view="streaming">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="2.5"/><path d="M7 4v16M17 4v16M2.5 12h19M2.5 8h4.5M2.5 16h4.5M17 8h4.5M17 16h4.5"/></svg>
+    <span class="side-label">Streaming</span>
+  </button>
+  <button class="side-item nav-focusable" type="button" data-view="tools">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 0 5.2 5.2l-7.7 7.7a2.3 2.3 0 0 1-3.3-3.3l7.7-7.7a4 4 0 0 0-5.2-5.2l3 3-2.4 2.4-3-3a4 4 0 0 0 5.7 5.7"/></svg>
+    <span class="side-label">Tools</span>
+  </button>
+  <button class="side-item nav-focusable" type="button" data-view="entertainment">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+    <span class="side-label">Entertainment</span>
+  </button>
+
+  <div class="side-group-label">Your projector</div>
+  <a class="side-item nav-focusable" id="sideFeatures" href="tools.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.2 5 5.3.5-4 3.6 1.2 5.2L12 14.6 7.3 17.3l1.2-5.2-4-3.6L9.8 8z"/></svg>
+    <span class="side-label">Hidden Features</span>
+  </a>
+  <a class="side-item nav-focusable" id="sideFirmware" href="fix.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="6.5" width="11" height="11" rx="2"/><path d="M10 3v3.5M14 3v3.5M10 17.5V21M14 17.5V21M3 10h3.5M3 14h3.5M17.5 10H21M17.5 14H21"/></svg>
+    <span class="side-label">Firmware Update</span>
+  </a>
+  <a class="side-item nav-focusable" id="sideTutorials" href="tutorials.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 6 3.5-6 3.5z"/></svg>
+    <span class="side-label">Tutorials</span>
+  </a>
+  <button class="side-item nav-focusable" type="button" data-view="settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 14.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.3a2 2 0 1 1-4 0v-.2a1.6 1.6 0 0 0-2.8-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3.4a2 2 0 1 1 0-4h.2a1.6 1.6 0 0 0 1.1-2.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 2.7-1.1V3.4a2 2 0 1 1 4 0v.2a1.6 1.6 0 0 0 2.8 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7h.3a2 2 0 1 1 0 4h-.2a1.6 1.6 0 0 0-1.5 1z"/></svg>
+    <span class="side-label">Preferences</span>
+  </button>
+
+  <div class="side-spacer"></div>
+  <div class="side-foot"><strong>@karlsmidlifecrisis</strong><br>UK TikTok Shop · Home Cinema</div>
+</nav>
+
+<main id="stage">
+  <div class="topbar" id="topbar"></div>
+  <div id="viewBody"></div>
+  <div class="legal">
+    Message <strong>@karlsmidlifecrisis</strong> on TikTok if an app fails to install or a link looks broken.<br>
+    All app names, logos and trademarks are the property of their respective owners. Android is a trademark of Google Inc. We are not affiliated with, endorsed by, or sponsored by any of the app developers or rights holders listed on this site.
   </div>
-  <div id="userGreeting" class="greeting"></div>
-  <div class="subtitle">Tap an app below to download and install... easy! 🍿 🎬 ⚽️</div>
-</header>
+</main>
 
-<div class="category-pills" id="categoryPills">
-  <button class="category-pill active" data-filter="all">All apps</button>
-  <button class="category-pill" data-filter="livetv">📺 Live TV apps</button>
-  <button class="category-pill" data-filter="streaming">🎬 Streaming</button>
-  <button class="category-pill" data-filter="tools">🛠️ Tools</button>
 </div>
 
-<div class="category-pills hidden" id="entCategoryPills">
-  <button class="category-pill active" data-entfilter="entertainment">All</button>
-  <button class="category-pill" data-entfilter="ent-livetv">📺 Live TV apps</button>
-  <button class="category-pill" data-entfilter="ent-streaming">🎬 Streaming Services</button>
-  <button class="category-pill" data-entfilter="ent-movies">🍿 Movies</button>
-  <button class="category-pill" data-entfilter="ent-sports">⚽ Sports</button>
-  <button class="category-pill" data-entfilter="ent-tools">🛠️ Tools</button>
-</div>
-
-<div id="installBar" class="install-bar hidden">
-  <span class="install-icon">📲</span>
-  <span class="install-text">Add this app to your projector's home screen for one-tap access</span>
-  <button class="install-btn" id="installBtn">Add to Home Screen</button>
-</div>
-
-<div class="grid-wrap">
-  <div class="grid-label" id="gridLabel">Available apps</div>
-  <div class="app-grid" id="appGrid" tabindex="-1"></div>
-  <div class="grid-hint">◀ ▶ on the remote to scroll · press OK to download</div>
-</div>
-
-<div class="howto">
-  <div class="howto-card">
+<!-- How-to-install modal, opened from the hero's secondary button -->
+<div id="howtoModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-title">How to install</div>
     <div class="howto-step">
       <div class="howto-num">1</div>
       <div>
-        <div class="howto-title">Tap Download</div>
+        <div class="howto-title">Press Download</div>
         <div class="howto-desc">The app saves to your projector and will prompt you to install automatically.</div>
       </div>
     </div>
@@ -546,15 +706,13 @@ h1 { font-size:30px; font-weight:800; letter-spacing:-0.01em; }
     <div class="howto-step">
       <div class="howto-num">3</div>
       <div>
-        <div class="howto-title">Allow & Enjoy</div>
+        <div class="howto-title">Allow &amp; Enjoy</div>
         <div class="howto-desc">Tap "Allow from this source" if asked, then Install... done!</div>
       </div>
     </div>
+    <button id="howtoClose" class="btn btn-ghost nav-focusable" type="button" style="margin-top:18px;width:100%;justify-content:center;">Close</button>
   </div>
 </div>
-
-<div class="footer-note"><a href="tools.html" style="color:var(--text3);text-decoration:underline;">Engineering Tools</a><br><br>Maintained by <strong>@karlsmidlifecrisis</strong> · UK TikTok Shop · Home Cinema<br>Message on TikTok if an app fails to install or a link looks broken.
-<br><br>All app names, logos and trademarks are the property of their respective owners. Android is a trademark of Google Inc. We are not affiliated with, endorsed by, or sponsored by any of the app developers or rights holders listed on this site.</div>
 
 <script>
 // ─────────────────────────────────────────────
@@ -627,15 +785,10 @@ const lockUser = document.getElementById('lockUser');
 const lockInput = document.getElementById('lockInput');
 const lockBtn = document.getElementById('lockBtn');
 const lockMsg = document.getElementById('lockMsg');
-
-function showGreeting() {
-  const user = localStorage.getItem('xbj_username');
-  const greeting = document.getElementById('userGreeting');
-  if (user) {
-    greeting.textContent = `Welcome back, @${user} 👋`;
-    greeting.classList.add('show');
-  }
-}
+const shell = document.getElementById('shell');
+const sidebar = document.getElementById('sidebar');
+const topbar = document.getElementById('topbar');
+const viewBody = document.getElementById('viewBody');
 
 // Save session to both localStorage and a cookie so it survives browser
 // restarts and projector reboots (some Android TV browsers wipe localStorage
@@ -686,24 +839,376 @@ function focusFirstIn(containerId) {
   if (first) { try { first.focus(); } catch(e) {} }
 }
 
-function showSubHub(model) {
-  const label = MODEL_LABELS[model] || 'Your Projector';
-  document.getElementById('subHubTitle').textContent = label;
-  document.getElementById('subHubTools').href = 'tools.html?model=' + model;
-  document.getElementById('subHubFix').href = 'fix.html?model=' + model;
-  document.getElementById('subHubTutorials').href = 'tutorials.html?model=' + model;
+// ─────────────────────────────────────────────
+// APP DATA
+// ─────────────────────────────────────────────
+const MANIFEST_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apps.json';
+const APK_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/';
+
+// Any app whose file lives under apks/entertainment/ is part of the hidden
+// "Entertainment" section — excluded from the shelves until re-entering the
+// same access code (checkCode) unlocks it. Unlike the main 30-day login
+// session, this unlock is never written to localStorage: it's a plain
+// in-memory timestamp that expires on its own after a couple of minutes —
+// just long enough to find and download the app — and disappears entirely
+// on reload/app relaunch either way.
+const HIDDEN_APP_PREFIX = 'entertainment/';
+const ENTERTAINMENT_UNLOCK_MS = 2 * 60 * 1000; // 2 minutes
+function isHiddenApp(a) { return typeof a.file === 'string' && a.file.startsWith(HIDDEN_APP_PREFIX); }
+let entertainmentUnlockedUntil = 0;
+function entertainmentIsUnlocked() { return Date.now() < entertainmentUnlockedUntil; }
+
+window._allApps = [];
+
+// Apps that suit the projector model the buyer picked, minus anything from
+// the hidden Entertainment section unless it's currently unlocked.
+function visibleApps() {
+  const model = loadModel();
+  const unlocked = entertainmentIsUnlocked();
+  return window._allApps.filter(a => {
+    if (isHiddenApp(a) && !unlocked) return false;
+    if (!a.models || a.models.includes('all')) return true;
+    return model && a.models.includes(model);
+  });
+}
+function openApps()   { return visibleApps().filter(a => !isHiddenApp(a)); }
+function hiddenApps() { return visibleApps().filter(isHiddenApp); }
+function byTag(list, tag) { return list.filter(a => Array.isArray(a.tags) && a.tags.includes(tag)); }
+function newestFirst(list) {
+  return list.slice().sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
+}
+function appHref(a) { return a.url || APK_BASE_URL + a.file; }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ─────────────────────────────────────────────
+// CARD / ROW / HERO BUILDERS
+// ─────────────────────────────────────────────
+// apps.json's "downloads" field carries two different things: either a count
+// ("New", "2.5k") which belongs in the corner badge, or a one-line description
+// of what the app does ("Stream movies & TV shows") which belongs under the
+// title. Tell them apart rather than cramming prose into a badge.
+function isCountish(v) { return typeof v === 'string' && /^(new|[\d.]+\s*[km]?)$/i.test(v.trim()); }
+
+function cardHtml(a, i) {
+  const art = a.icon
+    ? `<img src="${esc(a.icon)}" alt="" loading="lazy" onerror="this.parentElement.insertAdjacentHTML('beforeend','<span class=\\'card-abbr\\'>${esc(a.abbr || '')}</span>');this.remove();">`
+    : `<span class="card-abbr">${esc(a.abbr || '')}</span>`;
+  const count = isCountish(a.downloads) ? a.downloads.trim() : '';
+  const badge = count
+    ? `<span class="card-badge${/^new$/i.test(count) ? ' is-new' : ''}">${/^new$/i.test(count) ? 'NEW' : '⬇ ' + esc(count)}</span>`
+    : '';
+  const blurb = (a.downloads && !count) ? `<div class="card-blurb">${esc(a.downloads)}</div>` : '';
+  return `
+    <a class="card nav-focusable" style="animation-delay:${(0.03 * (i || 0)).toFixed(2)}s"
+       href="${esc(appHref(a))}" download="${esc(a.file)}" data-app="${esc(a.name)}">
+      <div class="card-art" style="background:${esc(a.color || 'rgba(255,255,255,0.06)')}">
+        ${badge}${art}
+      </div>
+      <div class="card-title">${esc(a.name)}</div>
+      ${blurb}
+      <div class="card-sub"><span class="star">★</span>${esc(a.rating)} · ${esc(a.size)}</div>
+    </a>`;
+}
+
+function lockedCardHtml() {
+  return `
+    <button type="button" class="card card-locked nav-focusable" data-action="unlock-ent">
+      <div class="card-art"><span class="card-abbr">🔒</span></div>
+      <div class="card-title">Unlock Entertainment</div>
+      <div class="card-sub">Enter the code to reveal</div>
+    </button>`;
+}
+
+// Wide 16:9 cards for the guide/help shelf — these have real artwork in /img
+function wideCardHtml(o) {
+  const model = loadModel() || 'other';
+  const art = o.img
+    ? `<img src="${o.img}" alt="" loading="lazy">`
+    : `<span class="card-emoji">${o.emoji}</span>`;
+  const attrs = o.href
+    ? `href="${o.href}${o.href.indexOf('?') > -1 ? '&' : '?'}model=${model}"`
+    : `type="button" data-action="${o.action}"`;
+  const tag = o.href ? 'a' : 'button';
+  return `
+    <${tag} class="card card-wide nav-focusable" ${attrs}>
+      <div class="card-art">${art}</div>
+      <div class="card-title">${o.title}</div>
+      <div class="card-sub">${o.sub}</div>
+    </${tag}>`;
+}
+
+const HELP_CARDS = [
+  { title:'Hidden Features',   sub:'Unlock the settings XBJ hides',  img:'img/hub-hidden-features.png', href:'tools.html' },
+  { title:'Firmware Update',   sub:'Flash the latest firmware',      img:'img/hub-firmware-update.png', href:'fix.html' },
+  { title:'Tutorials',         sub:'Step-by-step video guides',      img:'img/hub-tutorials.png',       href:'tutorials.html' },
+  { title:'Entertainment',     sub:'Code-locked section',            emoji:'🔒',                        action:'unlock-ent' },
+  { title:'Check for Updates', sub:'Update the Projector Guy app',   emoji:'🔄',                        action:'check-updates' }
+];
+
+function rowHtml(title, apps, opts) {
+  opts = opts || {};
+  if (!apps.length && !opts.extra) return '';
+  const cards = apps.map(cardHtml).join('') + (opts.extra || '');
+  return `
+    <section class="row">
+      <div class="row-head">
+        <div class="row-title">${title}</div>
+        ${opts.count === false ? '' : `<div class="row-count">${apps.length} app${apps.length === 1 ? '' : 's'}</div>`}
+      </div>
+      <div class="rail">${cards}</div>
+    </section>`;
+}
+
+function gridHtml(title, apps, extra) {
+  const cards = apps.map(cardHtml).join('') + (extra || '');
+  if (!cards) return `<div class="empty-note">Nothing here for your projector yet — check another section.</div>`;
+  return `
+    <section class="row">
+      <div class="row-head">
+        <div class="row-title">${title}</div>
+        <div class="row-count">${apps.length} app${apps.length === 1 ? '' : 's'}</div>
+      </div>
+      <div class="grid">${cards}</div>
+    </section>`;
+}
+
+function heroHtml(a) {
+  if (!a) return '';
+  const backdrop = a.bg || a.icon || '';
+  const art = a.icon
+    ? `<img src="${esc(a.icon)}" alt="">`
+    : esc(a.abbr || '');
+  return `
+    <section class="hero">
+      <div class="hero-bg">
+        <div class="hero-tint" style="background:${esc(a.color || '#12203a')}"></div>
+        ${backdrop ? `<div class="hero-art" style="background-image:url('${esc(backdrop)}')"></div>` : ''}
+      </div>
+      <div class="hero-scrim"></div>
+      <div class="hero-inner">
+        <div class="hero-icon" style="background:${esc(a.color || '#12203a')}">${art}</div>
+        <div class="hero-copy">
+          <div class="hero-eyebrow">Latest update</div>
+          <div class="hero-title">${esc(a.name)}</div>
+          <div class="hero-meta">
+            <span><span class="star">★</span> ${esc(a.rating)}</span><span class="dot">·</span>
+            <span>${esc(a.size)}</span><span class="dot">·</span>
+            <span>Updated ${esc(a.updated)}</span>
+            <span class="hero-tag">${esc(a.category || 'App')}</span>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary nav-focusable" href="${esc(appHref(a))}" download="${esc(a.file)}" data-app="${esc(a.name)}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+              Download
+            </a>
+            <button class="btn btn-ghost nav-focusable" type="button" data-action="howto">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.4"/></svg>
+              How to install
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>`;
+}
+
+// ─────────────────────────────────────────────
+// VIEWS — the sidebar picks one of these
+// ─────────────────────────────────────────────
+const APP_CHIPS = [
+  { view:'all',       label:'All apps' },
+  { view:'livetv',    label:'📺 Live TV' },
+  { view:'streaming', label:'🎬 Streaming' },
+  { view:'tools',     label:'🛠️ Tools' }
+];
+const ENT_CHIPS = [
+  { filter:'all',       label:'All' },
+  { filter:'livetv',    label:'📺 Live TV' },
+  { filter:'streaming', label:'🎬 Streaming' },
+  { filter:'movies',    label:'🍿 Movies' },
+  { filter:'sports',    label:'⚽ Sports' },
+  { filter:'tools',     label:'🛠️ Tools' }
+];
+
+let currentView = 'home';
+let entFilter = 'all';
+
+function renderTopbar(view) {
+  if (view === 'home' || view === 'search' || view === 'settings') {
+    topbar.innerHTML = '';
+    topbar.classList.add('hidden');
+    return;
+  }
+  topbar.classList.remove('hidden');
+  if (view === 'entertainment') {
+    topbar.innerHTML = ENT_CHIPS.map(c =>
+      `<button class="chip nav-focusable${c.filter === entFilter ? ' active' : ''}" type="button" data-entfilter="${c.filter}">${c.label}</button>`
+    ).join('');
+  } else {
+    topbar.innerHTML = APP_CHIPS.map(c =>
+      `<button class="chip nav-focusable${c.view === view ? ' active' : ''}" type="button" data-chipview="${c.view}">${c.label}</button>`
+    ).join('');
+  }
+}
+
+function renderHome() {
+  const open = openApps();
+  const recent = newestFirst(open).slice(0, 10);
+  const helpCards = HELP_CARDS.map(wideCardHtml).join('');
+  const entRow = entertainmentIsUnlocked()
+    ? rowHtml('Entertainment', newestFirst(hiddenApps()))
+    : '';
+  return heroHtml(recent[0])
+    + rowHtml('Recently updated', recent)
+    + rowHtml('📺 Live TV apps', byTag(open, 'livetv'))
+    + rowHtml('🎬 Streaming', byTag(open, 'streaming'))
+    + rowHtml('🛠️ Tools', byTag(open, 'tools'))
+    + entRow
+    + `<section class="row">
+         <div class="row-head"><div class="row-title">Your projector</div></div>
+         <div class="rail">${helpCards}</div>
+       </section>`;
+}
+
+function renderAppView(view) {
+  const open = openApps();
+  const titles = { all:'All apps', livetv:'📺 Live TV apps', streaming:'🎬 Streaming', tools:'🛠️ Tools' };
+  const list = view === 'all' ? newestFirst(open) : byTag(open, view);
+  const extra = (view === 'all' && !entertainmentIsUnlocked() && window._allApps.some(isHiddenApp))
+    ? lockedCardHtml() : '';
+  return gridHtml(titles[view] || 'Apps', list, extra);
+}
+
+function renderEntertainment() {
+  if (!entertainmentIsUnlocked()) {
+    return `
+      <div class="panel" style="text-align:center;padding:40px 30px;">
+        <div style="font-size:44px;line-height:1;margin-bottom:14px;">🔒</div>
+        <div class="modal-title" style="margin-bottom:8px;">Entertainment is locked</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:22px;">
+          Enter the access code to reveal this section. It re-locks itself after a couple of minutes.
+        </div>
+        <button class="btn btn-primary nav-focusable" type="button" data-action="unlock-ent" style="justify-content:center;">Enter code</button>
+      </div>`;
+  }
+  const list = hiddenApps();
+  const filtered = entFilter === 'all' ? newestFirst(list) : byTag(list, entFilter);
+  const label = (ENT_CHIPS.find(c => c.filter === entFilter) || {}).label || 'All';
+  return gridHtml('Entertainment · ' + label, filtered);
+}
+
+function renderSearch() {
+  return `
+    <div class="search-wrap">
+      <input id="searchInput" class="search-input nav-focusable" type="search" autocomplete="off"
+             placeholder="Search apps — Netflix, iPlayer, Downloader…">
+    </div>
+    <div id="searchResults"></div>`;
+}
+
+function renderSearchResults(q) {
+  const results = document.getElementById('searchResults');
+  if (!results) return;
+  const term = q.trim().toLowerCase();
+  const pool = visibleApps();
+  if (!term) {
+    results.innerHTML = gridHtml('All apps', newestFirst(pool));
+  } else {
+    const hits = pool.filter(a =>
+      a.name.toLowerCase().includes(term) ||
+      (a.category || '').toLowerCase().includes(term) ||
+      (a.tags || []).join(' ').toLowerCase().includes(term));
+    results.innerHTML = hits.length
+      ? gridHtml(`${hits.length} result${hits.length === 1 ? '' : 's'} for "${esc(q.trim())}"`, hits)
+      : `<div class="empty-note">No apps match "${esc(q.trim())}". Try a shorter word.</div>`;
+  }
+}
+
+function renderSettings() {
+  const model = loadModel();
+  const user = localStorage.getItem('xbj_username');
+  const installRow = window._deferredInstallPrompt ? `
+    <div class="panel-row">
+      <div class="panel-label"><b>Add to home screen</b><span>One-tap access from your projector's launcher</span></div>
+      <button class="panel-btn nav-focusable" type="button" data-action="install">Add</button>
+    </div>` : '';
+  return `
+    <section class="row">
+      <div class="row-head"><div class="row-title">Preferences</div></div>
+      <div class="panel">
+        <div class="panel-row">
+          <div class="panel-label"><b>Projector model</b><span>${esc(MODEL_LABELS[model] || 'Not set')}</span></div>
+          <button class="panel-btn nav-focusable" type="button" data-action="change-model">Change</button>
+        </div>
+        <div class="panel-row">
+          <div class="panel-label"><b>Signed in as</b><span>${user ? '@' + esc(user) : 'Guest'}</span></div>
+        </div>
+        <div class="panel-row">
+          <div class="panel-label"><b>Entertainment section</b><span>${entertainmentIsUnlocked() ? 'Unlocked — re-locks shortly' : 'Locked'}</span></div>
+          <button class="panel-btn nav-focusable" type="button" data-action="unlock-ent">Enter code</button>
+        </div>
+        <div class="panel-row">
+          <div class="panel-label"><b>Check for updates</b><span>Update the Projector Guy app itself</span></div>
+          <button class="panel-btn nav-focusable" type="button" data-action="check-updates">Check</button>
+        </div>
+        ${installRow}
+      </div>
+    </section>`;
+}
+
+function setView(view, opts) {
+  opts = opts || {};
+  currentView = view;
+  sidebar.querySelectorAll('.side-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.view === view));
+  renderTopbar(view);
+
+  if (view === 'home')               viewBody.innerHTML = renderHome();
+  else if (view === 'search')        viewBody.innerHTML = renderSearch();
+  else if (view === 'entertainment') viewBody.innerHTML = renderEntertainment();
+  else if (view === 'settings')      viewBody.innerHTML = renderSettings();
+  else                               viewBody.innerHTML = renderAppView(view);
+
+  window.scrollTo(0, 0);
+  if (view === 'search') {
+    renderSearchResults('');
+    const input = document.getElementById('searchInput');
+    if (input) {
+      input.addEventListener('input', () => renderSearchResults(input.value));
+      if (!opts.keepFocus) setTimeout(() => { try { input.focus(); } catch(e) {} }, 60);
+    }
+    return;
+  }
+  if (!opts.keepFocus) {
+    setTimeout(() => {
+      const first = viewBody.querySelector('.nav-focusable');
+      if (first) { try { first.focus(); } catch(e) {} }
+    }, 80);
+  }
+}
+
+// Re-render whatever is on screen without stealing focus back to the top
+function refreshView() { setView(currentView, { keepFocus: true }); }
+
+// ─────────────────────────────────────────────
+// SHELL ENTRY / EXIT
+// ─────────────────────────────────────────────
+function enterShell(view) {
   document.getElementById('hub').classList.add('hidden');
-  document.getElementById('subHub').classList.remove('hidden');
-  setTimeout(() => focusFirstIn('subHub'), 50);
+  shell.classList.remove('hidden');
+  const model = loadModel() || 'other';
+  document.getElementById('sideFeatures').href  = 'tools.html?model=' + model;
+  document.getElementById('sideFirmware').href  = 'fix.html?model=' + model;
+  document.getElementById('sideTutorials').href = 'tutorials.html?model=' + model;
+  setView(view || 'home');
 }
 
 function selectModel(model) {
   saveModel(model);
-  showSubHub(model);
+  enterShell('home');
 }
 
 function changeModel() {
-  document.getElementById('subHub').classList.add('hidden');
+  shell.classList.add('hidden');
   document.getElementById('hub').classList.remove('hidden');
   setTimeout(() => focusFirstIn('hub'), 150);
 }
@@ -711,43 +1216,14 @@ function changeModel() {
 function unlock() {
   saveSession();
   lock.classList.add('hidden');
-  showGreeting();
   // Tell the native Android wrapper (if we're running inside it) that the
   // code lock just granted access, so it can run its own update check.
   // undefined in a regular browser, so this is a no-op there.
   if (window.AndroidBridge && typeof AndroidBridge.onUnlocked === 'function') {
     try { AndroidBridge.onUnlocked(); } catch (e) {}
   }
-  const saved = loadModel();
-  if (saved) {
-    showSubHub(saved);
-  } else {
-    document.getElementById('hub').classList.remove('hidden');
-    setTimeout(() => focusFirstIn('hub'), 150);
-  }
-}
-
-function enterApps() {
-  document.getElementById('subHub').classList.add('hidden');
-  document.getElementById('menuBackBtn').classList.add('show');
-  window._activeFilter = 'all';
-  // No forced re-lock here — entertainmentIsUnlocked() already expires the
-  // unlock on its own after ENTERTAINMENT_UNLOCK_MS.
-  entCategoryPills.classList.add('hidden');
-  categoryPills.classList.remove('hidden');
-  categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-  const allPill = categoryPills.querySelector('[data-filter="all"]');
-  if (allPill) allPill.classList.add('active');
-  renderModelGrid();
-  focusFirstAppTile();
-  window.scrollTo(0, 0);
-}
-
-function backToMenu() {
-  document.getElementById('menuBackBtn').classList.remove('show');
-  const saved = loadModel();
-  if (saved) {
-    showSubHub(saved);
+  if (loadModel()) {
+    enterShell('home');
   } else {
     document.getElementById('hub').classList.remove('hidden');
     setTimeout(() => focusFirstIn('hub'), 150);
@@ -756,16 +1232,14 @@ function backToMenu() {
 
 if (loadSession() > Date.now()) {
   lock.classList.add('hidden');
-  showGreeting();
   // Returning user with a still-valid session skips the code-entry unlock()
   // path entirely, so it needs its own call to trigger the native app's
   // update check — otherwise it only ever fires once per 30-day session.
   if (window.AndroidBridge && typeof AndroidBridge.onUnlocked === 'function') {
     try { AndroidBridge.onUnlocked(); } catch (e) {}
   }
-  const saved = loadModel();
-  if (saved) {
-    showSubHub(saved);
+  if (loadModel()) {
+    enterShell('home');
   } else {
     document.getElementById('hub').classList.remove('hidden');
   }
@@ -816,40 +1290,33 @@ async function tryUnlock() {
   }
 }
 lockUser.addEventListener('keydown', e => { if (e.key === 'Enter') lockInput.focus(); });
-
-// ── Add to Home Screen ──
-const installBar = document.getElementById('installBar');
-const installBtn = document.getElementById('installBtn');
-let deferredInstallPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredInstallPrompt = e;
-  if (!localStorage.getItem('xbj_pwa_installed') && !window.matchMedia('(display-mode: standalone)').matches) {
-    installBar.classList.remove('hidden');
-  }
-});
-installBtn.addEventListener('click', async () => {
-  if (!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  const { outcome } = await deferredInstallPrompt.userChoice;
-  if (outcome === 'accepted') {
-    localStorage.setItem('xbj_pwa_installed', '1');
-    installBar.classList.add('hidden');
-  }
-  deferredInstallPrompt = null;
-});
-window.addEventListener('appinstalled', () => {
-  localStorage.setItem('xbj_pwa_installed', '1');
-  installBar.classList.add('hidden');
-});
-
 lockBtn.addEventListener('click', tryUnlock);
 lockInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
 lockInput.addEventListener('input', () => { lockInput.value = lockInput.value.replace(/\D/g, '').slice(0, 6); });
 
-// ── "Check for Updates" hub tile — hands off to the native app's own
-// update-check overlay. No-op outside the native wrapper: there's nothing
-// meaningful to check against in a plain browser.
+// ── Add to Home Screen — surfaced as a row in Preferences ──
+window._deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  window._deferredInstallPrompt = e;
+  if (currentView === 'settings') refreshView();
+});
+window.addEventListener('appinstalled', () => {
+  localStorage.setItem('xbj_pwa_installed', '1');
+  window._deferredInstallPrompt = null;
+});
+async function runInstallPrompt() {
+  if (!window._deferredInstallPrompt) return;
+  window._deferredInstallPrompt.prompt();
+  const { outcome } = await window._deferredInstallPrompt.userChoice;
+  if (outcome === 'accepted') localStorage.setItem('xbj_pwa_installed', '1');
+  window._deferredInstallPrompt = null;
+  if (currentView === 'settings') refreshView();
+}
+
+// ── "Check for Updates" — hands off to the native app's own update-check
+// overlay. No-op outside the native wrapper: there's nothing meaningful to
+// check against in a plain browser.
 function checkForAppUpdates() {
   if (window.AndroidBridge && typeof AndroidBridge.checkForUpdates === 'function') {
     try { AndroidBridge.checkForUpdates(); } catch (e) {}
@@ -869,9 +1336,7 @@ function openEntOverlay() {
   entOverlay.classList.remove('hidden');
   setTimeout(() => { try { entInput.focus(); } catch(e) {} }, 50);
 }
-function closeEntOverlay() {
-  entOverlay.classList.add('hidden');
-}
+function closeEntOverlay() { entOverlay.classList.add('hidden'); }
 
 async function tryEntUnlock() {
   const val = entInput.value.trim();
@@ -900,26 +1365,10 @@ async function tryEntUnlock() {
     entMsg.textContent = 'Unlocked!'; entMsg.className = 'lock-msg ok';
     setTimeout(() => {
       closeEntOverlay();
-      // Opened straight from the hub menu tile rather than the locked tile
-      // inside the Apps grid — navigate into Apps too.
-      const subHubEl = document.getElementById('subHub');
-      if (subHubEl && !subHubEl.classList.contains('hidden')) {
-        subHubEl.classList.add('hidden');
-        document.getElementById('menuBackBtn').classList.add('show');
-        window.scrollTo(0, 0);
-      }
-      // Show just the newly-unlocked hidden apps, not the whole catalogue —
-      // swap in the Entertainment-only filter pills (Streaming/Movies/
-      // Sports/Tools) in place of the normal All/Live TV/Streaming/Tools row,
-      // defaulting to the Streaming Services pill rather than "All".
-      window._activeFilter = 'ent-streaming';
-      categoryPills.classList.add('hidden');
-      entCategoryPills.classList.remove('hidden');
-      entCategoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-      const entDefaultPill = entCategoryPills.querySelector('[data-entfilter="ent-streaming"]');
-      if (entDefaultPill) entDefaultPill.classList.add('active');
-      renderModelGrid();
-      focusFirstAppTile();
+      // Land straight on the newly-revealed section rather than the whole
+      // catalogue, defaulting its chip row to Streaming like before.
+      entFilter = 'streaming';
+      setView('entertainment');
     }, 350);
   } else {
     entMsg.textContent = 'Wrong code.';
@@ -932,173 +1381,149 @@ entInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryEntUnlock(
 entInput.addEventListener('input', () => { entInput.value = entInput.value.replace(/\D/g, '').slice(0, 6); });
 entCancelBtn.addEventListener('click', closeEntOverlay);
 entOverlay.addEventListener('click', e => { if (e.target === entOverlay) closeEntOverlay(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !entOverlay.classList.contains('hidden')) closeEntOverlay(); });
 
-const MANIFEST_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apps.json';
-const APK_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/';
+// ── How-to-install modal ──
+const howtoModal = document.getElementById('howtoModal');
+document.getElementById('howtoClose').addEventListener('click', () => howtoModal.classList.add('hidden'));
+howtoModal.addEventListener('click', e => { if (e.target === howtoModal) howtoModal.classList.add('hidden'); });
 
-const grid = document.getElementById('appGrid');
-const gridLabel = document.getElementById('gridLabel');
-const categoryPills = document.getElementById('categoryPills');
-const entCategoryPills = document.getElementById('entCategoryPills');
-
-// Any app whose file lives under apks/entertainment/ is part of the hidden
-// "Entertainment" section — excluded from the grid until re-entering the
-// same access code (checkCode) unlocks it. Unlike the main 30-day login
-// session, this unlock is never written to localStorage: it's a plain
-// in-memory timestamp that expires on its own after a couple of minutes —
-// just long enough to find and download the app — and disappears entirely
-// on reload/app relaunch either way.
-const HIDDEN_APP_PREFIX = 'entertainment/';
-const ENTERTAINMENT_UNLOCK_MS = 2 * 60 * 1000; // 2 minutes
-function isHiddenApp(a) { return typeof a.file === 'string' && a.file.startsWith(HIDDEN_APP_PREFIX); }
-let entertainmentUnlockedUntil = 0;
-function entertainmentIsUnlocked() { return Date.now() < entertainmentUnlockedUntil; }
-
-function renderModelGrid() {
-  const apps = window._allApps || [];
-  const model = loadModel();
-  const filter = window._activeFilter || 'all';
-  const modelApps = apps.filter(a => {
-    if (!a.models || a.models.includes('all')) return true;
-    return model && a.models.includes(model);
-  });
-  const filtered = filter === 'all' ? modelApps
-    : filter === 'entertainment' ? modelApps.filter(isHiddenApp)
-    : filter.startsWith('ent-') ? modelApps.filter(a => isHiddenApp(a) && Array.isArray(a.tags) && a.tags.includes(filter.slice(4)))
-    : modelApps.filter(a => Array.isArray(a.tags) && a.tags.includes(filter));
-  const unlocked = entertainmentIsUnlocked();
-  const visible = unlocked ? filtered : filtered.filter(a => !isHiddenApp(a));
-  const showLockedTile = !unlocked && modelApps.some(isHiddenApp);
-  renderGrid(visible, showLockedTile);
-}
-
-// D-pad left/right moves focus between the hub menu tiles (Apps/Hidden
-// Features/Firmware Update/Tutorials) — same pattern as the apps grid and
-// engineering-tools carousel below.
-const hubTiles = document.getElementById('hubTiles');
-document.addEventListener('keydown', e => {
-  if (!hubTiles.contains(document.activeElement)) return;
-  const isLeft = e.key === 'ArrowLeft' || e.keyCode === 37;
-  const isRight = e.key === 'ArrowRight' || e.keyCode === 39;
-  if (!isLeft && !isRight) return;
-
-  const tiles = Array.from(hubTiles.querySelectorAll('.hub-tile'));
-  if (!tiles.length) return;
-  e.preventDefault();
-
-  let idx = tiles.indexOf(document.activeElement);
-  if (idx < 0) idx = 0;
-  idx = isRight ? Math.min(idx + 1, tiles.length - 1) : Math.max(idx - 1, 0);
-  tiles[idx].focus();
-  tiles[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+// ─────────────────────────────────────────────
+// INTERACTION
+// ─────────────────────────────────────────────
+sidebar.addEventListener('click', e => {
+  const item = e.target.closest('.side-item');
+  if (!item || !item.dataset.view) return;
+  setView(item.dataset.view);
 });
 
-// D-pad left/right moves focus between tiles and keeps the focused one
-// scrolled into view — same pattern as the engineering-tools carousel.
-// OK/select needs no extra handling: tiles are <a href> elements, so Enter
-// on a focused one triggers its native navigation (the download) already.
-document.addEventListener('keydown', e => {
-  if (!grid.contains(document.activeElement)) return;
-  const isLeft = e.key === 'ArrowLeft' || e.keyCode === 37;
-  const isRight = e.key === 'ArrowRight' || e.keyCode === 39;
-  if (!isLeft && !isRight) return;
-
-  const tiles = Array.from(grid.querySelectorAll('.app-tile'));
-  if (!tiles.length) return;
-  e.preventDefault();
-
-  let idx = tiles.indexOf(document.activeElement);
-  if (idx < 0) idx = 0;
-  idx = isRight ? Math.min(idx + 1, tiles.length - 1) : Math.max(idx - 1, 0);
-  tiles[idx].focus();
-  tiles[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+topbar.addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  if (chip.dataset.chipview) { setView(chip.dataset.chipview); return; }
+  if (chip.dataset.entfilter) {
+    entFilter = chip.dataset.entfilter;
+    setView('entertainment');
+  }
 });
 
-// Only called once the apps carousel is actually the active screen
-// (entering it, or re-filtering within it) — never on the initial
-// background render, so it can't steal focus from the lock/hub screens.
-function focusFirstAppTile(){
-  setTimeout(() => { const first = grid.querySelector('.app-tile'); if (first) first.focus(); }, 150);
-}
+const ACTIONS = {
+  'unlock-ent':    openEntOverlay,
+  'check-updates': checkForAppUpdates,
+  'change-model':  changeModel,
+  'install':       runInstallPrompt,
+  'howto':         () => howtoModal.classList.remove('hidden')
+};
 
-// Inside the native Projector Guy App wrapper, hand app-tile downloads to
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const fn = ACTIONS[el.dataset.action];
+  if (fn) { e.preventDefault(); fn(); }
+});
+
+// Inside the native Projector Guy App wrapper, hand card downloads to
 // AndroidBridge.downloadApp() instead of letting the plain <a href download>
 // fall through to the WebView's DownloadListener — that kicks the user out
 // to the system browser/Downloads app to install, then back to the home
 // screen, instead of installing in place without ever leaving the app.
 // Regular browsers have no AndroidBridge, so the <a download> keeps working
 // there unchanged.
-grid.addEventListener('click', e => {
+shell.addEventListener('click', e => {
   if (!window.AndroidBridge || typeof AndroidBridge.downloadApp !== 'function') return;
-  const tile = e.target.closest('.app-tile');
-  if (!tile || !tile.hasAttribute('href')) return; // the locked tile is a <button>, no href
+  const link = e.target.closest('a[data-app]');
+  if (!link) return;
   e.preventDefault();
-  const nameEl = tile.querySelector('.tile-name');
-  try { AndroidBridge.downloadApp(tile.getAttribute('href'), nameEl ? nameEl.textContent : 'app'); } catch (err) {}
+  try { AndroidBridge.downloadApp(link.getAttribute('href'), link.dataset.app); } catch (err) {}
 });
 
-function renderGrid(apps, showLockedTile) {
-  gridLabel.textContent = apps.length + (apps.length === 1 ? ' app available' : ' apps available');
-
-  const tilesHtml = apps.map((a, i) => `
-    <a class="app-tile" style="animation-delay:${0.06 * i}s" href="${a.url || APK_BASE_URL + a.file}" download="${a.file}" data-bg="${a.bg || a.icon || ''}">
-      <div class="tile-icon" style="background:${a.color}">
-        ${a.icon
-          ? `<img src="${a.icon}" alt="${a.name}" loading="lazy" onerror="this.parentElement.textContent='${a.abbr}';this.remove();">`
-          : a.abbr}
-      </div>
-      <div class="tile-name">${a.name}</div>
-      <div class="tile-meta"><span class="star">★</span><span>${a.rating}</span><span>·</span><span>${a.size}</span></div>
-      ${a.downloads ? `<div class="tile-downloads">⬇ ${a.downloads}</div>` : ''}
-      <div class="tile-dl">⬇ Download</div>
-    </a>
-  `).join('');
-
-  const lockedTileHtml = showLockedTile ? `
-    <button type="button" class="app-tile tile-locked" id="entLockTile" style="animation-delay:${0.06 * apps.length}s">
-      <div class="tile-icon tile-icon-locked">🔒</div>
-      <div class="tile-name">Unlock Entertainment</div>
-      <div class="tile-meta">Enter code to reveal</div>
-    </button>
-  ` : '';
-
-  grid.innerHTML = tilesHtml + lockedTileHtml;
-
-  const entLockTile = document.getElementById('entLockTile');
-  if (entLockTile) entLockTile.addEventListener('click', openEntOverlay);
+// ─────────────────────────────────────────────
+// D-PAD / REMOTE NAVIGATION
+// Spatial focus: from whatever is focused, arrow keys jump to the nearest
+// focusable in that direction. One rule set covers the sidebar, the chip
+// row, the hero buttons and every card rail/grid, so the remote behaves the
+// same everywhere without per-component wiring.
+// ─────────────────────────────────────────────
+function isVisible(el) {
+  const r = el.getBoundingClientRect();
+  return r.width > 0 && r.height > 0;
 }
 
+function navCandidates() {
+  return Array.from(document.querySelectorAll('#shell .nav-focusable')).filter(isVisible);
+}
+
+function moveFocus(dir) {
+  const cur = document.activeElement;
+  if (!cur || !cur.getBoundingClientRect) return false;
+  const r = cur.getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  let best = null, bestCost = Infinity;
+
+  navCandidates().forEach(el => {
+    if (el === cur) return;
+    const b = el.getBoundingClientRect();
+    const bx = b.left + b.width / 2, by = b.top + b.height / 2;
+    const dx = bx - cx, dy = by - cy;
+    let along, across;
+    if (dir === 'left')       { along = -dx; across = Math.abs(dy); }
+    else if (dir === 'right') { along =  dx; across = Math.abs(dy); }
+    else if (dir === 'up')    { along = -dy; across = Math.abs(dx); }
+    else                      { along =  dy; across = Math.abs(dx); }
+    if (along <= 4) return;                      // not actually in that direction
+    if (across > along * 3 + 220) return;        // too far off to the side
+    const cost = along + across * 2;
+    if (cost < bestCost) { bestCost = cost; best = el; }
+  });
+
+  if (!best) return false;
+  try { best.focus(); } catch(e) {}
+  try { best.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' }); } catch(e) { best.scrollIntoView(); }
+  return true;
+}
+
+const DIRS = { ArrowLeft:'left', ArrowRight:'right', ArrowUp:'up', ArrowDown:'down',
+               37:'left', 39:'right', 38:'up', 40:'down' };
+
+document.addEventListener('keydown', e => {
+  // Escape / Back — close whatever is open, then step back to Home
+  if (e.key === 'Escape' || e.keyCode === 27) {
+    if (!entOverlay.classList.contains('hidden')) { closeEntOverlay(); return; }
+    if (!howtoModal.classList.contains('hidden')) { howtoModal.classList.add('hidden'); return; }
+    if (!shell.classList.contains('hidden') && currentView !== 'home') { setView('home'); return; }
+    return;
+  }
+  if (shell.classList.contains('hidden')) return;
+  if (!entOverlay.classList.contains('hidden') || !howtoModal.classList.contains('hidden')) return;
+
+  const dir = DIRS[e.key] || DIRS[e.keyCode];
+  if (!dir) return;
+  // Let the search box keep left/right for text editing
+  const active = document.activeElement;
+  if (active && active.id === 'searchInput' && (dir === 'left' || dir === 'right')) return;
+
+  if (moveFocus(dir)) e.preventDefault();
+});
+
+// Old Android TV webviews don't all support :focus-visible, so mirror focus
+// onto a plain class the styles can rely on.
+document.addEventListener('focusin', e => {
+  document.querySelectorAll('.nav-focus').forEach(el => el.classList.remove('nav-focus'));
+  if (e.target.classList && e.target.classList.contains('nav-focusable')) {
+    e.target.classList.add('nav-focus');
+  }
+});
+
+// ─────────────────────────────────────────────
+// LOAD THE CATALOGUE
+// ─────────────────────────────────────────────
 fetch(MANIFEST_URL + '?nc=' + Date.now())
   .then(r => r.json())
   .then(apps => {
     window._allApps = apps;
-    renderModelGrid();
-
-    // ── Category pill filtering ──
-    categoryPills.addEventListener('click', e => {
-      const btn = e.target.closest('.category-pill');
-      if (!btn) return;
-      categoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      window._activeFilter = btn.dataset.filter;
-      renderModelGrid();
-      focusFirstAppTile();
-    });
-
-    // ── Entertainment-only pill filtering (Streaming/Movies/Sports/Tools) ──
-    entCategoryPills.addEventListener('click', e => {
-      const btn = e.target.closest('.category-pill');
-      if (!btn) return;
-      entCategoryPills.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      window._activeFilter = btn.dataset.entfilter;
-      renderModelGrid();
-      focusFirstAppTile();
-    });
+    if (!shell.classList.contains('hidden')) refreshView();
   })
   .catch(() => {
-    grid.innerHTML = '<div style="width:100%;text-align:center;color:var(--text2);padding:40px;">Couldn\'t load the app list — refresh, or message @karlsmidlifecrisis on TikTok.</div>';
+    viewBody.innerHTML = '<div class="empty-note">Couldn\'t load the app list — refresh, or message @karlsmidlifecrisis on TikTok.</div>';
   });
 </script>
 
