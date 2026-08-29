@@ -11,13 +11,5 @@
       "The Entertainment lock icon now shows amber while locked and turns green and open the moment it's unlocked, everywhere it appears",
       "Fixed the sign-in screen so the on-screen keyboard no longer covers the username/code fields"
     ]
-  },
-  {
-    "id": 2,
-    "date": "29 August 2026",
-    "title": "Nicer app tile colours",
-    "items": [
-      "Fixed several app tiles whose background colour clashed with their icon (Roblox, Channel 4, My5, ITVX, BBC iPlayer, NOW TV, Prime Video and others) — tiles now pick up colours from each app's actual icon"
-    ]
   }
 ]

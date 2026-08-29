@@ -99,8 +99,12 @@ does):
 `id` must be higher than every existing entry — that's the only thing that
 decides whether a device has already seen it (stored client-side in
 localStorage under `xbj_changelog_seen`). Commit — the popup goes out
-instantly, same as any other change to this repo. Claude adds this entry
-automatically whenever it pushes a user-facing change on Karl's behalf.
+instantly, same as any other change to this repo.
+
+**When Claude should add an entry:** only for new/updated apps or other
+major changes buyers would actually care about — never for UI/design
+tweaks (layout, colours, icons, spacing, animations, wording). Even then,
+ask Karl first rather than adding it automatically.
 
 ---
 
