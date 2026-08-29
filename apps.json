@@ -12,7 +12,7 @@
     "tags": ["streaming"],
     "size": "100 MB",
     "rating": 4.4,
-    "color": "linear-gradient(145deg,#e31e24,#9b1a1a)",
+    "color": "linear-gradient(145deg,#414d5c,#12171e)",
     "updated": "July 2026",
     "downloads": "New",
     "updatedAt": "2026-07-11T00:00:00Z"
@@ -69,7 +69,7 @@
     ],
     "size": "33 MB",
     "rating": 4.4,
-    "color": "linear-gradient(145deg,#1f2933,#0d1b2a)",
+    "color": "linear-gradient(145deg,#29b6f6,#0a6ea8)",
     "updated": "June 2026",
     "downloads": "2.5k",
     "updatedAt": "2026-06-08T00:00:00Z"
@@ -126,7 +126,7 @@
     ],
     "size": "15 MB",
     "rating": 4.1,
-    "color": "linear-gradient(145deg,#1a1a2e,#000000)",
+    "color": "linear-gradient(145deg,#0f5c5c,#052626)",
     "updated": "June 2026",
     "downloads": "New",
     "updatedAt": "2026-06-11T14:26:00Z"
@@ -146,7 +146,7 @@
     ],
     "size": "43 MB",
     "rating": 4.6,
-    "color": "linear-gradient(145deg,#1a3a6b,#0d2342)",
+    "color": "linear-gradient(145deg,#12586b,#082436)",
     "updated": "June 2026",
     "downloads": "2.8k",
     "updatedAt": "2026-06-08T00:00:00Z"
@@ -165,7 +165,7 @@
     ],
     "size": "6 MB",
     "rating": 4.8,
-    "color": "linear-gradient(145deg,#e4002b,#a3001f)",
+    "color": "linear-gradient(145deg,#e6197e,#7a0c46)",
     "updated": "June 2026",
     "downloads": "2.2k",
     "updatedAt": "2026-06-08T00:00:00Z"
@@ -184,7 +184,7 @@
     ],
     "size": "6 MB",
     "rating": 4.3,
-    "color": "linear-gradient(145deg,#6d0eb1,#44007a)",
+    "color": "linear-gradient(145deg,#9be85a,#4a8a1a)",
     "updated": "June 2026",
     "downloads": "1.6k",
     "updatedAt": "2026-06-08T00:00:00Z"
@@ -203,7 +203,7 @@
     ],
     "size": "31 MB",
     "rating": 4.4,
-    "color": "linear-gradient(145deg,#ffd400,#e0a800)",
+    "color": "linear-gradient(145deg,#1a4d8f,#0a2340)",
     "updated": "June 2026",
     "downloads": "980",
     "updatedAt": "2026-06-08T00:00:00Z"
@@ -241,7 +241,7 @@
     ],
     "size": "7 MB",
     "rating": 4.0,
-    "color": "linear-gradient(145deg,#003c8f,#00246b)",
+    "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
     "updated": "June 2026",
     "downloads": "1.3k",
     "updatedAt": "2026-06-08T00:00:00Z"
@@ -258,7 +258,7 @@
     "tags": ["streaming"],
     "size": "59 MB",
     "rating": 4.6,
-    "color": "linear-gradient(145deg,#c2185b,#6a0d33)",
+    "color": "linear-gradient(145deg,#e2202f,#1a0505)",
     "updated": "August 2026",
     "downloads": "Stream movies & TV shows",
     "updatedAt": "2026-08-12T00:00:00Z"
@@ -275,7 +275,7 @@
     "tags": ["tools"],
     "size": "17 MB",
     "rating": 4.5,
-    "color": "linear-gradient(145deg,#00acc1,#00636f)",
+    "color": "linear-gradient(145deg,#3a7bd5,#5b2c8f)",
     "updated": "August 2026",
     "downloads": "New",
     "updatedAt": "2026-08-11T00:00:00Z"
@@ -292,7 +292,7 @@
     "tags": ["sports"],
     "size": "21 MB",
     "rating": 4.4,
-    "color": "linear-gradient(145deg,#7b2ff7,#3b0a91)",
+    "color": "linear-gradient(145deg,#ff7a29,#160800)",
     "updated": "August 2026",
     "downloads": "Stream Sports and Live TV",
     "updatedAt": "2026-08-22T00:00:00Z"
@@ -309,7 +309,7 @@
     "tags": ["livetv"],
     "size": "26 MB",
     "rating": 4.3,
-    "color": "linear-gradient(145deg,#ff6b6b,#a11d1d)",
+    "color": "linear-gradient(145deg,#f01e34,#150000)",
     "updated": "August 2026",
     "downloads": "Stream Sports and Live TV",
     "updatedAt": "2026-08-22T00:00:00Z"
@@ -326,7 +326,7 @@
     "tags": ["movies"],
     "size": "27 MB",
     "rating": 4.2,
-    "color": "linear-gradient(145deg,#2c9cf0,#0d4a80)",
+    "color": "linear-gradient(145deg,#e42030,#1a1a1a)",
     "updated": "August 2026",
     "downloads": "Stream movies & TV shows",
     "updatedAt": "2026-08-22T00:00:00Z"
