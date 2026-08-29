@@ -309,6 +309,15 @@ body {
 .howto-title { font-size:14.5px; font-weight:700; margin-bottom:3px; }
 .howto-desc { font-size:13px; color:var(--text2); line-height:1.5; }
 
+/* ── What's New modal ── */
+.whats-new-entry { margin-bottom:20px; }
+.whats-new-entry:last-child { margin-bottom:0; }
+.whats-new-date { font-size:11px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+.whats-new-title { font-size:16px; font-weight:800; margin-bottom:10px; }
+.whats-new-list { padding-left:20px; }
+.whats-new-list li { font-size:13.5px; color:var(--text2); line-height:1.6; margin-bottom:6px; }
+.whats-new-list li:last-child { margin-bottom:0; }
+
 /* ══════════════════════════════════════════════════════
    Responsive — phone rail collapses to icons, TV scales up
    ══════════════════════════════════════════════════════ */
@@ -771,6 +780,16 @@ body {
   </div>
 </div>
 
+<!-- "What's New" modal — shown once per device after checkWhatsNew() finds
+     changelog.json entries newer than what's saved in CHANGELOG_SEEN_KEY -->
+<div id="whatsNewModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-title">What's new</div>
+    <div id="whatsNewBody"></div>
+    <button id="whatsNewClose" class="btn btn-primary nav-focusable" type="button" style="margin-top:8px;width:100%;justify-content:center;">Got it</button>
+  </div>
+</div>
+
 <script>
 // ─────────────────────────────────────────────
 // ACCESS LOCK — standard 30s Google Authenticator codes,
@@ -837,6 +856,42 @@ if (document.readyState === 'complete') {
   window.addEventListener('load', () => setTimeout(hideSplash, 2800));
 }
 
+// ── "What's New" — shows once per device, the first time it opens the app
+// after we publish new changelog.json entries. Purely a web-content feature:
+// no APK rebuild needed, since the WebView just reloads the live site.
+let whatsNewChecked = false;
+function dismissWhatsNew(maxId) {
+  whatsNewModal.classList.add('hidden');
+  try { localStorage.setItem(CHANGELOG_SEEN_KEY, String(maxId)); } catch(e) {}
+}
+function checkWhatsNew() {
+  if (whatsNewChecked) return;
+  whatsNewChecked = true;
+  fetch(CHANGELOG_URL + '?nc=' + Date.now())
+    .then(r => r.json())
+    .then(entries => {
+      if (!Array.isArray(entries) || !entries.length) return;
+      const seen = parseInt(localStorage.getItem(CHANGELOG_SEEN_KEY) || '0', 10);
+      const unseen = entries.filter(e => e.id > seen).sort((a, b) => b.id - a.id);
+      const maxId = Math.max(...entries.map(e => e.id));
+      if (!unseen.length) {
+        // Nothing new, but keep the seen-marker in sync in case it was never set.
+        try { localStorage.setItem(CHANGELOG_SEEN_KEY, String(maxId)); } catch(e) {}
+        return;
+      }
+      whatsNewBody.innerHTML = unseen.map(e => `
+        <div class="whats-new-entry">
+          <div class="whats-new-date">${esc(e.date)}</div>
+          <div class="whats-new-title">${esc(e.title)}</div>
+          <ul class="whats-new-list">${(e.items || []).map(i => `<li>${esc(i)}</li>`).join('')}</ul>
+        </div>`).join('');
+      whatsNewModal.classList.remove('hidden');
+      whatsNewModal.dataset.maxId = maxId;
+      setTimeout(() => { try { document.getElementById('whatsNewClose').focus(); } catch(e) {} }, 60);
+    })
+    .catch(() => {});
+}
+
 const lock = document.getElementById('lock');
 const lockUser = document.getElementById('lockUser');
 const lockInput = document.getElementById('lockInput');
@@ -845,6 +900,8 @@ const lockMsg = document.getElementById('lockMsg');
 const shell = document.getElementById('shell');
 const sidebar = document.getElementById('sidebar');
 const topbar = document.getElementById('topbar');
+const whatsNewModal = document.getElementById('whatsNewModal');
+const whatsNewBody = document.getElementById('whatsNewBody');
 const viewBody = document.getElementById('viewBody');
 
 // Save session to both localStorage and a cookie so it survives browser
@@ -901,6 +958,8 @@ function focusFirstIn(containerId) {
 // ─────────────────────────────────────────────
 const MANIFEST_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apps.json';
 const APK_BASE_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/';
+const CHANGELOG_URL = 'https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/changelog.json';
+const CHANGELOG_SEEN_KEY = 'xbj_changelog_seen';
 
 // Any app whose file lives under apks/entertainment/ is part of the hidden
 // "Entertainment" section — excluded from the shelves until re-entering the
@@ -1285,6 +1344,9 @@ function enterShell(view) {
   document.getElementById('sideFirmware').href  = 'fix.html?model=' + model;
   document.getElementById('sideTutorials').href = 'tutorials.html?model=' + model;
   setView(view || 'home');
+  // Delayed past the splash screen's fade-out (2800ms) so it never shows on
+  // top of it or steals focus from the initial view.
+  setTimeout(checkWhatsNew, 3200);
 }
 
 function selectModel(model) {
@@ -1478,6 +1540,10 @@ const howtoModal = document.getElementById('howtoModal');
 document.getElementById('howtoClose').addEventListener('click', () => howtoModal.classList.add('hidden'));
 howtoModal.addEventListener('click', e => { if (e.target === howtoModal) howtoModal.classList.add('hidden'); });
 
+// ── What's New modal ──
+document.getElementById('whatsNewClose').addEventListener('click', () => dismissWhatsNew(whatsNewModal.dataset.maxId));
+whatsNewModal.addEventListener('click', e => { if (e.target === whatsNewModal) dismissWhatsNew(whatsNewModal.dataset.maxId); });
+
 // ─────────────────────────────────────────────
 // INTERACTION
 // ─────────────────────────────────────────────
@@ -1581,11 +1647,12 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' || e.keyCode === 27) {
     if (!entOverlay.classList.contains('hidden')) { closeEntOverlay(); return; }
     if (!howtoModal.classList.contains('hidden')) { howtoModal.classList.add('hidden'); return; }
+    if (!whatsNewModal.classList.contains('hidden')) { dismissWhatsNew(whatsNewModal.dataset.maxId); return; }
     if (!shell.classList.contains('hidden') && currentView !== 'home') { setView('home'); return; }
     return;
   }
   if (shell.classList.contains('hidden')) return;
-  if (!entOverlay.classList.contains('hidden') || !howtoModal.classList.contains('hidden')) return;
+  if (!entOverlay.classList.contains('hidden') || !howtoModal.classList.contains('hidden') || !whatsNewModal.classList.contains('hidden')) return;
 
   const dir = DIRS[e.key] || DIRS[e.keyCode];
   if (!dir) return;

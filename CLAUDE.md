@@ -82,6 +82,28 @@ No changes needed to index.html.
 
 ---
 
+## To notify users of an update ("What's New")
+Every device sees a one-time "What's New" popup the first time it opens the
+app after a new entry lands in changelog.json — no APK rebuild needed, since
+the app's WebView just reloads the live site. Add a new object to the
+**front** of the array (or anywhere — order in the file doesn't matter, `id`
+does):
+```json
+{
+  "id":    2,
+  "date":  "Month Year",
+  "title": "Short headline",
+  "items": ["Plain-English bullet describing what changed or was added", "..."]
+}
+```
+`id` must be higher than every existing entry — that's the only thing that
+decides whether a device has already seen it (stored client-side in
+localStorage under `xbj_changelog_seen`). Commit — the popup goes out
+instantly, same as any other change to this repo. Claude adds this entry
+automatically whenever it pushes a user-facing change on Karl's behalf.
+
+---
+
 ## Access code system
 - 10-minute TOTP (600 second window), 6 digits
 - Use 2FAS app (free, iOS & Android) — NOT Google Authenticator (hardcoded 30s, won't work)

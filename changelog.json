@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "date": "23 August 2026",
+    "title": "New TV-style app store design",
+    "items": [
+      "Redesigned the whole store into a TV-style layout — a side menu plus big poster-style cards, instead of the old top-tab layout",
+      "Added AK47 Sports, MovieBox and HD Streamz to Entertainment",
+      "Added a \"Change Projector\" option in the sidebar to quickly switch models without digging into Preferences",
+      "Entertainment now stays unlocked for 30 minutes after entering the code, instead of just 2",
+      "The Entertainment lock icon now shows amber while locked and turns green and open the moment it's unlocked, everywhere it appears",
+      "Fixed the sign-in screen so the on-screen keyboard no longer covers the username/code fields"
+    ]
+  }
+]
