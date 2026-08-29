@@ -420,6 +420,14 @@ body {
   font-family:'DM Sans',sans-serif;
 }
 .ent-cancel-btn:hover { color:var(--text); }
+/* Brand mark shown at the top of the sign-in card — same badge+wordmark used
+   in the sidebar and splash screen, just bigger. Kept separate from
+   .lock-title, which other cards (Unlock Entertainment, model picker) reuse
+   for plain text and shouldn't inherit badge layout. */
+.lock-logo { display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:20px; }
+.lock-logo img { width:52px; height:52px; border-radius:16px; box-shadow:0 8px 26px rgba(90,166,255,0.4); }
+.lock-logo-text { font-size:18px; font-weight:800; letter-spacing:0.01em; line-height:1.15; text-align:center; }
+.lock-logo-text span { color:var(--accent); }
 .lock-title { font-size:20px; font-weight:800; margin-bottom:6px; }
 .lock-sub { font-size:13.5px; color:var(--text2); line-height:1.5; margin-bottom:22px; }
 /* #lock's sub text sits after the fields/button (see markup), not before —
@@ -454,6 +462,9 @@ body {
 @media (min-width:900px) {
   .lock-card { max-width:680px; padding:48px 64px; }
   .lock-badge { width:72px; height:72px; border-radius:20px; margin-bottom:22px; }
+  .lock-logo { gap:16px; margin-bottom:28px; }
+  .lock-logo img { width:78px; height:78px; border-radius:22px; }
+  .lock-logo-text { font-size:27px; }
   .lock-title { font-size:30px; margin-bottom:10px; }
   .lock-sub { font-size:17px; margin-bottom:30px; }
   #lock .lock-sub { margin-bottom:0; margin-top:30px; }
@@ -473,6 +484,9 @@ body {
 @media (min-width:1400px) {
   .lock-card { max-width:860px; padding:64px 80px; border-radius:32px; backdrop-filter:blur(20px); }
   .lock-badge { width:100px; height:100px; border-radius:28px; margin-bottom:28px; }
+  .lock-logo { gap:20px; margin-bottom:34px; }
+  .lock-logo img { width:108px; height:108px; border-radius:28px; }
+  .lock-logo-text { font-size:38px; }
   .lock-title { font-size:42px; margin-bottom:14px; }
   .lock-sub { font-size:20px; margin-bottom:36px; max-width:620px; margin-left:auto; margin-right:auto; }
   #lock .lock-sub { margin-bottom:0; margin-top:36px; }
@@ -594,17 +608,19 @@ body {
 }
 #splash.hide { opacity:0; visibility:hidden; pointer-events:none; }
 .splash-badge {
-  width:96px; height:96px; border-radius:26px; overflow:hidden;
+  width:108px; height:108px; border-radius:28px; overflow:hidden;
   box-shadow:0 12px 40px rgba(90,166,255,0.45);
-  animation:splashPop 1.3s cubic-bezier(.2,.9,.3,1.4) both;
+  animation:splashPop 1.1s cubic-bezier(.2,.9,.3,1.4) both, splashGlow 2.4s ease-in-out 1.1s infinite;
 }
 .splash-badge img { width:100%; height:100%; object-fit:cover; display:block; }
 .splash-title {
-  margin-top:22px; font-size:19px; font-weight:800; letter-spacing:0.02em;
+  margin-top:24px; font-size:24px; font-weight:800; letter-spacing:0.01em;
+  line-height:1.15; text-align:center;
   opacity:0; animation:splashFadeUp 0.7s ease 0.35s forwards;
 }
+.splash-title span { color:var(--blue); }
 .splash-ring {
-  margin-top:28px; width:34px; height:34px; border-radius:50%;
+  margin-top:30px; width:34px; height:34px; border-radius:50%;
   border:3px solid rgba(255,255,255,0.15); border-top-color:var(--blue);
   animation:splashSpin 0.9s linear infinite, splashFadeUp 0.7s ease 0.5s forwards;
   opacity:0;
@@ -612,29 +628,37 @@ body {
 @keyframes splashPop { 0% { opacity:0; transform:scale(0.6) rotate(-8deg); } 100% { opacity:1; transform:scale(1) rotate(0); } }
 @keyframes splashFadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 @keyframes splashSpin { to { transform:rotate(360deg); } }
+@keyframes splashGlow {
+  0%, 100% { box-shadow:0 12px 40px rgba(90,166,255,0.45); }
+  50% { box-shadow:0 12px 52px rgba(90,166,255,0.75); }
+}
 @media (min-width:900px) {
-  .splash-badge { width:128px; height:128px; border-radius:32px; }
-  .splash-title { font-size:24px; margin-top:28px; }
+  .splash-badge { width:152px; height:152px; border-radius:36px; }
+  .splash-title { font-size:32px; margin-top:30px; }
 }
 </style>
 </head>
 <body>
 <div id="splash">
-  <div class="splash-title"><svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;display:block;margin:0 auto"><defs><linearGradient id="a1-beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5aa6ff" stop-opacity="0.18"/><stop offset="100%" stop-color="#5aa6ff" stop-opacity="0"/></linearGradient><linearGradient id="a1-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a3550"/><stop offset="100%" stop-color="#161e30"/></linearGradient><linearGradient id="a1-lens" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5aa6ff"/><stop offset="100%" stop-color="#2563d6"/></linearGradient><clipPath id="a1-clip"><rect x="118" y="0" height="300" width="0"><animate attributeName="width" from="0" to="330" dur="0.7s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0 0.2 1"/></rect></clipPath></defs><polygon points="118,150 440,52 440,248" fill="url(#a1-beam)" clip-path="url(#a1-clip)"/><rect x="30" y="118" width="90" height="64" rx="14" fill="url(#a1-body)" stroke="#2a3a5c" stroke-width="1.5"/><circle cx="118" cy="150" r="28" fill="#0f1828" stroke="#2a3a5c" stroke-width="1.5"/><circle cx="118" cy="150" r="20" fill="url(#a1-lens)" opacity="0.9"><animate attributeName="r" values="20;26;20" dur="0.5s" fill="freeze"/></circle><circle cx="111" cy="143" r="5" fill="white" opacity="0.25"/><rect x="66" y="182" width="18" height="22" rx="3" fill="#1c2840"/><ellipse cx="75" cy="204" rx="22" ry="5" fill="#1c2840"/><line x1="44" y1="130" x2="44" y2="170" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><line x1="52" y1="128" x2="52" y2="172" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><line x1="60" y1="127" x2="60" y2="173" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><rect x="428" y="54" width="4" height="192" rx="2" fill="#1e2d4a"/><g opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.35s" dur="0.45s" fill="freeze"/><text x="172" y="138" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="52" font-weight="900" letter-spacing="-1" fill="#f4f4f8">PROJECTOR</text><text x="172" y="195" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="52" font-weight="900" letter-spacing="-1" fill="#5aa6ff">GUY</text><rect x="172" y="208" width="220" height="3" rx="1.5" fill="#5aa6ff" opacity="0.5"/><circle cx="404" cy="209.5" r="3" fill="#5aa6ff"/></g></svg></div>
+  <div class="splash-badge"><img src="icon-512.png" alt=""></div>
+  <div class="splash-title">PROJECTOR <span>GUY</span></div>
   <div class="splash-ring"></div>
 </div>
 <div id="ambientBg"></div>
 
 <div id="lock">
   <div class="lock-card">
-    <div class="lock-title"><svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:300px;display:block;margin:0 auto"><defs><linearGradient id="a2-beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5aa6ff" stop-opacity="0.18"/><stop offset="100%" stop-color="#5aa6ff" stop-opacity="0"/></linearGradient><linearGradient id="a2-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a3550"/><stop offset="100%" stop-color="#161e30"/></linearGradient><linearGradient id="a2-lens" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5aa6ff"/><stop offset="100%" stop-color="#2563d6"/></linearGradient><clipPath id="a2-clip"><rect x="118" y="0" height="300" width="0"><animate attributeName="width" from="0" to="330" dur="0.7s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0 0.2 1"/></rect></clipPath></defs><polygon points="118,150 440,52 440,248" fill="url(#a2-beam)" clip-path="url(#a2-clip)"/><rect x="30" y="118" width="90" height="64" rx="14" fill="url(#a2-body)" stroke="#2a3a5c" stroke-width="1.5"/><circle cx="118" cy="150" r="28" fill="#0f1828" stroke="#2a3a5c" stroke-width="1.5"/><circle cx="118" cy="150" r="20" fill="url(#a2-lens)" opacity="0.9"><animate attributeName="r" values="20;26;20" dur="0.5s" fill="freeze"/></circle><circle cx="111" cy="143" r="5" fill="white" opacity="0.25"/><rect x="66" y="182" width="18" height="22" rx="3" fill="#1c2840"/><ellipse cx="75" cy="204" rx="22" ry="5" fill="#1c2840"/><line x1="44" y1="130" x2="44" y2="170" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><line x1="52" y1="128" x2="52" y2="172" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><line x1="60" y1="127" x2="60" y2="173" stroke="#3a4a6a" stroke-width="1" stroke-linecap="round"/><rect x="428" y="54" width="4" height="192" rx="2" fill="#1e2d4a"/><g opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.35s" dur="0.45s" fill="freeze"/><text x="172" y="138" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="52" font-weight="900" letter-spacing="-1" fill="#f4f4f8">PROJECTOR</text><text x="172" y="195" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="52" font-weight="900" letter-spacing="-1" fill="#5aa6ff">GUY</text><rect x="172" y="208" width="220" height="3" rx="1.5" fill="#5aa6ff" opacity="0.5"/><circle cx="404" cy="209.5" r="3" fill="#5aa6ff"/></g></svg></div>
+    <div class="lock-logo">
+      <img src="icon-512.png" alt="">
+      <div class="lock-logo-text">PROJECTOR <span>GUY</span></div>
+    </div>
     <div class="lock-input-row">
       <input id="lockUser" class="lock-input lock-input-text" type="text" placeholder="Your TikTok username" autocomplete="off" autocapitalize="none" maxlength="40">
       <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
     </div>
     <button id="lockBtn" class="lock-btn">Unlock</button>
     <div id="lockMsg" class="lock-msg"></div>
-    <div class="lock-sub">App updates locked. Message <strong>@karlsmidlifecrisis</strong> on TikTok for the current access code if you've purchased an XBJ Projector from my lives or videos.</div>
+    <div class="lock-sub">Access is limited to verified XBJ Projector customers. Message us on TikTok to receive your access code.</div>
   </div>
 </div>
 
@@ -737,14 +761,14 @@ body {
   </button>
 
   <div class="side-spacer"></div>
-  <div class="side-foot"><strong>@karlsmidlifecrisis</strong><br>UK TikTok Shop · Home Cinema</div>
+  <div class="side-foot"><strong>Projector Guy</strong><br>UK TikTok Shop · Home Cinema</div>
 </nav>
 
 <main id="stage">
   <div class="topbar" id="topbar"></div>
   <div id="viewBody"></div>
   <div class="legal">
-    Message <strong>@karlsmidlifecrisis</strong> on TikTok if an app fails to install or a link looks broken.<br>
+    Message us on TikTok if an app fails to install or a link looks broken.<br>
     All app names, logos and trademarks are the property of their respective owners. Android is a trademark of Google Inc. We are not affiliated with, endorsed by, or sponsored by any of the app developers or rights holders listed on this site.
   </div>
 </main>
@@ -1428,7 +1452,7 @@ async function tryUnlock() {
     lockMsg.textContent = 'Unlocked!'; lockMsg.className = 'lock-msg ok';
     setTimeout(unlock, 350);
   } else {
-    lockMsg.textContent = 'Wrong code — message @karlsmidlifecrisis on TikTok for the current one.';
+    lockMsg.textContent = 'Wrong code — message us on TikTok for the current one.';
     lockMsg.className = 'lock-msg error';
     lockInput.value = '';
     // Don't auto-focus the numeric field here — on some Android TV browsers
@@ -1682,7 +1706,7 @@ fetch(MANIFEST_URL + '?nc=' + Date.now())
     if (!shell.classList.contains('hidden')) refreshView();
   })
   .catch(() => {
-    viewBody.innerHTML = '<div class="empty-note">Couldn\'t load the app list — refresh, or message @karlsmidlifecrisis on TikTok.</div>';
+    viewBody.innerHTML = '<div class="empty-note">Couldn\'t load the app list — refresh, or message us on TikTok.</div>';
   });
 </script>
 
