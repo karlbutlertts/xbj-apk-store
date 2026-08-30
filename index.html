@@ -1367,7 +1367,13 @@ function enterShell(view) {
   document.getElementById('sideFeatures').href  = 'tools.html?model=' + model;
   document.getElementById('sideFirmware').href  = 'fix.html?model=' + model;
   document.getElementById('sideTutorials').href = 'tutorials.html?model=' + model;
-  setView(view || 'home');
+  // Land the remote's focus on the sidebar's Home item, not the first card —
+  // same reasoning as the sidebar click handler above, just for first entry.
+  setView(view || 'home', { keepFocus: true });
+  setTimeout(() => {
+    const homeItem = sidebar.querySelector('.side-item[data-view="home"]');
+    if (homeItem) { try { homeItem.focus(); } catch(e) {} }
+  }, 80);
   // Delayed past the splash screen's fade-out (2800ms) so it never shows on
   // top of it or steals focus from the initial view.
   setTimeout(checkWhatsNew, 3200);
@@ -1574,7 +1580,10 @@ whatsNewModal.addEventListener('click', e => { if (e.target === whatsNewModal) d
 sidebar.addEventListener('click', e => {
   const item = e.target.closest('.side-item');
   if (!item || !item.dataset.view) return;
-  setView(item.dataset.view);
+  // Selecting a section changes the content, but keeps the remote's focus
+  // on the sidebar item itself rather than jumping into the new grid —
+  // the user has to press Right deliberately to move over to the cards.
+  setView(item.dataset.view, { keepFocus: true });
 });
 
 topbar.addEventListener('click', e => {
