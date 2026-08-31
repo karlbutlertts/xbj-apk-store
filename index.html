@@ -12,6 +12,8 @@
 <meta name="apple-mobile-web-app-title" content="Projector Guy">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -1706,16 +1708,37 @@ document.addEventListener('focusin', e => {
 });
 
 // ─────────────────────────────────────────────
-// LOAD THE CATALOGUE
+// LOAD THE CATALOGUE — stale-while-revalidate. Paint instantly from
+// whatever was cached last time (if anything — this runs synchronously
+// before the browser's first paint, so there's no visible empty flash),
+// then always refetch in the background and only re-render if the
+// catalogue actually changed. First-ever load with nothing cached falls
+// straight through to the plain fetch, same as before.
 // ─────────────────────────────────────────────
+const APPS_CACHE_KEY = 'xbj_apps_cache';
+
+try {
+  const cached = JSON.parse(localStorage.getItem(APPS_CACHE_KEY) || 'null');
+  if (Array.isArray(cached) && cached.length) {
+    window._allApps = cached;
+    if (!shell.classList.contains('hidden')) refreshView();
+  }
+} catch (e) {}
+
 fetch(MANIFEST_URL + '?nc=' + Date.now())
   .then(r => r.json())
   .then(apps => {
+    const changed = JSON.stringify(apps) !== JSON.stringify(window._allApps);
     window._allApps = apps;
-    if (!shell.classList.contains('hidden')) refreshView();
+    try { localStorage.setItem(APPS_CACHE_KEY, JSON.stringify(apps)); } catch (e) {}
+    if (changed && !shell.classList.contains('hidden')) refreshView();
   })
   .catch(() => {
-    viewBody.innerHTML = '<div class="empty-note">Couldn\'t load the app list — refresh, or message us on TikTok.</div>';
+    // Only show the error if there's nothing cached to fall back on —
+    // otherwise keep quietly showing whatever we already have.
+    if (!window._allApps.length) {
+      viewBody.innerHTML = '<div class="empty-note">Couldn\'t load the app list — refresh, or message us on TikTok.</div>';
+    }
   });
 </script>
 
