@@ -422,6 +422,23 @@ body {
   font-family:'DM Sans',sans-serif;
 }
 .ent-cancel-btn:hover { color:var(--text); }
+.ent-generate-btn {
+  display:block; margin:2px auto 16px; background:transparent; color:var(--accent);
+  border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700;
+  text-decoration:underline; cursor:pointer; padding:6px; outline:none;
+}
+.ent-generate-btn:hover { color:var(--text); }
+.ent-generate-btn:focus-visible, .ent-generate-btn.nav-focus { color:var(--text); box-shadow:0 0 0 2px var(--accent); border-radius:6px; }
+.ent-generate-btn:disabled { opacity:0.6; cursor:default; text-decoration:none; }
+.ent-generated-code {
+  margin:0 0 16px; padding:14px 18px; border-radius:14px;
+  background:rgba(90,166,255,0.12); border:1px solid rgba(90,166,255,0.35);
+}
+.ent-generated-code .code-digits {
+  font-size:28px; font-weight:800; letter-spacing:0.25em; color:var(--accent);
+  font-family:'DM Sans',sans-serif;
+}
+.ent-generated-code .code-caption { font-size:11.5px; color:var(--text2); margin-top:4px; }
 /* Brand mark shown at the top of the sign-in card — same badge+wordmark used
    in the sidebar and splash screen, just bigger. Kept separate from
    .lock-title, which other cards (Unlock Entertainment, model picker) reuse
@@ -669,6 +686,8 @@ body {
     <div class="lock-badge ent-lock-badge locked" id="entLockBadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></div>
     <div class="lock-title">Unlock Entertainment</div>
     <div class="lock-sub">Enter the entertainment access code to reveal this section.</div>
+    <button id="entGenerateBtn" type="button" class="ent-generate-btn nav-focusable">Generate my code</button>
+    <div id="entGeneratedCode" class="ent-generated-code hidden"></div>
     <input id="entInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
     <button id="entBtn" class="lock-btn">Unlock</button>
     <div id="entMsg" class="lock-msg"></div>
@@ -861,6 +880,18 @@ async function checkCode(input) {
     if (input === await hotp(TOTP_SECRET, counter)) return true;
   }
   return false;
+}
+
+// Same formula as checkCode(), just run forward instead of checked against
+// input — returns the code that's currently valid right now. Used by the
+// Entertainment overlay's "Generate my code" button: since that button only
+// exists inside the already-unlocked app shell, only someone who already
+// has a code from Karl can ever reach it, so handing them this one too
+// carries no more risk than the shared code already does today.
+async function getCurrentCode() {
+  const now = Math.floor(Date.now() / 1000);
+  const counter = Math.floor(now / STEP);
+  return hotp(TOTP_SECRET, counter);
 }
 
 // Some older/embedded Android TV browsers don't expose window.crypto.subtle
@@ -1509,20 +1540,75 @@ const entBtn = document.getElementById('entBtn');
 const entMsg = document.getElementById('entMsg');
 const entCancelBtn = document.getElementById('entCancelBtn');
 const entLockBadge = document.getElementById('entLockBadge');
+const entGenerateBtn = document.getElementById('entGenerateBtn');
+const entGeneratedCode = document.getElementById('entGeneratedCode');
+
+// Self-generated codes get their own tighter 60-second expiry, layered on
+// top of (not replacing) checkCode()'s normal ~10-minute tolerance — codes
+// Karl gives out manually over DM are unaffected and keep the wider window.
+const SELF_GEN_VALID_MS = 60 * 1000;
+let entGeneratedAt = 0;
 
 function openEntOverlay() {
   entInput.value = '';
   entMsg.textContent = ''; entMsg.className = 'lock-msg';
   entLockBadge.className = 'lock-badge ent-lock-badge locked';
   entLockBadge.innerHTML = LOCK_SVG_CLOSED;
+  entGeneratedCode.classList.add('hidden');
+  entGeneratedCode.innerHTML = '';
+  entGenerateBtn.classList.remove('hidden');
+  entGenerateBtn.disabled = false;
+  entGenerateBtn.textContent = 'Generate my code';
+  entGeneratedAt = 0;
   entOverlay.classList.remove('hidden');
   setTimeout(() => { try { entInput.focus(); } catch(e) {} }, 50);
 }
+
+// Reachable only from inside the already-unlocked shell, so anyone who can
+// tap this has already gotten a code from Karl — see getCurrentCode()'s
+// comment for why that makes this safe to hand out with no extra checks.
+entGenerateBtn.addEventListener('click', async () => {
+  if (!cryptoAvailable()) {
+    entMsg.textContent = 'This browser is too old to generate a code securely.';
+    entMsg.className = 'lock-msg error';
+    return;
+  }
+  entGenerateBtn.disabled = true;
+  entGenerateBtn.textContent = 'Generating…';
+  try {
+    const code = await getCurrentCode();
+    entGeneratedAt = Date.now();
+    entGeneratedCode.innerHTML =
+      '<div class="code-digits">' + esc(code) + '</div>' +
+      '<div class="code-caption">Type this into the box below — valid for 60 seconds</div>';
+    entGeneratedCode.classList.remove('hidden');
+    entGenerateBtn.classList.add('hidden');
+  } catch (e) {
+    entMsg.textContent = 'Couldn\'t generate a code on this device. Please try again.';
+    entMsg.className = 'lock-msg error';
+    entGenerateBtn.disabled = false;
+    entGenerateBtn.textContent = 'Generate my code';
+  }
+});
+
 function closeEntOverlay() { entOverlay.classList.add('hidden'); }
 
 async function tryEntUnlock() {
   const val = entInput.value.trim();
   if (val.length !== 6) { entMsg.textContent = 'Enter the 6-digit code.'; entMsg.className = 'lock-msg error'; return; }
+
+  if (entGeneratedAt && Date.now() - entGeneratedAt > SELF_GEN_VALID_MS) {
+    entGeneratedAt = 0;
+    entGeneratedCode.classList.add('hidden');
+    entGeneratedCode.innerHTML = '';
+    entGenerateBtn.classList.remove('hidden');
+    entGenerateBtn.disabled = false;
+    entGenerateBtn.textContent = 'Generate my code';
+    entMsg.textContent = 'That code has expired — tap Generate my code again.';
+    entMsg.className = 'lock-msg error';
+    entInput.value = '';
+    return;
+  }
 
   if (!cryptoAvailable()) {
     entMsg.textContent = 'This browser is too old to check the code securely.';

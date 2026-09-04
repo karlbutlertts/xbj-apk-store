@@ -11,5 +11,14 @@
       "The Entertainment lock icon now shows amber while locked and turns green and open the moment it's unlocked, everywhere it appears",
       "Fixed the sign-in screen so the on-screen keyboard no longer covers the username/code fields"
     ]
+  },
+  {
+    "id": 2,
+    "date": "4 September 2026",
+    "title": "Generate your own Entertainment code",
+    "items": [
+      "The Entertainment unlock screen now has a \"Generate my code\" button — get instant access without messaging us, no need to wait for a reply",
+      "Self-generated codes are valid for 60 seconds, so they can't be shared around after the fact"
+    ]
   }
 ]
