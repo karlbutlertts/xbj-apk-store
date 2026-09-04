@@ -109,15 +109,31 @@ ask Karl first rather than adding it automatically.
 ---
 
 ## Access code system
-- 10-minute TOTP (600 second window), 6 digits
-- Use 2FAS app (free, iOS & Android) — NOT Google Authenticator (hardcoded 30s, won't work)
-- Add manually in 2FAS: Account name = XBJ Updates, Key = TOTP_SECRET value, Algorithm = SHA-1, Period = 600, Digits = 6
-- Karl reads current code to buyers who message him on TikTok
-- Worker accepts ±1 window either side (codes valid ~10-30 mins to cover clock drift)
+The whole thing runs client-side in index.html — the TOTP_SECRET, STEP and
+WINDOW constants near the top of the main <script> block are the actual
+source of truth. worker.js's /verify-pin endpoint (600-second period) is
+NOT what the live site calls; it's leftover from an earlier design and is
+currently unused. If the two ever disagree, index.html wins.
+- Standard 30-second-period TOTP, 6 digits (matches Google Authenticator's
+  default — this is why 2FAS must be set to 30s, not 600s)
+- Use 2FAS app (free, iOS & Android)
+- Add manually in 2FAS: Account name = XBJ Updates, Key = KARLXBJPROJECTOR
+  (the decoded TOTP_SECRET), Algorithm = SHA-1, Period = 30, Digits = 6
+- Karl reads the current code to buyers who message him on TikTok
+- The site accepts ±10 steps either side (±5 minutes), so a code stays
+  usable for ~10 minutes total to cover clock drift and typing time
+- Corrected 4 September 2026 — a 2FAS entry set up per the old "Period =
+  600" instructions here caused a real outage (every code Karl read out
+  was rejected). If logins start failing "wrong code" again, the first
+  thing to check is always whether 2FAS's Period still says 30.
 
 ---
 
-## Verification logic
+## Verification logic (NOT currently wired up)
+worker.js's /verify-order endpoint implements this, but index.html never
+calls it — access is controlled entirely by the shared TOTP code above.
+Documented here in case it's revisited later, not as a description of
+current behaviour:
 1. Buyer enters TikTok Shop order number
 2. Worker fetches Google Sheet (Column A = Order ID, Column E = Creator Username)
 3. If order found AND Column E contains CREATOR_USERNAME → access granted
