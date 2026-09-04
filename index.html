@@ -835,6 +835,19 @@ body {
   </div>
 </div>
 
+<!-- Shown instead of downloading for apps flagged "preinstalled" in
+     apps.json (Netflix, Google Play Store, Google Play Services) — these
+     ship with the projector's firmware already, and sideloading over a
+     system-signed app just fails with a confusing signature-mismatch
+     error, so the click is intercepted before it ever starts. -->
+<div id="preinstalledModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-title">Already on your projector</div>
+    <div id="preinstalledBody" class="howto-desc"></div>
+    <button id="preinstalledClose" class="btn btn-primary nav-focusable" type="button" style="margin-top:18px;width:100%;justify-content:center;">Got it</button>
+  </div>
+</div>
+
 <script>
 // ─────────────────────────────────────────────
 // ACCESS LOCK — standard 30s Google Authenticator codes,
@@ -1089,9 +1102,10 @@ function cardHtml(a, i) {
     ? `<span class="card-badge${/^new$/i.test(count) ? ' is-new' : ''}">${/^new$/i.test(count) ? 'NEW' : '⬇ ' + esc(count)}</span>`
     : '';
   const blurb = (a.downloads && !count) ? `<div class="card-blurb">${esc(a.downloads)}</div>` : '';
+  const preinstalledAttr = a.preinstalled ? ' data-preinstalled="1"' : '';
   return `
     <a class="card nav-focusable" style="animation-delay:${(0.03 * (i || 0)).toFixed(2)}s"
-       href="${esc(appHref(a))}" download="${esc(a.file)}" data-app="${esc(a.name)}">
+       href="${esc(appHref(a))}" download="${esc(a.file)}" data-app="${esc(a.name)}"${preinstalledAttr}>
       <div class="card-art" style="background:${esc(a.color || 'rgba(255,255,255,0.06)')}">
         ${badge}${art}
       </div>
@@ -1178,6 +1192,7 @@ function heroHtml(a) {
   const art = a.icon
     ? `<img src="${esc(a.icon)}" alt="">`
     : esc(a.abbr || '');
+  const preinstalledAttr = a.preinstalled ? ' data-preinstalled="1"' : '';
   return `
     <section class="hero">
       <div class="hero-bg">
@@ -1197,7 +1212,7 @@ function heroHtml(a) {
             <span class="hero-tag">${esc(a.category || 'App')}</span>
           </div>
           <div class="hero-actions">
-            <a class="btn btn-primary nav-focusable" href="${esc(appHref(a))}" download="${esc(a.file)}" data-app="${esc(a.name)}">
+            <a class="btn btn-primary nav-focusable" href="${esc(appHref(a))}" download="${esc(a.file)}" data-app="${esc(a.name)}"${preinstalledAttr}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
               Download
             </a>
@@ -1662,6 +1677,26 @@ howtoModal.addEventListener('click', e => { if (e.target === howtoModal) howtoMo
 document.getElementById('whatsNewClose').addEventListener('click', () => dismissWhatsNew(whatsNewModal.dataset.maxId));
 whatsNewModal.addEventListener('click', e => { if (e.target === whatsNewModal) dismissWhatsNew(whatsNewModal.dataset.maxId); });
 
+// ── "Already on your projector" modal ──
+// Capture phase on document, so this runs before the AndroidBridge download
+// handoff below (or the plain <a download>'s own default action) ever
+// starts — clicking a preinstalled app's card/hero button shows this
+// instead of downloading anything.
+const preinstalledModal = document.getElementById('preinstalledModal');
+const preinstalledBody = document.getElementById('preinstalledBody');
+document.addEventListener('click', e => {
+  const link = e.target.closest('[data-preinstalled="1"]');
+  if (!link) return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  preinstalledBody.textContent = (link.dataset.app || 'This app') +
+    ' comes pre-installed on your XBJ projector and is kept up to date automatically — no need to download it again.';
+  preinstalledModal.classList.remove('hidden');
+  setTimeout(() => { try { document.getElementById('preinstalledClose').focus(); } catch(e) {} }, 60);
+}, true);
+document.getElementById('preinstalledClose').addEventListener('click', () => preinstalledModal.classList.add('hidden'));
+preinstalledModal.addEventListener('click', e => { if (e.target === preinstalledModal) preinstalledModal.classList.add('hidden'); });
+
 // ─────────────────────────────────────────────
 // INTERACTION
 // ─────────────────────────────────────────────
@@ -1769,11 +1804,12 @@ document.addEventListener('keydown', e => {
     if (!entOverlay.classList.contains('hidden')) { closeEntOverlay(); return; }
     if (!howtoModal.classList.contains('hidden')) { howtoModal.classList.add('hidden'); return; }
     if (!whatsNewModal.classList.contains('hidden')) { dismissWhatsNew(whatsNewModal.dataset.maxId); return; }
+    if (!preinstalledModal.classList.contains('hidden')) { preinstalledModal.classList.add('hidden'); return; }
     if (!shell.classList.contains('hidden') && currentView !== 'home') { setView('home'); return; }
     return;
   }
   if (shell.classList.contains('hidden')) return;
-  if (!entOverlay.classList.contains('hidden') || !howtoModal.classList.contains('hidden') || !whatsNewModal.classList.contains('hidden')) return;
+  if (!entOverlay.classList.contains('hidden') || !howtoModal.classList.contains('hidden') || !whatsNewModal.classList.contains('hidden') || !preinstalledModal.classList.contains('hidden')) return;
 
   const dir = DIRS[e.key] || DIRS[e.keyCode];
   if (!dir) return;

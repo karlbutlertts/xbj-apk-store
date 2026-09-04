@@ -80,6 +80,12 @@ Add a new JSON object to apps.json:
 the Home hero and the "Recently updated" shelf.
 No changes needed to index.html.
 
+Add `"preinstalled": true` for anything that ships with the projector's
+firmware already (Netflix, Google Play Store, Google Play Services today).
+Tapping the card/Download button shows a "already on your projector"
+message instead of downloading — sideloading over a system-signed app
+just fails anyway, so this heads that off before it's confusing.
+
 ---
 
 ## To notify users of an update ("What's New")

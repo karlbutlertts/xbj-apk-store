@@ -43,6 +43,7 @@
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/netflix.png",
     "file": "Netflix.apk",
     "packageName": "com.netflix.ninja",
+    "preinstalled": true,
     "versionCode": 1,
     "category": "Entertainment",
     "tags": [
@@ -81,6 +82,7 @@
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/googleplayservices.png",
     "file": "GooglePlayServices.apk",
     "packageName": "com.google.android.gms",
+    "preinstalled": true,
     "versionCode": 1,
     "category": "Tools",
     "tags": [
@@ -100,6 +102,7 @@
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/googleplaystore.png",
     "file": "GooglePlayStore.apk",
     "packageName": "com.android.vending",
+    "preinstalled": true,
     "versionCode": 1,
     "category": "Tools",
     "tags": [
