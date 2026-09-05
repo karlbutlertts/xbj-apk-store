@@ -288,7 +288,7 @@ body {
 /* ── Centre the stage column on wide screens (pills, rows of cards, hero,
    locked/preferences panels) so content doesn't hug the left edge —
    existing padding/margin still gives the min gutter on narrower screens. ── */
-.topbar, .row-head, .rail, .grid, .search-wrap, .section-note, .hint-bar, .empty-note {
+.topbar, .row-head, .rail, .grid, .search-wrap, .section-note, .hint-bar, .empty-note, .install-all-banner {
   max-width:var(--content-max); margin-left:auto; margin-right:auto;
 }
 .legal { margin-left:auto; margin-right:auto; }
@@ -320,6 +320,32 @@ body {
 .whats-new-list li { font-size:13.5px; color:var(--text2); line-height:1.6; margin-bottom:6px; }
 .whats-new-list li:last-child { margin-bottom:0; }
 
+/* ── Install-all banner (Live TV category view) ── */
+.install-all-banner {
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  margin-top:18px; margin-bottom:8px; padding:16px 20px; box-sizing:border-box;
+  border-radius:16px; background:rgba(90,166,255,0.08); border:1px solid rgba(90,166,255,0.25);
+}
+.install-all-title { font-size:15px; font-weight:800; }
+.install-all-sub { font-size:12.5px; color:var(--text2); margin-top:2px; }
+.install-all-banner .btn { flex-shrink:0; }
+
+/* ── Install-all queue ── */
+.install-queue-list { display:flex; flex-direction:column; gap:2px; margin-bottom:4px; }
+.install-queue-item {
+  display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:10px;
+  font-size:14px; font-weight:600; color:var(--text3);
+}
+.install-queue-item .iq-num {
+  flex-shrink:0; width:22px; height:22px; border-radius:50%; display:flex;
+  align-items:center; justify-content:center; font-size:11px; font-weight:800;
+  background:rgba(255,255,255,0.08); color:var(--text3);
+}
+.install-queue-item.done { color:var(--text2); }
+.install-queue-item.done .iq-num { background:rgba(52,199,89,0.18); color:#34c759; }
+.install-queue-item.current { color:var(--text); background:rgba(90,166,255,0.12); }
+.install-queue-item.current .iq-num { background:var(--accent); color:var(--accent-ink); }
+
 /* ══════════════════════════════════════════════════════
    Responsive — phone rail collapses to icons, TV scales up
    ══════════════════════════════════════════════════════ */
@@ -330,7 +356,7 @@ body {
   .side-item .side-label { display:none; }
   .side-logo { padding:0 0 14px; justify-content:center; }
   .side-logo-text, .side-group-label, .side-foot { display:none; }
-  .topbar, .row-head, .rail, .grid, .search-wrap, .section-note, .legal, .hint-bar { padding-left:18px; padding-right:18px; }
+  .topbar, .row-head, .rail, .grid, .search-wrap, .section-note, .legal, .hint-bar, .install-all-banner { padding-left:18px; padding-right:18px; }
   .hero { margin-left:18px; margin-right:18px; min-height:auto; }
   .hero-inner { flex-direction:column; align-items:flex-start; gap:16px; padding:22px; }
   .hero-icon { width:78px; height:78px; border-radius:20px; }
@@ -359,7 +385,7 @@ body {
   .hero-title { font-size:50px; }
   .hero-meta { font-size:16px; }
   .btn { font-size:17px; padding:15px 32px; }
-  .row-head, .rail, .grid, .search-wrap, .section-note, .legal, .hint-bar { padding-left:48px; padding-right:48px; }
+  .row-head, .rail, .grid, .search-wrap, .section-note, .legal, .hint-bar, .install-all-banner { padding-left:48px; padding-right:48px; }
   .row-title { font-size:23px; }
   .card { flex-basis:206px; }
   .card-wide { flex-basis:340px; }
@@ -854,6 +880,22 @@ body {
   </div>
 </div>
 
+<!-- "Install all" queue — walks through a category's apps one at a time.
+     There's no way to detect from here when Android's own install prompt
+     has actually been dismissed (it's a separate screen with no callback),
+     so this doesn't try to auto-advance: tapping the action button both
+     starts that app's install AND immediately preps the next step, so
+     whatever the user returns to after handling the native installer is
+     already the next one, ready to go. -->
+<div id="installQueueModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-title" id="installQueueTitle">Install all</div>
+    <div id="installQueueList" class="install-queue-list"></div>
+    <button id="installQueueActionBtn" class="btn btn-primary nav-focusable" type="button" style="margin-top:16px;width:100%;justify-content:center;"></button>
+    <button id="installQueueClose" type="button" class="ent-cancel-btn">Close</button>
+  </div>
+</div>
+
 <script>
 // ─────────────────────────────────────────────
 // ACCESS LOCK — standard 30s Google Authenticator codes,
@@ -1290,13 +1332,30 @@ function renderHome() {
        </section>`;
 }
 
+// Only makes sense inside the native app, which can hand a download
+// straight to the system installer — a plain browser has no equivalent,
+// so the banner just doesn't render there rather than offering something
+// that can't actually deliver.
+function installAllBannerHtml(list) {
+  if (!hasAndroidBridge() || list.length < 2) return '';
+  return `
+    <div class="install-all-banner">
+      <div>
+        <div class="install-all-title">Install every Live TV app</div>
+        <div class="install-all-sub">${list.length} apps, one after another — no need to find each one yourself</div>
+      </div>
+      <button class="btn btn-primary nav-focusable" type="button" data-action="install-all-livetv">Install all</button>
+    </div>`;
+}
+
 function renderAppView(view) {
   const open = openApps();
   const titles = { all:'All apps', livetv:'📺 Live TV apps', streaming:'🎬 Streaming', tools:'🛠️ Tools' };
   const list = view === 'all' ? newestFirst(open) : byTag(open, view);
   const extra = (view === 'all' && !entertainmentIsUnlocked() && window._allApps.some(isHiddenApp))
     ? lockedCardHtml() : '';
-  return gridHtml(titles[view] || 'Apps', list, extra);
+  const banner = view === 'livetv' ? installAllBannerHtml(list) : '';
+  return banner + gridHtml(titles[view] || 'Apps', list, extra);
 }
 
 function renderEntertainment() {
@@ -1707,6 +1766,58 @@ document.addEventListener('click', e => {
 document.getElementById('preinstalledClose').addEventListener('click', () => preinstalledModal.classList.add('hidden'));
 preinstalledModal.addEventListener('click', e => { if (e.target === preinstalledModal) preinstalledModal.classList.add('hidden'); });
 
+// ── "Install all" queue ──
+// There's no signal from the native side for when an install actually
+// finishes (Android's installer is a separate screen with no callback),
+// so this never tries to auto-advance. Tapping the action button both
+// starts that app's install AND immediately preps the next step, so
+// whatever the user comes back to is already the next one, ready to go.
+const installQueueModal = document.getElementById('installQueueModal');
+const installQueueTitle = document.getElementById('installQueueTitle');
+const installQueueList = document.getElementById('installQueueList');
+const installQueueActionBtn = document.getElementById('installQueueActionBtn');
+let installQueueApps = [];
+let installQueueIndex = 0;
+
+function hasAndroidBridge() { return !!(window.AndroidBridge && typeof AndroidBridge.downloadApp === 'function'); }
+
+function openInstallQueue(apps, title) {
+  installQueueApps = apps;
+  installQueueIndex = 0;
+  installQueueTitle.textContent = title;
+  renderInstallQueueUI();
+  installQueueModal.classList.remove('hidden');
+  setTimeout(() => { try { installQueueActionBtn.focus(); } catch(e) {} }, 60);
+}
+
+function renderInstallQueueUI() {
+  installQueueList.innerHTML = installQueueApps.map((a, i) => {
+    const state = i < installQueueIndex ? 'done' : (i === installQueueIndex ? 'current' : '');
+    const num = i < installQueueIndex ? '✓' : String(i + 1);
+    return `<div class="install-queue-item ${state}"><span class="iq-num">${num}</span>${esc(a.name)}</div>`;
+  }).join('');
+
+  if (installQueueIndex >= installQueueApps.length) {
+    installQueueActionBtn.textContent = 'All done!';
+    installQueueActionBtn.disabled = true;
+  } else {
+    installQueueActionBtn.disabled = false;
+    installQueueActionBtn.textContent = 'Install ' + installQueueApps[installQueueIndex].name;
+  }
+}
+
+installQueueActionBtn.addEventListener('click', () => {
+  if (installQueueIndex >= installQueueApps.length) return;
+  const app = installQueueApps[installQueueIndex];
+  if (hasAndroidBridge()) {
+    try { AndroidBridge.downloadApp(appHref(app), app.name); } catch (e) {}
+  }
+  installQueueIndex++;
+  renderInstallQueueUI();
+});
+document.getElementById('installQueueClose').addEventListener('click', () => installQueueModal.classList.add('hidden'));
+installQueueModal.addEventListener('click', e => { if (e.target === installQueueModal) installQueueModal.classList.add('hidden'); });
+
 // ─────────────────────────────────────────────
 // INTERACTION
 // ─────────────────────────────────────────────
@@ -1730,12 +1841,13 @@ topbar.addEventListener('click', e => {
 });
 
 const ACTIONS = {
-  'unlock-ent':      openEntOverlay,
-  'go-entertainment': () => setView('entertainment'),
-  'check-updates':   checkForAppUpdates,
-  'change-model':    changeModel,
-  'install':         runInstallPrompt,
-  'howto':           () => howtoModal.classList.remove('hidden')
+  'unlock-ent':        openEntOverlay,
+  'go-entertainment':  () => setView('entertainment'),
+  'check-updates':     checkForAppUpdates,
+  'change-model':      changeModel,
+  'install':           runInstallPrompt,
+  'howto':             () => howtoModal.classList.remove('hidden'),
+  'install-all-livetv': () => openInstallQueue(byTag(openApps(), 'livetv'), 'Install Live TV apps')
 };
 
 document.addEventListener('click', e => {
@@ -1815,11 +1927,12 @@ document.addEventListener('keydown', e => {
     if (!howtoModal.classList.contains('hidden')) { howtoModal.classList.add('hidden'); return; }
     if (!whatsNewModal.classList.contains('hidden')) { dismissWhatsNew(whatsNewModal.dataset.maxId); return; }
     if (!preinstalledModal.classList.contains('hidden')) { preinstalledModal.classList.add('hidden'); return; }
+    if (!installQueueModal.classList.contains('hidden')) { installQueueModal.classList.add('hidden'); return; }
     if (!shell.classList.contains('hidden') && currentView !== 'home') { setView('home'); return; }
     return;
   }
   if (shell.classList.contains('hidden')) return;
-  if (!entOverlay.classList.contains('hidden') || !howtoModal.classList.contains('hidden') || !whatsNewModal.classList.contains('hidden') || !preinstalledModal.classList.contains('hidden')) return;
+  if (!entOverlay.classList.contains('hidden') || !howtoModal.classList.contains('hidden') || !whatsNewModal.classList.contains('hidden') || !preinstalledModal.classList.contains('hidden') || !installQueueModal.classList.contains('hidden')) return;
 
   const dir = DIRS[e.key] || DIRS[e.keyCode];
   if (!dir) return;

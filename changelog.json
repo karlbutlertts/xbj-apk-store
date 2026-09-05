@@ -20,5 +20,13 @@
       "The Entertainment unlock screen now has a \"Generate my code\" button — get instant access without messaging us, no need to wait for a reply",
       "Self-generated codes are valid for 60 seconds, so they can't be shared around after the fact"
     ]
+  },
+  {
+    "id": 3,
+    "date": "5 September 2026",
+    "title": "Install all Live TV apps in one go",
+    "items": [
+      "The Live TV section now has an \"Install all\" button — installs BBC iPlayer, ITVX, Channel 4 and My5 one after another instead of finding and installing each one yourself"
+    ]
   }
 ]
