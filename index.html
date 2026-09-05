@@ -423,13 +423,19 @@ body {
 }
 .ent-cancel-btn:hover { color:var(--text); }
 .ent-generate-btn {
-  display:block; margin:2px auto 16px; background:transparent; color:var(--accent);
-  border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700;
-  text-decoration:underline; cursor:pointer; padding:6px; outline:none;
+  display:block; margin:2px auto 16px; background:rgba(90,166,255,0.14); color:var(--accent);
+  border:1px solid rgba(90,166,255,0.4); border-radius:999px;
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:800;
+  cursor:pointer; padding:10px 22px; outline:none;
+  animation:generateBtnPulse 1.8s ease-in-out infinite;
 }
 .ent-generate-btn:hover { color:var(--text); }
-.ent-generate-btn:focus-visible, .ent-generate-btn.nav-focus { color:var(--text); box-shadow:0 0 0 2px var(--accent); border-radius:6px; }
-.ent-generate-btn:disabled { opacity:0.6; cursor:default; text-decoration:none; }
+.ent-generate-btn:focus-visible, .ent-generate-btn.nav-focus { color:var(--text); box-shadow:0 0 0 3px var(--accent); }
+.ent-generate-btn:disabled { opacity:0.6; cursor:default; animation:none; box-shadow:none; }
+@keyframes generateBtnPulse {
+  0%, 100% { box-shadow:0 0 0 0 rgba(90,166,255,0.55); }
+  50% { box-shadow:0 0 0 9px rgba(90,166,255,0); }
+}
 .ent-generated-code {
   margin:0 0 16px; padding:14px 18px; border-radius:14px;
   background:rgba(90,166,255,0.12); border:1px solid rgba(90,166,255,0.35);
@@ -1576,7 +1582,11 @@ function openEntOverlay() {
   entGenerateBtn.textContent = 'Generate my code';
   entGeneratedAt = 0;
   entOverlay.classList.remove('hidden');
-  setTimeout(() => { try { entInput.focus(); } catch(e) {} }, 50);
+  // Focus the Generate button, not the code field — focusing the field
+  // auto-opens the on-screen keyboard before the user's done anything,
+  // and most people don't have a code memorised anyway. This nudges them
+  // toward the actual first step instead.
+  setTimeout(() => { try { entGenerateBtn.focus(); } catch(e) {} }, 50);
 }
 
 // Reachable only from inside the already-unlocked shell, so anyone who can
