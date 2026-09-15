@@ -197,36 +197,19 @@
     "name": "STV Player",
     "abbr": "ST",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/stv.png",
+    "file": "STVPlayer.apk",
     "packageName": "tv.stv.android.player",
     "versionCode": 460,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "57.3 MB",
+    "size": "26.0 MB",
     "rating": 4.2,
     "color": "linear-gradient(145deg,#e63329,#7a0a05)",
     "updated": "September 2026",
     "downloads": "New",
-    "updatedAt": "2026-09-15T00:00:00Z",
-    "splits": [
-      {
-        "file": "stv_base.apk",
-        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/stv_base.apk"
-      },
-      {
-        "file": "stv_split_armeabi_v7a.apk",
-        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/stv_split_armeabi_v7a.apk"
-      },
-      {
-        "file": "stv_split_en.apk",
-        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/stv_split_en.apk"
-      },
-      {
-        "file": "stv_split_mdpi.apk",
-        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/stv_split_mdpi.apk"
-      }
-    ]
+    "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
     "models": ["all"],
@@ -271,36 +254,19 @@
     "name": "ITVX",
     "abbr": "IT",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/itvx.png",
+    "file": "ITVX.apk",
     "packageName": "air.ITVMobilePlayer",
     "versionCode": 1301717000,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "35.9 MB",
+    "size": "36.0 MB",
     "rating": 4.0,
     "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
     "updated": "September 2026",
     "downloads": "1.3k",
-    "updatedAt": "2026-09-15T00:00:00Z",
-    "splits": [
-      {
-        "file": "itv_base.apk",
-        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/itv_base.apk"
-      },
-      {
-        "file": "itv_split_armeabi_v7a.apk",
-        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/itv_split_armeabi_v7a.apk"
-      },
-      {
-        "file": "itv_split_en.apk",
-        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/itv_split_en.apk"
-      },
-      {
-        "file": "itv_split_xxhdpi.apk",
-        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/itv_split_xxhdpi.apk"
-      }
-    ]
+    "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
     "models": ["all"],
