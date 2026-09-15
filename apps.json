@@ -24,17 +24,17 @@
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
     "file": "ProjectorGuyApp.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 18,
+    "versionCode": 19,
     "category": "Tools",
     "tags": [
       "tools"
     ],
-    "size": "3 MB",
+    "size": "2.4 MB",
     "rating": 5.0,
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
     "updated": "September 2026",
     "downloads": "New",
-    "updatedAt": "2026-09-05T00:00:00Z"
+    "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
     "models": ["a5pro"],
@@ -197,19 +197,36 @@
     "name": "STV Player",
     "abbr": "ST",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/stv.png",
-    "file": "STVPlayer.apk",
     "packageName": "tv.stv.android.player",
     "versionCode": 460,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "52.9 MB",
+    "size": "57.3 MB",
     "rating": 4.2,
     "color": "linear-gradient(145deg,#e63329,#7a0a05)",
     "updated": "September 2026",
     "downloads": "New",
-    "updatedAt": "2026-09-15T00:00:00Z"
+    "updatedAt": "2026-09-15T00:00:00Z",
+    "splits": [
+      {
+        "file": "stv_base.apk",
+        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/stv_base.apk"
+      },
+      {
+        "file": "stv_split_armeabi_v7a.apk",
+        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/stv_split_armeabi_v7a.apk"
+      },
+      {
+        "file": "stv_split_en.apk",
+        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/stv_split_en.apk"
+      },
+      {
+        "file": "stv_split_mdpi.apk",
+        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/stv_split_mdpi.apk"
+      }
+    ]
   },
   {
     "models": ["all"],
@@ -254,19 +271,36 @@
     "name": "ITVX",
     "abbr": "IT",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/itvx.png",
-    "file": "ITVX.apk",
-    "packageName": "com.itv.itvplayer",
-    "versionCode": 1,
+    "packageName": "air.ITVMobilePlayer",
+    "versionCode": 1301717000,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "7 MB",
+    "size": "35.9 MB",
     "rating": 4.0,
     "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
-    "updated": "June 2026",
+    "updated": "September 2026",
     "downloads": "1.3k",
-    "updatedAt": "2026-06-08T00:00:00Z"
+    "updatedAt": "2026-09-15T00:00:00Z",
+    "splits": [
+      {
+        "file": "itv_base.apk",
+        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/itv_base.apk"
+      },
+      {
+        "file": "itv_split_armeabi_v7a.apk",
+        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/itv_split_armeabi_v7a.apk"
+      },
+      {
+        "file": "itv_split_en.apk",
+        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/itv_split_en.apk"
+      },
+      {
+        "file": "itv_split_xxhdpi.apk",
+        "url": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/apks/itv_split_xxhdpi.apk"
+      }
+    ]
   },
   {
     "models": ["all"],
@@ -316,7 +350,7 @@
     "rating": 4.5,
     "color": "linear-gradient(145deg,#4f7cff,#7b2ff7)",
     "updated": "September 2026",
-    "downloads": "The ultimate media library for Android TV",
+    "downloads": "Discover, browse and download trending apps for Android TV",
     "updatedAt": "2026-09-15T00:00:00Z"
   },
   {

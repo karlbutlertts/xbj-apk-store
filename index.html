@@ -1130,6 +1130,11 @@ function newestFirst(list) {
   return list.slice().sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
 }
 function appHref(a) { return a.url || APK_BASE_URL + a.file; }
+function hasSplits(a) { return !!(a.splits && Array.isArray(a.splits) && a.splits.length > 0); }
+function getSplitUrls(a) {
+  if (!hasSplits(a)) return [];
+  return a.splits.map(s => s.url || (APK_BASE_URL + s.file));
+}
 function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ─────────────────────────────────────────────
@@ -1869,7 +1874,26 @@ shell.addEventListener('click', e => {
   const link = e.target.closest('a[data-app]');
   if (!link) return;
   e.preventDefault();
-  try { AndroidBridge.downloadApp(link.getAttribute('href'), link.dataset.app); } catch (err) {}
+  const appName = link.dataset.app;
+  const app = apps.find(a => a.name === appName);
+
+  // Handle split APKs if available
+  if (app && hasSplits(app)) {
+    const splitUrls = getSplitUrls(app);
+    try {
+      if (typeof AndroidBridge.downloadAppSplits === 'function') {
+        AndroidBridge.downloadAppSplits(JSON.stringify(splitUrls), appName);
+      } else {
+        // Fallback: download splits individually
+        splitUrls.forEach((url, idx) => {
+          AndroidBridge.downloadApp(url, appName + ' (split ' + (idx + 1) + ')');
+        });
+      }
+    } catch (err) {}
+  } else {
+    // Regular single APK download
+    try { AndroidBridge.downloadApp(link.getAttribute('href'), appName); } catch (err) {}
+  }
 });
 
 // ─────────────────────────────────────────────
