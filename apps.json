@@ -161,17 +161,17 @@
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/bbciplayer.png",
     "file": "BBCiPlayer.apk",
     "packageName": "bbc.iplayer.android",
-    "versionCode": 1,
+    "versionCode": 10081,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "6 MB",
+    "size": "19 MB",
     "rating": 4.8,
     "color": "linear-gradient(145deg,#e6197e,#7a0c46)",
-    "updated": "June 2026",
+    "updated": "September 2026",
     "downloads": "2.2k",
-    "updatedAt": "2026-06-08T00:00:00Z"
+    "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
     "models": ["all"],
