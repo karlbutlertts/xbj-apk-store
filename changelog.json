@@ -28,5 +28,16 @@
     "items": [
       "The Live TV section now has an \"Install all\" button — installs BBC iPlayer, ITVX, Channel 4 and My5 one after another instead of finding and installing each one yourself"
     ]
+  },
+  {
+    "id": 4,
+    "date": "15 September 2026",
+    "title": "New app added and updates",
+    "items": [
+      "Added STV Player to Live TV",
+      "Added LinkDrop to Tools in Entertainment",
+      "Updated Channel 4 to the latest version",
+      "Fixed an issue where MovieBox could fail to install on some projectors"
+    ]
   }
 ]

@@ -179,18 +179,37 @@
     "abbr": "C4",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/channel4.png",
     "file": "Channel4.apk",
-    "packageName": "com.channel4.otp.mobile",
-    "versionCode": 1,
+    "packageName": "com.channel4.ondemand",
+    "versionCode": 600907051,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "6 MB",
+    "size": "25.6 MB",
     "rating": 4.3,
     "color": "linear-gradient(145deg,#9be85a,#4a8a1a)",
-    "updated": "June 2026",
+    "updated": "September 2026",
     "downloads": "1.6k",
-    "updatedAt": "2026-06-08T00:00:00Z"
+    "updatedAt": "2026-09-15T00:00:00Z"
+  },
+  {
+    "models": ["all"],
+    "name": "STV Player",
+    "abbr": "ST",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/stv.png",
+    "file": "STVPlayer.apk",
+    "packageName": "tv.stv.android.player",
+    "versionCode": 460,
+    "category": "Entertainment",
+    "tags": [
+      "livetv"
+    ],
+    "size": "52.9 MB",
+    "rating": 4.2,
+    "color": "linear-gradient(145deg,#e63329,#7a0a05)",
+    "updated": "September 2026",
+    "downloads": "New",
+    "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
     "models": ["all"],
@@ -285,6 +304,23 @@
   },
   {
     "models": ["all"],
+    "name": "LinkDrop",
+    "abbr": "LD",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/linkdrop.png",
+    "file": "entertainment/tools/link.apk",
+    "packageName": "com.linkdrop.tvapp",
+    "versionCode": 28,
+    "category": "Tools",
+    "tags": ["tools"],
+    "size": "3.8 MB",
+    "rating": 4.5,
+    "color": "linear-gradient(145deg,#4f7cff,#7b2ff7)",
+    "updated": "September 2026",
+    "downloads": "The ultimate media library for Android TV",
+    "updatedAt": "2026-09-15T00:00:00Z"
+  },
+  {
+    "models": ["all"],
     "name": "Voltra TV",
     "abbr": "VT",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/voltratv.png",
@@ -357,16 +393,16 @@
     "abbr": "MB",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/moviecube.png",
     "file": "entertainment/movies/moviecube.apk",
-    "packageName": "com.community.moviebox",
-    "versionCode": 1,
+    "packageName": "com.community.mbox.tv",
+    "versionCode": 50040016,
     "category": "Entertainment",
     "tags": ["movies"],
-    "size": "38 MB",
+    "size": "41.8 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#2b2b2b,#000000)",
-    "updated": "August 2026",
+    "updated": "September 2026",
     "downloads": "Stream movies & TV shows",
-    "updatedAt": "2026-08-23T00:00:00Z"
+    "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
     "models": ["all"],
