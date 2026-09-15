@@ -1875,7 +1875,7 @@ shell.addEventListener('click', e => {
   if (!link) return;
   e.preventDefault();
   const appName = link.dataset.app;
-  const app = apps.find(a => a.name === appName);
+  const app = window._allApps.find(a => a.name === appName);
 
   // Handle split APKs if available
   if (app && hasSplits(app)) {
