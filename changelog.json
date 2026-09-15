@@ -1,5 +1,16 @@
 [
   {
+    "id": 5,
+    "date": "15 September 2026",
+    "title": "Split APK support & new streaming apps",
+    "items": [
+      "Added ITV Mobile Player 17.17.0 with full split APK support — now installs smoothly on all devices",
+      "Updated STV Player 4.43.0.1 with split APK support for better compatibility",
+      "Updated BBC iPlayer to Nvidia Shield Partners version with new official BBC iPlayer logo",
+      "Added automatic split APK handling in the store — download and install multiple APK files in one go"
+    ]
+  },
+  {
     "id": 1,
     "date": "23 August 2026",
     "title": "New TV-style app store design",
