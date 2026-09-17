@@ -8,19 +8,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="XBJ Remote">
-    <meta name="description" content="Control your XBJ projector from your phone — full D-pad, power, hotkeys, volume, and playback controls">
+    <meta name="description" content="Control your XBJ A5 Pro projector — D-pad, power, volume, focus, and streaming app hotkeys">
     <title>XBJ Remote Control</title>
     <link rel="manifest" href="manifest-remote.json">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%235aa6ff' width='192' height='192' rx='48'/><rect x='36' y='24' width='120' height='144' rx='18' fill='none' stroke='%23fff' stroke-width='8'/><circle cx='96' cy='48' r='8' fill='%23fff'/><rect x='60' y='72' width='72' height='56' rx='8' fill='none' stroke='%23fff' stroke-width='6'/><circle cx='96' cy='136' r='8' fill='%23fff'/></svg>">
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin:0; padding:0; box-sizing:border-box;
         }
 
         body {
-            font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+            font-family: 'DM Sans', system-ui, sans-serif;
             background: linear-gradient(135deg, #070a11 0%, #0f1318 100%);
             color: #ffffff;
             min-height: 100vh;
@@ -33,124 +31,6 @@
         .remote-container {
             width: 100%;
             max-width: 400px;
-        }
-
-        .discovery-section {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 26px;
-            padding: 32px 24px;
-            margin-bottom: 24px;
-            backdrop-filter: blur(10px);
-        }
-
-        .discovery-section h2 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .discovery-status {
-            text-align: center;
-            margin-bottom: 20px;
-            min-height: 24px;
-        }
-
-        .status-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .status-text.active {
-            color: #4ade80;
-        }
-
-        .status-text.error {
-            color: #f87171;
-        }
-
-        .projector-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 16px;
-        }
-
-        .projector-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .projector-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-
-        .projector-item.selected {
-            background: rgba(74, 222, 128, 0.1);
-            border-color: #4ade80;
-        }
-
-        .projector-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .projector-name {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .projector-ip {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .projector-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .projector-item.selected .projector-indicator {
-            background: #4ade80;
-            box-shadow: 0 0 12px rgba(74, 222, 128, 0.5);
-        }
-
-        .discovery-button {
-            width: 100%;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-            color: #0f172a;
-            border: none;
-            border-radius: 999px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-        }
-
-        .discovery-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(74, 222, 128, 0.3);
-        }
-
-        .discovery-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
         }
 
         .remote-section {
@@ -168,16 +48,10 @@
             text-align: center;
         }
 
-        .remote-section.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
         .remote-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
-            margin-bottom: 24px;
         }
 
         .power-button {
@@ -197,14 +71,8 @@
             gap: 8px;
         }
 
-        .power-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(239, 68, 68, 0.3);
-        }
-
-        .power-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .power-button:active {
+            transform: scale(0.95);
         }
 
         .dpad {
@@ -212,7 +80,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
-            margin-bottom: 12px;
+            margin: 12px 0;
             aspect-ratio: 1;
         }
 
@@ -231,15 +99,9 @@
             font-weight: 600;
         }
 
-        .dpad-button:hover:not(:disabled) {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        .dpad-button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
+        .dpad-button:active {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            transform: scale(0.9);
         }
 
         .center-button {
@@ -253,7 +115,6 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
             margin-top: 12px;
-            margin-bottom: 12px;
         }
 
         .hotkey-button {
@@ -273,15 +134,9 @@
             padding: 8px;
         }
 
-        .hotkey-button:hover:not(:disabled) {
+        .hotkey-button:active {
             background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
-            border-color: rgba(96, 165, 250, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .hotkey-button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
+            transform: scale(0.95);
         }
 
         .controls {
@@ -289,6 +144,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
+            margin-top: 12px;
         }
 
         .control-button {
@@ -308,37 +164,26 @@
             padding: 8px;
         }
 
-        .control-button:hover:not(:disabled) {
+        .control-button:active {
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(147, 51, 234, 0.1) 100%);
-            border-color: rgba(168, 85, 247, 0.4);
-            transform: translateY(-2px);
+            transform: scale(0.95);
         }
 
-        .control-button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
+        .status {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 16px;
+            min-height: 20px;
         }
 
-        .volume-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+        .status.success {
+            color: #4ade80;
         }
 
-        .volume-controls button {
-            flex: 1;
-            aspect-ratio: 1;
-        }
-
-        .focus-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .focus-controls button {
-            flex: 1;
-            aspect-ratio: 1;
+        .status.error {
+            color: #f87171;
         }
 
         .back-button {
@@ -362,78 +207,18 @@
         .back-button:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-
-        .connection-error {
-            display: none;
-            grid-column: 1 / -1;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 12px;
-            padding: 12px 16px;
-            color: #fca5a5;
-            font-size: 13px;
-            margin-top: 16px;
-        }
-
-        .connection-error.show {
-            display: block;
-        }
-
-        @media (max-width: 600px) {
-            .remote-container {
-                max-width: 100%;
-            }
-
-            .discovery-section,
-            .remote-section {
-                padding: 24px 16px;
-            }
-
-            .remote-grid {
-                gap: 10px;
-            }
-
-            .power-button {
-                font-size: 14px;
-            }
-
-            .dpad-button {
-                font-size: 18px;
-            }
-
-            .hotkey-button,
-            .control-button {
-                font-size: 11px;
-            }
-        }
     </style>
 </head>
 <body>
     <button class="back-button" onclick="goHome()">←</button>
 
     <div class="remote-container">
-        <div class="discovery-section">
-            <h2>XBJ Projector</h2>
-
-            <div class="discovery-status">
-                <div class="status-text" id="discoveryStatus">Discovering projectors...</div>
-            </div>
-
-            <div class="projector-list" id="projectorList"></div>
-
-            <button class="discovery-button" id="discoverButton" onclick="startDiscovery()">
-                🔍 Discover Projectors
-            </button>
-        </div>
-
-        <div class="remote-section" id="remoteSection">
-            <h2>Remote Control</h2>
+        <div class="remote-section">
+            <h2>XBJ A5 Pro Remote</h2>
 
             <div class="remote-grid">
                 <!-- Power -->
-                <button class="power-button" onclick="sendCommand('power')">
-                    ⏻ Power
-                </button>
+                <button class="power-button" onclick="sendCommand('power')">⏻ Power</button>
 
                 <!-- D-Pad -->
                 <div class="dpad">
@@ -450,36 +235,25 @@
                     <div class="dpad-empty"></div>
                 </div>
 
-                <!-- Hotkey Buttons -->
+                <!-- Hotkeys -->
                 <div class="hotkeys">
                     <button class="hotkey-button" onclick="sendCommand('netflix')">Netflix</button>
-                    <button class="hotkey-button" onclick="sendCommand('youtube')">YouTube</button>
-                    <button class="hotkey-button" onclick="sendCommand('hulu')">Hulu</button>
                     <button class="hotkey-button" onclick="sendCommand('disney')">Disney+</button>
+                    <button class="hotkey-button" onclick="sendCommand('youtube')">YouTube</button>
+                    <button class="hotkey-button" onclick="sendCommand('prime')">Prime</button>
                 </div>
 
                 <!-- Controls -->
                 <div class="controls">
-                    <div class="volume-controls">
-                        <button class="control-button" onclick="sendCommand('volumeDown')">🔊−</button>
-                        <span style="flex: 1;"></span>
-                        <button class="control-button" onclick="sendCommand('volumeUp')">🔊+</button>
-                    </div>
+                    <button class="control-button" onclick="sendCommand('volumeDown')">🔊−</button>
                     <button class="control-button" onclick="sendCommand('menu')">≡ Menu</button>
-                    <div class="focus-controls">
-                        <button class="control-button" onclick="sendCommand('focusDown')">F−</button>
-                        <button class="control-button" onclick="sendCommand('focusUp')">F+</button>
-                    </div>
-                </div>
-
-                <!-- Playback -->
-                <div style="grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                    <button class="control-button" onclick="sendCommand('rewind')">⏪</button>
+                    <button class="control-button" onclick="sendCommand('volumeUp')">🔊+</button>
+                    <button class="control-button" onclick="sendCommand('focusDown')">F−</button>
                     <button class="control-button" onclick="sendCommand('pause')">⏸</button>
-                    <button class="control-button" onclick="sendCommand('forward')">⏩</button>
+                    <button class="control-button" onclick="sendCommand('focusUp')">F+</button>
                 </div>
 
-                <div class="connection-error" id="connectionError"></div>
+                <div class="status" id="status"></div>
             </div>
         </div>
     </div>
@@ -492,139 +266,57 @@
                 .catch(err => console.warn('Remote SW registration failed:', err));
         }
 
-        const DISCOVERY_PORT = 5555;
-        let selectedProjector = null;
-        let projectors = [];
-
         function goHome() {
-            window.location.href = window.location.href.split('/').slice(0, -1).join('/');
-        }
-
-        async function startDiscovery() {
-            const button = document.getElementById('discoverButton');
-            const status = document.getElementById('discoveryStatus');
-
-            button.disabled = true;
-            status.textContent = '🔍 Scanning network...';
-            status.className = 'status-text';
-            projectors = [];
-            document.getElementById('projectorList').innerHTML = '';
-
-            try {
-                // Try to use AndroidBridge if available
-                if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.discoverProjectors) {
-                    const found = window.AndroidBridge.discoverProjectors();
-                    if (found) {
-                        projectors = JSON.parse(found);
-                    }
-                }
-
-                // Fallback: simulate local discovery for testing
-                if (projectors.length === 0) {
-                    projectors = [
-                        { name: 'XBJ A5 Pro', ip: '192.168.1.187', model: 'A5' },
-                        { name: 'XBJ Home Cinema', ip: '192.168.1.150', model: 'Home' },
-                        { name: '📱 Demo Mode (Test UI)', ip: 'DEMO', model: 'Demo' }
-                    ];
-                }
-
-                updateProjectorList();
-                status.textContent = '✓ ' + projectors.length + ' device(s) found – tap to select';
-                status.className = 'status-text active';
-            } catch (err) {
-                status.textContent = '✗ Discovery failed';
-                status.className = 'status-text error';
-                console.error('Discovery failed:', err);
-            } finally {
-                button.disabled = false;
-            }
-        }
-
-        function updateProjectorList() {
-            const list = document.getElementById('projectorList');
-            list.innerHTML = projectors.map((proj, idx) => `
-                <div class="projector-item ${selectedProjector === idx ? 'selected' : ''}" onclick="selectProjector(${idx})">
-                    <div class="projector-info">
-                        <div class="projector-name">${proj.name}</div>
-                        <div class="projector-ip">${proj.ip}</div>
-                    </div>
-                    <div class="projector-indicator"></div>
-                </div>
-            `).join('');
-        }
-
-        function selectProjector(idx) {
-            selectedProjector = idx;
-            updateProjectorList();
-            document.getElementById('remoteSection').classList.remove('disabled');
+            window.history.back();
         }
 
         async function sendCommand(command) {
-            if (selectedProjector === null) {
-                showError('Please select a projector first');
-                return;
-            }
-
-            const projector = projectors[selectedProjector];
-            const error = document.getElementById('connectionError');
-            error.classList.remove('show');
-
-            // Demo mode: show what command was sent
-            if (projector.ip === 'DEMO') {
-                console.log('DEMO MODE — Command sent:', command);
-                error.classList.remove('show');
-                const statusEl = document.getElementById('discoveryStatus');
-                statusEl.textContent = '✓ Command sent: ' + command;
-                statusEl.className = 'status-text active';
-                setTimeout(() => {
-                    statusEl.textContent = '✓ Demo mode active';
-                }, 2000);
-                return;
-            }
+            const status = document.getElementById('status');
+            status.className = 'status';
+            status.textContent = '⏳ Sending...';
 
             try {
-                // Try native bridge first (only in Projector Guy app)
-                if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.sendProjectorCommand) {
-                    console.log('Using native bridge for:', command);
-                    const result = window.AndroidBridge.sendProjectorCommand(projector.ip, command);
-                    if (result === 'error') {
-                        showError('Failed to send command to projector');
-                    } else {
-                        console.log('Command sent successfully');
-                    }
+                if (typeof window.AndroidBridge === 'undefined') {
+                    status.textContent = '⚠ Open in Projector Guy app';
+                    status.className = 'status error';
+                    console.warn('AndroidBridge not available — open this in the Projector Guy app');
                     return;
                 }
 
-                // Fallback: HTTP request (for testing on web with real projector)
-                console.log('Sending HTTP command to', projector.ip + ':5555');
-                const response = await fetch(`http://${projector.ip}:5555/command`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ command }),
-                    timeout: 5000
-                });
+                const result = window.AndroidBridge.sendProjectorCommand('local', command);
 
-                if (!response.ok) {
-                    showError('Projector not responding (HTTP ' + response.status + ')');
+                if (result === 'ok') {
+                    status.textContent = '✓ ' + command;
+                    status.className = 'status success';
                 } else {
-                    console.log('Command successful');
+                    status.textContent = '✗ Failed: ' + command;
+                    status.className = 'status error';
                 }
+
+                console.log('Command result:', command, result);
+
+                setTimeout(() => {
+                    status.className = 'status';
+                    status.textContent = '';
+                }, 2000);
             } catch (err) {
+                status.textContent = '✗ Error: ' + err.message;
+                status.className = 'status error';
                 console.error('Command failed:', err);
-                showError('Connection failed: ' + err.message);
             }
         }
 
-        function showError(message) {
-            const error = document.getElementById('connectionError');
-            error.textContent = '⚠ ' + message;
-            error.classList.add('show');
-        }
-
-        // Auto-discover on load
+        // Show status on load
         window.addEventListener('load', () => {
-            document.getElementById('remoteSection').classList.add('disabled');
-            startDiscovery();
+            if (typeof window.AndroidBridge !== 'undefined') {
+                const status = document.getElementById('status');
+                status.textContent = '✓ Connected to projector';
+                status.className = 'status success';
+                setTimeout(() => {
+                    status.className = 'status';
+                    status.textContent = '';
+                }, 2000);
+            }
         });
     </script>
 </body>
