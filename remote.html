@@ -2,8 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#070a11">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="XBJ Remote">
+    <meta name="description" content="Control your XBJ projector from your phone — full D-pad, power, hotkeys, volume, and playback controls">
     <title>XBJ Remote Control</title>
+    <link rel="manifest" href="manifest-remote.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%235aa6ff' width='192' height='192' rx='48'/><rect x='36' y='24' width='120' height='144' rx='18' fill='none' stroke='%23fff' stroke-width='8'/><circle cx='96' cy='48' r='8' fill='%23fff'/><rect x='60' y='72' width='72' height='56' rx='8' fill='none' stroke='%23fff' stroke-width='6'/><circle cx='96' cy='136' r='8' fill='%23fff'/></svg>">
     <style>
         * {
             margin: 0;
@@ -477,6 +485,13 @@
     </div>
 
     <script>
+        // Register service worker for offline support
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker-remote.js', { scope: '/xbj-apk-store/' })
+                .then(reg => console.log('Remote SW registered'))
+                .catch(err => console.warn('Remote SW registration failed:', err));
+        }
+
         const DISCOVERY_PORT = 5555;
         let selectedProjector = null;
         let projectors = [];
