@@ -1,5 +1,18 @@
 [
   {
+    "id": 6,
+    "date": "17 September 2026",
+    "title": "XBJ Remote Control added",
+    "items": [
+      "New Remote Control page — control your XBJ projector from the Projector Guy app",
+      "Full D-pad navigation with power, menu, and OK buttons",
+      "Quick-access hotkeys for Netflix, YouTube, Hulu and Disney+",
+      "Volume and focus controls, plus playback buttons",
+      "Automatic projector discovery on your local network",
+      "Works with the native Projector Guy app — just tap Remote in the sidebar"
+    ]
+  },
+  {
     "id": 5,
     "date": "15 September 2026",
     "title": "Split APK support & new streaming apps",
