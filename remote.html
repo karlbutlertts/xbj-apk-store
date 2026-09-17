@@ -213,6 +213,13 @@
     <button class="back-button" onclick="goHome()">←</button>
 
     <div class="remote-container">
+        <!-- QR Code Section -->
+        <div class="remote-section" id="qrSection" style="text-align: center; padding: 24px; margin-bottom: 20px;">
+            <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 12px;">📱 Save to Home Screen</div>
+            <div id="qrCode" style="display: inline-block; padding: 16px; background: white; border-radius: 16px;"></div>
+            <div style="font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 12px;">Scan to add remote to your phone</div>
+        </div>
+
         <div class="remote-section">
             <h2>XBJ A5 Pro Remote</h2>
 
@@ -258,7 +265,24 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
+        // Generate QR code for this page
+        function generateQR() {
+            const url = window.location.href;
+            const qrElement = document.getElementById('qrCode');
+            if (qrElement && qrElement.children.length === 0) {
+                new QRCode(qrElement, {
+                    text: url,
+                    width: 200,
+                    height: 200,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+        }
+
         // Register service worker for offline support
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker-remote.js', { scope: '/xbj-apk-store/' })
@@ -306,8 +330,12 @@
             }
         }
 
-        // Show status on load
+        // Show status on load and generate QR code
         window.addEventListener('load', () => {
+            // Generate QR code
+            generateQR();
+
+            // Show connection status
             if (typeof window.AndroidBridge !== 'undefined') {
                 const status = document.getElementById('status');
                 status.textContent = '✓ Connected to projector';
