@@ -523,12 +523,13 @@
                 if (projectors.length === 0) {
                     projectors = [
                         { name: 'XBJ A5 Pro', ip: '192.168.1.187', model: 'A5' },
-                        { name: 'XBJ Home Cinema', ip: '192.168.1.150', model: 'Home' }
+                        { name: 'XBJ Home Cinema', ip: '192.168.1.150', model: 'Home' },
+                        { name: '📱 Demo Mode (Test UI)', ip: 'DEMO', model: 'Demo' }
                     ];
                 }
 
                 updateProjectorList();
-                status.textContent = '✓ ' + projectors.length + ' projector(s) found';
+                status.textContent = '✓ ' + projectors.length + ' device(s) found – tap to select';
                 status.className = 'status-text active';
             } catch (err) {
                 status.textContent = '✗ Discovery failed';
@@ -568,27 +569,48 @@
             const error = document.getElementById('connectionError');
             error.classList.remove('show');
 
+            // Demo mode: show what command was sent
+            if (projector.ip === 'DEMO') {
+                console.log('DEMO MODE — Command sent:', command);
+                error.classList.remove('show');
+                const statusEl = document.getElementById('discoveryStatus');
+                statusEl.textContent = '✓ Command sent: ' + command;
+                statusEl.className = 'status-text active';
+                setTimeout(() => {
+                    statusEl.textContent = '✓ Demo mode active';
+                }, 2000);
+                return;
+            }
+
             try {
-                // Try native bridge first
+                // Try native bridge first (only in Projector Guy app)
                 if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.sendProjectorCommand) {
+                    console.log('Using native bridge for:', command);
                     const result = window.AndroidBridge.sendProjectorCommand(projector.ip, command);
                     if (result === 'error') {
                         showError('Failed to send command to projector');
+                    } else {
+                        console.log('Command sent successfully');
                     }
                     return;
                 }
 
-                // Fallback: HTTP request (for testing on web)
+                // Fallback: HTTP request (for testing on web with real projector)
+                console.log('Sending HTTP command to', projector.ip + ':5555');
                 const response = await fetch(`http://${projector.ip}:5555/command`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ command })
+                    body: JSON.stringify({ command }),
+                    timeout: 5000
                 });
 
                 if (!response.ok) {
-                    showError('Projector not responding');
+                    showError('Projector not responding (HTTP ' + response.status + ')');
+                } else {
+                    console.log('Command successful');
                 }
             } catch (err) {
+                console.error('Command failed:', err);
                 showError('Connection failed: ' + err.message);
             }
         }
