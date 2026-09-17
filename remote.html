@@ -267,9 +267,21 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
+        // Prefer this device's own LAN address (served by the app's embedded
+        // Remote server) over window.location.href — a phone can't fetch()
+        // that server's plain-HTTP endpoint from this page's HTTPS origin
+        // (mixed-content blocking), so the link/QR must point at the LAN copy.
+        function getShareUrl() {
+            if (window.AndroidBridge && typeof window.AndroidBridge.getLocalRemoteUrl === 'function') {
+                const url = window.AndroidBridge.getLocalRemoteUrl();
+                if (url) return url;
+            }
+            return window.location.href;
+        }
+
         // Generate QR code for this page
         function generateQR() {
-            const url = window.location.href;
+            const url = getShareUrl();
             const qrElement = document.getElementById('qrCode');
             if (qrElement && qrElement.children.length === 0) {
                 new QRCode(qrElement, {
@@ -283,9 +295,12 @@
             }
         }
 
-        // Register service worker for offline support
+        // Register service worker for offline support. No explicit scope —
+        // this page is served from two different roots (GitHub Pages at
+        // /xbj-apk-store/, or the app's local LAN server at /), and an
+        // explicit scope only matches one of them.
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker-remote.js', { scope: '/xbj-apk-store/' })
+            navigator.serviceWorker.register('service-worker-remote.js')
                 .then(reg => console.log('Remote SW registered'))
                 .catch(err => console.warn('Remote SW registration failed:', err));
         }
@@ -300,14 +315,16 @@
             status.textContent = '⏳ Sending...';
 
             try {
-                if (typeof window.AndroidBridge === 'undefined') {
-                    status.textContent = '⚠ Open in Projector Guy app';
-                    status.className = 'status error';
-                    console.warn('AndroidBridge not available — open this in the Projector Guy app');
-                    return;
+                let result;
+                if (typeof window.AndroidBridge !== 'undefined') {
+                    // Running inside the Projector Guy app's own WebView.
+                    result = window.AndroidBridge.sendProjectorCommand('local', command);
+                } else {
+                    // Running on a phone, loaded from the app's local LAN
+                    // server — same-origin fetch, so no CORS/mixed-content issue.
+                    const response = await fetch('/command?cmd=' + encodeURIComponent(command));
+                    result = (await response.text()).trim();
                 }
-
-                const result = window.AndroidBridge.sendProjectorCommand('local', command);
 
                 if (result === 'ok') {
                     status.textContent = '✓ ' + command;

@@ -1,7 +1,7 @@
 const CACHE_NAME = 'xbj-remote-v1';
 const ASSETS_TO_CACHE = [
-  '/xbj-apk-store/remote.html',
-  '/xbj-apk-store/manifest-remote.json'
+  './remote.html',
+  './manifest-remote.json'
 ];
 
 // Install: cache assets
@@ -73,7 +73,7 @@ self.addEventListener('fetch', event => {
       })
       .catch(() => {
         // Network error and not in cache — return cached version if available
-        return caches.match('/xbj-apk-store/remote.html');
+        return caches.match('./remote.html');
       })
   );
 });
