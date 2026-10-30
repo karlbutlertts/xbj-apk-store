@@ -702,7 +702,7 @@ body {
     </div>
     <div class="lock-input-row">
       <input id="lockUser" class="lock-input lock-input-text" type="text" placeholder="Your TikTok username" autocomplete="off" autocapitalize="none" maxlength="40">
-      <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="12" placeholder="• • • • • •" autocomplete="off">
+      <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="12" placeholder="6-digit PIN or 12-digit backup" autocomplete="off">
     </div>
     <button id="lockBtn" class="lock-btn">Unlock</button>
     <div id="lockMsg" class="lock-msg"></div>
@@ -1626,7 +1626,7 @@ async function tryUnlock() {
 lockUser.addEventListener('keydown', e => { if (e.key === 'Enter') lockInput.focus(); });
 lockBtn.addEventListener('click', tryUnlock);
 lockInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
-lockInput.addEventListener('input', () => { lockInput.value = lockInput.value.replace(/\D/g, '').slice(0, 6); });
+lockInput.addEventListener('input', () => { lockInput.value = lockInput.value.replace(/\D/g, '').slice(0, 12); });
 
 // ── Add to Home Screen — surfaced as a row in Preferences ──
 window._deferredInstallPrompt = null;
