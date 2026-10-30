@@ -1,5 +1,13 @@
 [
   {
+    "id": 10,
+    "date": "30 October 2026",
+    "title": "Live TV guide added",
+    "items": [
+      "TellyGrid Live TV Guide is now available in the Live TV section, alongside BBC iPlayer, Channel 4 and My5."
+    ]
+  },
+  {
     "id": 9,
     "date": "30 October 2026",
     "title": "Original A5 Pro YouTube restored",
