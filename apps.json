@@ -615,27 +615,27 @@
     "name": "YouTube",
     "abbr": "YT",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/youtube.png",
-    "file": "YouTube-5.30.340.apks",
+    "file": "YouTube-5.30.304-A5.apks",
     "packageName": "com.google.android.youtube.tv",
-    "versionCode": 530340320,
-    "versionName": "5.30.340",
+    "versionCode": 530304320,
+    "versionName": "5.30.304",
     "minSdk": 24,
     "category": "Entertainment",
     "tags": [
       "streaming"
     ],
-    "size": "49 MB",
+    "size": "45.5 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#ff2525,#a80000)",
     "updated": "30 October 2026",
-    "downloads": "TV app · A5 Pro playback tested",
-    "updatedAt": "2026-10-30T15:39:03.827162Z",
+    "downloads": "Original A5 Pro version · Google signed",
+    "updatedAt": "2026-10-30T17:30:13.256137Z",
     "splits": [
       {
-        "file": "YouTube-5.30.340-base.apk"
+        "file": "YouTube-5.30.304-base.apk"
       },
       {
-        "file": "YouTube-5.30.340-armeabi-v7a.apk"
+        "file": "YouTube-5.30.304-armeabi-v7a.apk"
       }
     ]
   }
