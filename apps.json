@@ -1,6 +1,8 @@
 [
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "Roblox",
     "abbr": "RB",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/roblox.png",
@@ -9,7 +11,9 @@
     "packageName": "com.roblox.client",
     "versionCode": 1,
     "category": "Entertainment",
-    "tags": ["streaming"],
+    "tags": [
+      "streaming"
+    ],
     "size": "100 MB",
     "rating": 4.4,
     "color": "linear-gradient(145deg,#414d5c,#12171e)",
@@ -63,8 +67,48 @@
     "versionName": "9.88.0 build 7 74729"
   },
   {
-    "models": ["all"],
+    "models": [
+      "a5pro",
+      "360"
+    ],
     "name": "Prime Video",
+    "abbr": "PV",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/primevideo.png",
+    "file": "PrimeVideo-6.24.13-A5.apks",
+    "packageName": "com.amazon.amazonvideo.livingroom",
+    "versionCode": 606024130,
+    "category": "Entertainment",
+    "tags": [
+      "streaming"
+    ],
+    "size": "23 MB",
+    "rating": 4.4,
+    "color": "linear-gradient(145deg,#29b6f6,#0a6ea8)",
+    "updated": "30 October 2026",
+    "downloads": "A5 Pro playback confirmed",
+    "updatedAt": "2026-10-30T15:30:00Z",
+    "versionName": "6.24.13+v16.0.1.93-allAbis",
+    "minSdk": 21,
+    "splits": [
+      {
+        "file": "PrimeVideo-6.24.13-base.apk"
+      },
+      {
+        "file": "PrimeVideo-6.24.13-armeabi-v7a.apk"
+      },
+      {
+        "file": "PrimeVideo-6.24.13-en.apk"
+      },
+      {
+        "file": "PrimeVideo-6.24.13-xhdpi.apk"
+      }
+    ]
+  },
+  {
+    "models": [
+      "other"
+    ],
+    "name": "Prime Video (legacy)",
     "abbr": "PV",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/primevideo.png",
     "file": "PrimeVideo.apk",
@@ -82,7 +126,9 @@
     "updatedAt": "2026-06-08T00:00:00Z"
   },
   {
-    "models": ["a5pro"],
+    "models": [
+      "a5pro"
+    ],
     "name": "Google Play Services",
     "abbr": "GS",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/googleplayservices.png",
@@ -102,7 +148,9 @@
     "updatedAt": "2026-06-08T00:00:00Z"
   },
   {
-    "models": ["a5pro"],
+    "models": [
+      "a5pro"
+    ],
     "name": "Google Play Store",
     "abbr": "GP",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/googleplaystore.png",
@@ -122,7 +170,9 @@
     "updatedAt": "2026-06-08T00:00:00Z"
   },
   {
-    "models": ["a5pro"],
+    "models": [
+      "a5pro"
+    ],
     "name": "NOW TV",
     "abbr": "NW",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/nowtv.png",
@@ -202,7 +252,9 @@
     "updatedAt": "2026-06-08T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "BBC iPlayer",
     "abbr": "iP",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/bbciplayer.png",
@@ -221,7 +273,9 @@
     "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "Channel 4",
     "abbr": "C4",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/channel4.png",
@@ -240,7 +294,9 @@
     "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "STV Player",
     "abbr": "ST",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/stv.png",
@@ -259,7 +315,9 @@
     "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "My5",
     "abbr": "M5",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/my5.png",
@@ -278,7 +336,9 @@
     "updatedAt": "2026-06-08T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "Downloader",
     "abbr": "DL",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/downloader.png",
@@ -297,7 +357,9 @@
     "updatedAt": "2026-06-08T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "ITVX",
     "abbr": "IT",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/itvx.png",
@@ -316,7 +378,9 @@
     "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "NetMirrorTV",
     "abbr": "NM",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/netmirrortv.png",
@@ -324,7 +388,9 @@
     "packageName": "app.netmirror.newtv",
     "versionCode": 1,
     "category": "Entertainment",
-    "tags": ["streaming"],
+    "tags": [
+      "streaming"
+    ],
     "size": "59 MB",
     "rating": 4.6,
     "color": "linear-gradient(145deg,#e2202f,#1a0505)",
@@ -333,7 +399,9 @@
     "updatedAt": "2026-08-12T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "Fluid Video Player",
     "abbr": "FV",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/fluidvideoplayer.png",
@@ -341,7 +409,9 @@
     "packageName": "com.player.bear",
     "versionCode": 2019046,
     "category": "Tools",
-    "tags": ["tools"],
+    "tags": [
+      "tools"
+    ],
     "size": "17 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#3a7bd5,#5b2c8f)",
@@ -350,7 +420,9 @@
     "updatedAt": "2026-08-11T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "LinkDrop",
     "abbr": "LD",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/linkdrop.png",
@@ -358,7 +430,9 @@
     "packageName": "com.linkdrop.tvapp",
     "versionCode": 28,
     "category": "Tools",
-    "tags": ["tools"],
+    "tags": [
+      "tools"
+    ],
     "size": "3.8 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#4f7cff,#7b2ff7)",
@@ -367,7 +441,9 @@
     "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "Voltra TV",
     "abbr": "VT",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/voltratv.png",
@@ -375,7 +451,9 @@
     "packageName": "com.amhkor.voltratv",
     "versionCode": 11,
     "category": "Entertainment",
-    "tags": ["sports"],
+    "tags": [
+      "sports"
+    ],
     "size": "21 MB",
     "rating": 4.4,
     "color": "linear-gradient(145deg,#ff7a29,#160800)",
@@ -384,7 +462,9 @@
     "updatedAt": "2026-08-22T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "Reezn",
     "abbr": "RZ",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/reezn.png",
@@ -392,7 +472,9 @@
     "packageName": "com.rmedia.rplayer",
     "versionCode": 35,
     "category": "Entertainment",
-    "tags": ["livetv"],
+    "tags": [
+      "livetv"
+    ],
     "size": "26 MB",
     "rating": 4.3,
     "color": "linear-gradient(145deg,#f01e34,#150000)",
@@ -401,7 +483,9 @@
     "updatedAt": "2026-08-22T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "ClipBox",
     "abbr": "CB",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/clipbox.png",
@@ -409,7 +493,9 @@
     "packageName": "org.clipbox.player",
     "versionCode": 157,
     "category": "Entertainment",
-    "tags": ["movies"],
+    "tags": [
+      "movies"
+    ],
     "size": "27 MB",
     "rating": 4.2,
     "color": "linear-gradient(145deg,#e42030,#1a1a1a)",
@@ -418,7 +504,9 @@
     "updatedAt": "2026-08-22T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "AK47 Sports",
     "abbr": "AK",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/aksports.png",
@@ -426,7 +514,9 @@
     "packageName": "app.aksports.live",
     "versionCode": 1,
     "category": "Entertainment",
-    "tags": ["sports"],
+    "tags": [
+      "sports"
+    ],
     "size": "12 MB",
     "rating": 4.4,
     "color": "linear-gradient(145deg,#1e3a5f,#0a1930)",
@@ -435,7 +525,9 @@
     "updatedAt": "2026-08-23T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "MovieBox",
     "abbr": "MB",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/moviecube.png",
@@ -443,7 +535,9 @@
     "packageName": "com.community.mbox.tv",
     "versionCode": 50040016,
     "category": "Entertainment",
-    "tags": ["movies"],
+    "tags": [
+      "movies"
+    ],
     "size": "41.8 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#2b2b2b,#000000)",
@@ -452,7 +546,9 @@
     "updatedAt": "2026-09-15T00:00:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "all"
+    ],
     "name": "HD Streamz",
     "abbr": "HD",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/hdstreamer.png",
@@ -460,7 +556,9 @@
     "packageName": "com.hdstreamz.app",
     "versionCode": 1,
     "category": "Entertainment",
-    "tags": ["livetv"],
+    "tags": [
+      "livetv"
+    ],
     "size": "22 MB",
     "rating": 4.3,
     "color": "linear-gradient(145deg,#3f51b5,#1a237e)",
