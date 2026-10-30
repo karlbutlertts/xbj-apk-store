@@ -40,24 +40,27 @@
     "versionName": "2.11.0"
   },
   {
-    "models": ["a5pro"],
+    "models": [
+      "a5pro"
+    ],
     "name": "Netflix",
     "abbr": "NF",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/netflix.png",
-    "file": "Netflix.apk",
-    "packageName": "com.netflix.ninja",
-    "preinstalled": true,
-    "versionCode": 1,
+    "file": "Netflix-Mobile-9.88.0-74729.apk",
+    "packageName": "com.netflix.mediaclient",
+    "versionCode": 74729,
     "category": "Entertainment",
     "tags": [
       "streaming"
     ],
-    "size": "89 MB",
+    "size": "270 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#e50914,#8b0000)",
-    "updated": "June 2026",
-    "downloads": "New",
-    "updatedAt": "2026-06-11T14:35:00Z"
+    "updated": "30 October 2026",
+    "downloads": "A5 Pro compatibility build · mobile Netflix",
+    "updatedAt": "2026-10-30T14:06:40Z",
+    "url": "https://media.githubusercontent.com/media/karlbutlertts/xbj-apk-store/main/apks/Netflix-Mobile-9.88.0-74729.apk",
+    "versionName": "9.88.0 build 7 74729"
   },
   {
     "models": ["all"],
@@ -138,8 +141,49 @@
     "updatedAt": "2026-06-11T14:26:00Z"
   },
   {
-    "models": ["all"],
+    "models": [
+      "a5pro",
+      "360"
+    ],
     "name": "Disney+",
+    "abbr": "D+",
+    "bg": "https://play-lh.googleusercontent.com/jk4yLcR_Ev-vB7fmD5LXPl4ujsclvTSW7-Own-ud7W-VK_TdzsoVsWal3vKYDBYKewA=w5120-h2880-rw",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/disneyplus.png",
+    "file": "DisneyPlus-26.19.0-A5.apks",
+    "packageName": "com.disney.disneyplus",
+    "versionCode": 1792455080,
+    "category": "Entertainment",
+    "tags": [
+      "streaming"
+    ],
+    "size": "49 MB",
+    "rating": 4.6,
+    "color": "linear-gradient(145deg,#12586b,#082436)",
+    "updated": "30 October 2026",
+    "downloads": "Android 12L+ · fresh install may be required",
+    "updatedAt": "2026-10-30T14:06:40Z",
+    "versionName": "26.19.0+rc3-2026.10.20",
+    "splits": [
+      {
+        "file": "DisneyPlus-26.19.0-base.apk"
+      },
+      {
+        "file": "DisneyPlus-26.19.0-armeabi-v7a.apk"
+      },
+      {
+        "file": "DisneyPlus-26.19.0-en.apk"
+      },
+      {
+        "file": "DisneyPlus-26.19.0-xhdpi.apk"
+      }
+    ],
+    "minSdk": 32
+  },
+  {
+    "models": [
+      "other"
+    ],
+    "name": "Disney+ (legacy)",
     "abbr": "D+",
     "bg": "https://play-lh.googleusercontent.com/jk4yLcR_Ev-vB7fmD5LXPl4ujsclvTSW7-Own-ud7W-VK_TdzsoVsWal3vKYDBYKewA=w5120-h2880-rw",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/disneyplus.png",
