@@ -77,7 +77,7 @@ Add a new JSON object to apps.json:
 ```
 `tags` decides which sidebar section it lands in (`livetv` / `streaming` /
 `tools`, plus `movies` / `sports` inside Entertainment). `updatedAt` drives
-the Home hero and the "Recently updated" shelf.
+the Home hero, the "Recently updated" shelf, and an automatic NEW icon badge for 14 calendar days. Set updatedAt to the publication time whenever publishing an APK update.
 No changes needed to index.html.
 
 Add `"preinstalled": true` for anything that ships with the projector's

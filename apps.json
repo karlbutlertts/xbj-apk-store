@@ -41,8 +41,7 @@
     "updated": "30 October 2026",
     "downloads": "New",
     "updatedAt": "2026-10-30T15:50:00Z",
-    "versionName": "2.11.1",
-    "badge": "NEW"
+    "versionName": "2.11.1"
   },
   {
     "models": [
@@ -65,8 +64,7 @@
     "downloads": "A5 Pro compatibility build · mobile Netflix",
     "updatedAt": "2026-10-30T14:06:40Z",
     "url": "https://media.githubusercontent.com/media/karlbutlertts/xbj-apk-store/main/apks/Netflix-Mobile-9.88.0-74729.apk",
-    "versionName": "9.88.0 build 7 74729",
-    "badge": "NEW"
+    "versionName": "9.88.0 build 7 74729"
   },
   {
     "models": [
@@ -104,8 +102,7 @@
       {
         "file": "PrimeVideo-6.24.13-xhdpi.apk"
       }
-    ],
-    "badge": "NEW"
+    ]
   },
   {
     "models": [
@@ -230,8 +227,7 @@
         "file": "DisneyPlus-26.19.0-xhdpi.apk"
       }
     ],
-    "minSdk": 32,
-    "badge": "NEW"
+    "minSdk": 32
   },
   {
     "models": [
@@ -333,8 +329,7 @@
       {
         "file": "STVPlayer-1.8.14.2-xhdpi.apk"
       }
-    ],
-    "badge": "NEW"
+    ]
   },
   {
     "models": [

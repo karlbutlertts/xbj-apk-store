@@ -1155,12 +1155,18 @@ function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replac
 // title. Tell them apart rather than cramming prose into a badge.
 function isCountish(v) { return typeof v === 'string' && /^(new|[\d.]+\s*[km]?)$/i.test(v.trim()); }
 
+function hasNewAppBadge(a, now = Date.now()) {
+  const updated = Date.parse(a.updatedAt || '');
+  const age = Math.floor(now / 86400000) - Math.floor(updated / 86400000);
+  return Number.isFinite(updated) && age >= 0 && age < 14;
+}
+
 function cardHtml(a, i) {
   const art = a.icon
     ? `<img src="${esc(a.icon)}" alt="" loading="lazy" onerror="this.parentElement.insertAdjacentHTML('beforeend','<span class=\\'card-abbr\\'>${esc(a.abbr || '')}</span>');this.remove();">`
     : `<span class="card-abbr">${esc(a.abbr || '')}</span>`;
   const count = isCountish(a.downloads) ? a.downloads.trim() : '';
-  const badge = a.badge === 'NEW'
+  const badge = hasNewAppBadge(a)
     ? '<span class="card-badge is-new">NEW</span>'
     : count
     ? `<span class="card-badge${/^new$/i.test(count) ? ' is-new' : ''}">${/^new$/i.test(count) ? 'NEW' : '⬇ ' + esc(count)}</span>`
