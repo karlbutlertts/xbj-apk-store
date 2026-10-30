@@ -1,14 +1,5 @@
 [
   {
-    "id": 9,
-    "date": "30 October 2026",
-    "title": "YouTube installation update",
-    "items": [
-      "YouTube 5.30.340 now installs from one APK, replacing the split download. Tested on A5 Pro.",
-      "If Android reports a signature conflict, uninstall the existing YouTube app first and install again. App settings will be cleared and you may need to sign in again."
-    ]
-  },
-  {
     "id": 8,
     "date": "30 October 2026",
     "title": "Disney+ installation update",
