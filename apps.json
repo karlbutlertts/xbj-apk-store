@@ -30,7 +30,7 @@
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
     "file": "ProjectorGuyApp.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 28,
+    "versionCode": 29,
     "category": "Tools",
     "tags": [
       "tools"
@@ -38,10 +38,11 @@
     "size": "2.4 MB",
     "rating": 5.0,
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
-    "updated": "October 2026",
+    "updated": "30 October 2026",
     "downloads": "New",
-    "updatedAt": "2026-10-04T17:15:45Z",
-    "versionName": "2.11.0"
+    "updatedAt": "2026-10-30T15:50:00Z",
+    "versionName": "2.11.1",
+    "badge": "NEW"
   },
   {
     "models": [
@@ -64,7 +65,8 @@
     "downloads": "A5 Pro compatibility build · mobile Netflix",
     "updatedAt": "2026-10-30T14:06:40Z",
     "url": "https://media.githubusercontent.com/media/karlbutlertts/xbj-apk-store/main/apks/Netflix-Mobile-9.88.0-74729.apk",
-    "versionName": "9.88.0 build 7 74729"
+    "versionName": "9.88.0 build 7 74729",
+    "badge": "NEW"
   },
   {
     "models": [
@@ -102,7 +104,8 @@
       {
         "file": "PrimeVideo-6.24.13-xhdpi.apk"
       }
-    ]
+    ],
+    "badge": "NEW"
   },
   {
     "models": [
@@ -227,7 +230,8 @@
         "file": "DisneyPlus-26.19.0-xhdpi.apk"
       }
     ],
-    "minSdk": 32
+    "minSdk": 32,
+    "badge": "NEW"
   },
   {
     "models": [
@@ -329,7 +333,8 @@
       {
         "file": "STVPlayer-1.8.14.2-xhdpi.apk"
       }
-    ]
+    ],
+    "badge": "NEW"
   },
   {
     "models": [

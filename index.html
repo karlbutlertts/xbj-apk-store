@@ -1160,7 +1160,9 @@ function cardHtml(a, i) {
     ? `<img src="${esc(a.icon)}" alt="" loading="lazy" onerror="this.parentElement.insertAdjacentHTML('beforeend','<span class=\\'card-abbr\\'>${esc(a.abbr || '')}</span>');this.remove();">`
     : `<span class="card-abbr">${esc(a.abbr || '')}</span>`;
   const count = isCountish(a.downloads) ? a.downloads.trim() : '';
-  const badge = count
+  const badge = a.badge === 'NEW'
+    ? '<span class="card-badge is-new">NEW</span>'
+    : count
     ? `<span class="card-badge${/^new$/i.test(count) ? ' is-new' : ''}">${/^new$/i.test(count) ? 'NEW' : '⬇ ' + esc(count)}</span>`
     : '';
   const blurb = (a.downloads && !count) ? `<div class="card-blurb">${esc(a.downloads)}</div>` : '';
