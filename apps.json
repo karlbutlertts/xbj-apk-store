@@ -199,34 +199,20 @@
     "abbr": "D+",
     "bg": "https://play-lh.googleusercontent.com/jk4yLcR_Ev-vB7fmD5LXPl4ujsclvTSW7-Own-ud7W-VK_TdzsoVsWal3vKYDBYKewA=w5120-h2880-rw",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/disneyplus.png",
-    "file": "DisneyPlus-26.19.0-A5.apks",
+    "file": "DisneyPlus-26.19.0-single.apk",
     "packageName": "com.disney.disneyplus",
     "versionCode": 1792455080,
     "category": "Entertainment",
     "tags": [
       "streaming"
     ],
-    "size": "49 MB",
+    "size": "30.1 MB",
     "rating": 4.6,
     "color": "linear-gradient(145deg,#12586b,#082436)",
     "updated": "30 October 2026",
-    "downloads": "Android 12L+ · fresh install may be required",
-    "updatedAt": "2026-10-30T14:06:40Z",
+    "downloads": "Single APK · fresh install may be required",
+    "updatedAt": "2026-10-30T16:55:12.162907Z",
     "versionName": "26.19.0+rc3-2026.10.20",
-    "splits": [
-      {
-        "file": "DisneyPlus-26.19.0-base.apk"
-      },
-      {
-        "file": "DisneyPlus-26.19.0-armeabi-v7a.apk"
-      },
-      {
-        "file": "DisneyPlus-26.19.0-en.apk"
-      },
-      {
-        "file": "DisneyPlus-26.19.0-xhdpi.apk"
-      }
-    ],
     "minSdk": 32
   },
   {

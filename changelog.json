@@ -1,5 +1,14 @@
 [
   {
+    "id": 8,
+    "date": "30 October 2026",
+    "title": "Disney+ installation update",
+    "items": [
+      "Disney+ 26.19 now downloads as one APK, replacing the split installer that failed on the A5 Pro.",
+      "If Android reports a signature conflict, uninstall your existing Disney+ first and install again. You will need to sign in again."
+    ]
+  },
+  {
     "id": 7,
     "date": "30 October 2026",
     "title": "Disney+, Netflix and STV updates",
