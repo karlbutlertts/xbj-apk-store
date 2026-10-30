@@ -1,5 +1,16 @@
 [
   {
+    "id": 7,
+    "date": "30 October 2026",
+    "title": "Disney+, Netflix and STV updates",
+    "items": [
+      "Disney+ updated to 26.19.0 — picture, sound and remote navigation confirmed on A5 Pro. Requires Android 12L or later.",
+      "Netflix 9.88.0 build 7 is now available for A5 Pro.",
+      "STV Player updated to TV build 1.8.14.2 — picture, sound and remote navigation confirmed on A5 Pro. Requires Android 12L or later.",
+      "Disney+ and STV may require uninstalling your existing version first, then signing in again."
+    ]
+  },
+  {
     "id": 6,
     "date": "17 September 2026",
     "title": "XBJ Remote Control added",

@@ -295,9 +295,47 @@
   },
   {
     "models": [
-      "all"
+      "a5pro",
+      "360"
     ],
     "name": "STV Player",
+    "abbr": "ST",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/stv.png",
+    "file": "STVPlayer-1.8.14.2-A5.apks",
+    "packageName": "tv.stv.android.player",
+    "versionCode": 597,
+    "category": "Entertainment",
+    "tags": [
+      "livetv"
+    ],
+    "size": "84 MB",
+    "rating": 4.2,
+    "color": "linear-gradient(145deg,#e63329,#7a0a05)",
+    "updated": "30 October 2026",
+    "downloads": "Android 12L+ · fresh install may be required",
+    "updatedAt": "2026-10-30T15:40:00Z",
+    "versionName": "1.8.14.2",
+    "minSdk": 32,
+    "splits": [
+      {
+        "file": "STVPlayer-1.8.14.2-base.apk"
+      },
+      {
+        "file": "STVPlayer-1.8.14.2-armeabi-v7a.apk"
+      },
+      {
+        "file": "STVPlayer-1.8.14.2-en.apk"
+      },
+      {
+        "file": "STVPlayer-1.8.14.2-xhdpi.apk"
+      }
+    ]
+  },
+  {
+    "models": [
+      "other"
+    ],
+    "name": "STV Player (legacy)",
     "abbr": "ST",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/stv.png",
     "file": "STVPlayer.apk",
