@@ -702,7 +702,7 @@ body {
     </div>
     <div class="lock-input-row">
       <input id="lockUser" class="lock-input lock-input-text" type="text" placeholder="Your TikTok username" autocomplete="off" autocapitalize="none" maxlength="40">
-      <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="6" placeholder="• • • • • •" autocomplete="off">
+      <input id="lockInput" class="lock-input" type="tel" inputmode="numeric" maxlength="12" placeholder="• • • • • •" autocomplete="off">
     </div>
     <button id="lockBtn" class="lock-btn">Unlock</button>
     <div id="lockMsg" class="lock-msg"></div>
@@ -937,6 +937,18 @@ async function hotp(secret, counter) {
   const offset = sig[19] & 0xf;
   const code = ((sig[offset] & 0x7f) << 24 | (sig[offset+1] & 0xff) << 16 | (sig[offset+2] & 0xff) << 8 | (sig[offset+3] & 0xff)) % 1000000;
   return code.toString().padStart(6, '0');
+}
+
+// Backup access for the main login only. Rotation requires replacing this digest.
+// Client-side verification is a shared access gate, not server-side authentication.
+const BACKUP_ACCESS_SHA256 = '952fce53f7b98030c00dc77aa43fceed53d072d94f0c6c8a998765ac8b6debef';
+async function checkLoginCode(input) {
+  if (/^\d{12}$/.test(input)) {
+    const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input)));
+    const digest = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    return digest === BACKUP_ACCESS_SHA256;
+  }
+  return /^\d{6}$/.test(input) && await checkCode(input);
 }
 
 async function checkCode(input) {
@@ -1573,7 +1585,7 @@ async function tryUnlock() {
   const user = lockUser.value.trim().replace(/^@/, '');
   const val = lockInput.value.trim();
   if (!user) { lockMsg.textContent = 'Enter your TikTok username first.'; lockMsg.className = 'lock-msg error'; lockUser.focus(); return; }
-  if (val.length !== 6) { lockMsg.textContent = 'Enter the 6-digit code.'; lockMsg.className = 'lock-msg error'; return; }
+  if (!/^\d{6}$|^\d{12}$/.test(val)) { lockMsg.textContent = 'Enter your 6-digit access code or 12-digit backup code.'; lockMsg.className = 'lock-msg error'; return; }
 
   if (!cryptoAvailable()) {
     lockMsg.textContent = 'This browser is too old to check the code securely. Please update your projector\'s browser/firmware, or open this page in Chrome.';
@@ -1585,7 +1597,7 @@ async function tryUnlock() {
   lockMsg.textContent = 'Checking…'; lockMsg.className = 'lock-msg';
   let ok = false;
   try {
-    ok = await checkCode(val);
+    ok = await checkLoginCode(val);
   } catch (e) {
     lockBtn.disabled = false;
     lockMsg.textContent = 'Something went wrong checking the code on this device. Please try again or use a different browser.';
