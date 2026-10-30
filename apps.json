@@ -641,10 +641,9 @@
   },
   {
     "models": [
-      "a5pro",
-      "360"
+      "a5pro"
     ],
-    "name": "TellyGrid",
+    "name": "TellyGrid (A5 Pro)",
     "abbr": "TG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/tellygrid.svg",
     "file": "TellyGrid-0.7.0-alpha7-A5.apk",
@@ -662,5 +661,28 @@
     "updated": "30 October 2026",
     "downloads": "UK TV guide & launcher · alpha test build",
     "updatedAt": "2026-10-30T18:11:42.256526Z"
+  },
+  {
+    "models": [
+      "360"
+    ],
+    "name": "TellyGrid (360)",
+    "abbr": "TG",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/tellygrid.svg",
+    "file": "TellyGrid-0.7.0-alpha7-360.apk",
+    "packageName": "io.github.lozza.tellygrid",
+    "versionCode": 7,
+    "versionName": "0.7.0-alpha.7",
+    "minSdk": 26,
+    "category": "Entertainment",
+    "tags": [
+      "livetv"
+    ],
+    "size": "14.7 MB",
+    "rating": 4.5,
+    "color": "linear-gradient(145deg,#7249ac,#201533)",
+    "updated": "30 October 2026",
+    "downloads": "UK TV guide & launcher · alpha test build",
+    "updatedAt": "2026-10-30T18:11:42.273736Z"
   }
 ]
