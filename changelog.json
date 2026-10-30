@@ -1,5 +1,15 @@
 [
   {
+    "id": 11,
+    "date": "30 October 2026",
+    "title": "Projector Guy 2.11.2 — installer update",
+    "items": [
+      "Added a Projector install option when Android cannot install an app’s split APK files. Tested with the original Google-signed YouTube on A5 Pro.",
+      "The fallback requires debugging enabled and one-time approval of Projector Guy’s connection. Existing app data is kept.",
+      "Downloads now show one overall progress percentage, and failed installs retain their files for retry."
+    ]
+  },
+  {
     "id": 10,
     "date": "30 October 2026",
     "title": "Live TV guide added",
