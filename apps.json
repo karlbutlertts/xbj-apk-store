@@ -260,9 +260,33 @@
   },
   {
     "models": [
-      "all"
+      "a5pro"
     ],
     "name": "Channel 4",
+    "abbr": "C4",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/channel4.png",
+    "file": "Channel4-TV-1.0.3-single.apk",
+    "packageName": "com.channel4.ondemand",
+    "versionCode": 103,
+    "category": "Entertainment",
+    "tags": [
+      "livetv"
+    ],
+    "size": "2.7 MB",
+    "rating": 4.3,
+    "color": "linear-gradient(145deg,#9be85a,#4a8a1a)",
+    "updated": "2 November 2026",
+    "downloads": "Android TV · uninstall previous version first",
+    "updatedAt": "2026-11-02T11:04:36.512989Z",
+    "versionName": "1.0.3",
+    "minSdk": 26
+  },
+  {
+    "models": [
+      "360",
+      "other"
+    ],
+    "name": "Channel 4 (legacy)",
     "abbr": "C4",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/channel4.png",
     "file": "Channel4.apk",

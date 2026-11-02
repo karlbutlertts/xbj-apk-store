@@ -1,5 +1,15 @@
 [
   {
+    "id": 12,
+    "date": "2 November 2026",
+    "title": "Channel 4 TV app for A5 Pro",
+    "items": [
+      "Channel 4 now uses the Android TV interface on A5 Pro, replacing the mobile build that showed a Google Play services warning.",
+      "Downloads as one APK. Sign-in, picture, sound and remote navigation tested on A5 Pro.",
+      "Uninstall the previous Channel 4 app before installing this version, then sign in again. HDMI/capture playback compatibility has not been verified."
+    ]
+  },
+  {
     "id": 11,
     "date": "30 October 2026",
     "title": "Projector Guy 2.11.2 — installer update",
