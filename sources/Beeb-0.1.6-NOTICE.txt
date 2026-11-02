@@ -1,0 +1,6 @@
+Beeb 0.1.6 by usefulappmaker
+Independent BBC player; not affiliated with or endorsed by the BBC.
+Source and licence notices: Beeb-Android-0.1.6-source.zip
+Upstream: https://github.com/usefulappmaker/beeb-android/releases/tag/v0.1.6
+A5/other APK is the unchanged upstream release.
+360 compatibility APK has the same app code and resources, signed using our compatibility key with v1/v2 signatures enabled. No source code changes. Future 360 updates must use the same signing key.

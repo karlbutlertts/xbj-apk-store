@@ -1,5 +1,15 @@
 [
   {
+    "id": 15,
+    "date": "2 November 2026",
+    "title": "BBC iPlayer download now installs Beeb",
+    "items": [
+      "The BBC iPlayer tile now downloads Beeb 0.1.6, an independent open-source BBC player not affiliated with or endorsed by the BBC. The catalogue tile keeps its existing name and icon; the installed app is named Beeb.",
+      "Live picture, sound and remote controls tested on A5 Pro and XBJ 360. On-demand playback has not yet been verified. Other projector models are untested.",
+      "Downloads as one APK, with a separate compatibility build for the 360. Your existing BBC iPlayer installation and login are retained."
+    ]
+  },
+  {
     "id": 14,
     "date": "2 November 2026",
     "title": "YouTube single-APK download fixed",

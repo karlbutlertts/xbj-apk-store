@@ -61,7 +61,7 @@
     "rating": 4.5,
     "color": "linear-gradient(145deg,#e50914,#8b0000)",
     "updated": "30 October 2026",
-    "downloads": "A5 Pro compatibility build · mobile Netflix",
+    "downloads": "A5 Pro compatibility build \u00b7 mobile Netflix",
     "updatedAt": "2026-10-30T14:06:40Z",
     "url": "https://media.githubusercontent.com/media/karlbutlertts/xbj-apk-store/main/apks/Netflix-Mobile-9.88.0-74729.apk",
     "versionName": "9.88.0 build 7 74729"
@@ -210,7 +210,7 @@
     "rating": 4.6,
     "color": "linear-gradient(145deg,#12586b,#082436)",
     "updated": "30 October 2026",
-    "downloads": "Single APK · fresh install may be required",
+    "downloads": "Single APK \u00b7 fresh install may be required",
     "updatedAt": "2026-10-30T16:55:12.162907Z",
     "versionName": "26.19.0+rc3-2026.10.20",
     "minSdk": 32
@@ -239,24 +239,52 @@
   },
   {
     "models": [
-      "all"
+      "a5pro",
+      "other"
     ],
     "name": "BBC iPlayer",
     "abbr": "iP",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/bbciplayer.png",
-    "file": "BBCiPlayer.apk",
-    "packageName": "bbc.iplayer.android",
-    "versionCode": 10081,
+    "file": "BBCiPlayer-Beeb-0.1.6.apk",
+    "packageName": "org.beebplayer.android",
+    "versionCode": 7,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "19 MB",
+    "size": "5.5 MB",
     "rating": 4.8,
     "color": "linear-gradient(145deg,#e6197e,#7a0c46)",
-    "updated": "September 2026",
-    "downloads": "2.2k",
-    "updatedAt": "2026-09-15T00:00:00Z"
+    "updated": "2 November 2026",
+    "downloads": "Installs Beeb \u00b7 independent BBC player",
+    "updatedAt": "2026-11-02T12:03:57.413292+00:00",
+    "versionName": "0.1.6",
+    "minSdk": 26,
+    "sourceUrl": "https://github.com/usefulappmaker/beeb-android/tree/v0.1.6"
+  },
+  {
+    "models": [
+      "360"
+    ],
+    "name": "BBC iPlayer",
+    "abbr": "iP",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/bbciplayer.png",
+    "file": "BBCiPlayer-Beeb-0.1.6-360.apk",
+    "packageName": "org.beebplayer.android",
+    "versionCode": 7,
+    "category": "Entertainment",
+    "tags": [
+      "livetv"
+    ],
+    "size": "5.5 MB",
+    "rating": 4.8,
+    "color": "linear-gradient(145deg,#e6197e,#7a0c46)",
+    "updated": "2 November 2026",
+    "downloads": "Installs Beeb \u00b7 independent BBC player",
+    "updatedAt": "2026-11-02T12:03:57.414651+00:00",
+    "versionName": "0.1.6",
+    "minSdk": 26,
+    "sourceUrl": "https://github.com/usefulappmaker/beeb-android/tree/v0.1.6"
   },
   {
     "models": [
@@ -276,7 +304,7 @@
     "rating": 4.3,
     "color": "linear-gradient(145deg,#9be85a,#4a8a1a)",
     "updated": "2 November 2026",
-    "downloads": "Single TV APK · uninstall previous version first",
+    "downloads": "Single TV APK \u00b7 uninstall previous version first",
     "updatedAt": "2026-11-02T11:13:50.824359Z",
     "versionName": "1.0.3",
     "minSdk": 26
@@ -300,7 +328,7 @@
     "rating": 4.2,
     "color": "linear-gradient(145deg,#e63329,#7a0a05)",
     "updated": "30 October 2026",
-    "downloads": "Android 12L+ · fresh install may be required",
+    "downloads": "Android 12L+ \u00b7 fresh install may be required",
     "updatedAt": "2026-10-30T15:40:00Z",
     "versionName": "1.8.14.2",
     "minSdk": 32,
@@ -652,7 +680,7 @@
     "rating": 4.5,
     "color": "linear-gradient(145deg,#7249ac,#201533)",
     "updated": "30 October 2026",
-    "downloads": "UK TV guide & launcher · alpha test build",
+    "downloads": "UK TV guide & launcher \u00b7 alpha test build",
     "updatedAt": "2026-10-30T18:11:42.256526Z"
   },
   {
@@ -675,7 +703,7 @@
     "rating": 4.5,
     "color": "linear-gradient(145deg,#7249ac,#201533)",
     "updated": "30 October 2026",
-    "downloads": "UK TV guide & launcher · alpha test build",
+    "downloads": "UK TV guide & launcher \u00b7 alpha test build",
     "updatedAt": "2026-10-30T18:11:42.273736Z"
   }
 ]
