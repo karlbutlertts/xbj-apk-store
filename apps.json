@@ -192,28 +192,134 @@
   },
   {
     "models": [
-      "a5pro",
+      "a5pro"
+    ],
+    "name": "Disney+",
+    "abbr": "D+",
+    "bg": "https://play-lh.googleusercontent.com/jk4yLcR_Ev-vB7fmD5LXPl4ujsclvTSW7-Own-ud7W-VK_TdzsoVsWal3vKYDBYKewA=w5120-h2880-rw",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/disneyplus.png",
+    "file": "DisneyPlus-26.20-single.apk",
+    "packageName": "com.disney.disneyplus",
+    "versionCode": 1792707940,
+    "category": "Entertainment",
+    "tags": [
+      "streaming"
+    ],
+    "size": "30 MB",
+    "rating": 4.6,
+    "color": "linear-gradient(145deg,#12586b,#082436)",
+    "updated": "2 November 2026",
+    "downloads": "Single APK \u00b7 manual sign-in",
+    "updatedAt": "2026-11-02T15:57:39.277318+00:00",
+    "versionName": "26.20.0+rc1-2026.10.22",
+    "minSdk": 32
+  },
+  {
+    "models": [
       "360"
     ],
     "name": "Disney+",
     "abbr": "D+",
     "bg": "https://play-lh.googleusercontent.com/jk4yLcR_Ev-vB7fmD5LXPl4ujsclvTSW7-Own-ud7W-VK_TdzsoVsWal3vKYDBYKewA=w5120-h2880-rw",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/disneyplus.png",
-    "file": "DisneyPlus-26.19.0-single.apk",
+    "file": "DisneyPlus-26.20-original.apkm",
     "packageName": "com.disney.disneyplus",
-    "versionCode": 1792455080,
+    "versionCode": 1792707940,
     "category": "Entertainment",
     "tags": [
       "streaming"
     ],
-    "size": "30.1 MB",
+    "size": "30 MB",
     "rating": 4.6,
     "color": "linear-gradient(145deg,#12586b,#082436)",
-    "updated": "30 October 2026",
-    "downloads": "Single APK \u00b7 fresh install may be required",
-    "updatedAt": "2026-10-30T16:55:12.162907Z",
-    "versionName": "26.19.0+rc3-2026.10.20",
-    "minSdk": 32
+    "updated": "2 November 2026",
+    "downloads": "Manual sign-in \u00b7 original signed package",
+    "updatedAt": "2026-11-02T15:57:39.277318+00:00",
+    "versionName": "26.20.0+rc1-2026.10.22",
+    "minSdk": 32,
+    "splits": [
+      {
+        "file": "DisneyPlus-26.20-base.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.ar.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.armeabi_v7a.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.de.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.en.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.es.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.et.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.fi.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.fr.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.hi.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.hu.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.in.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.it.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.ja.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.ko.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.ms.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.nl.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.pl.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.pt.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.ru.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.sv.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.th.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.tr.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.uk.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.vi.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.xhdpi.apk"
+      },
+      {
+        "file": "DisneyPlus-26.20-split_config.zh.apk"
+      }
+    ]
   },
   {
     "models": [
@@ -429,24 +535,44 @@
   },
   {
     "models": [
-      "all"
+      "a5pro",
+      "360"
     ],
     "name": "ITVX",
     "abbr": "IT",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/itvx.png",
-    "file": "ITVX.apk",
+    "file": "ITVX-17.20-original.apkm",
     "packageName": "air.ITVMobilePlayer",
-    "versionCode": 1301717000,
+    "versionCode": 1301720000,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "36.0 MB",
+    "size": "44 MB",
     "rating": 4.0,
     "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
-    "updated": "September 2026",
-    "downloads": "1.3k",
-    "updatedAt": "2026-09-15T00:00:00Z"
+    "updated": "2 November 2026",
+    "downloads": "Manual sign-in \u00b7 fresh install may be required",
+    "updatedAt": "2026-11-02T15:57:39.277318+00:00",
+    "versionName": "17.20.0",
+    "minSdk": 28,
+    "splits": [
+      {
+        "file": "ITVX-17.20-base.apk"
+      },
+      {
+        "file": "ITVX-17.20-split_config.armeabi_v7a.apk"
+      },
+      {
+        "file": "ITVX-17.20-split_config.en.apk"
+      },
+      {
+        "file": "ITVX-17.20-split_config.xxhdpi.apk"
+      },
+      {
+        "file": "ITVX-17.20-split_config.xxxhdpi.apk"
+      }
+    ]
   },
   {
     "models": [
@@ -667,21 +793,21 @@
     "name": "TellyGrid (A5 Pro)",
     "abbr": "TG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/tellygrid-app.svg",
-    "file": "TellyGrid-0.7.0-alpha7-A5.apk",
+    "file": "TellyGrid-0.8.2-alpha8.2-A5.apk",
     "packageName": "io.github.lozza.tellygrid",
-    "versionCode": 7,
-    "versionName": "0.7.0-alpha.7",
+    "versionCode": 10,
+    "versionName": "0.8.2-alpha.8.2",
     "minSdk": 26,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "14.7 MB",
+    "size": "15.5 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#7249ac,#201533)",
-    "updated": "30 October 2026",
-    "downloads": "UK TV guide & launcher \u00b7 alpha test build",
-    "updatedAt": "2026-10-30T18:11:42.256526Z"
+    "updated": "2 November 2026",
+    "downloads": "Updated alpha TV guide",
+    "updatedAt": "2026-11-02T15:57:39.277318+00:00"
   },
   {
     "models": [
@@ -690,20 +816,41 @@
     "name": "TellyGrid (360)",
     "abbr": "TG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/tellygrid-app.svg",
-    "file": "TellyGrid-0.7.0-alpha7-360.apk",
+    "file": "TellyGrid-0.8.2-alpha8.2-360.apk",
     "packageName": "io.github.lozza.tellygrid",
-    "versionCode": 7,
-    "versionName": "0.7.0-alpha.7",
+    "versionCode": 10,
+    "versionName": "0.8.2-alpha.8.2",
     "minSdk": 26,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "14.7 MB",
+    "size": "15.5 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#7249ac,#201533)",
-    "updated": "30 October 2026",
-    "downloads": "UK TV guide & launcher \u00b7 alpha test build",
-    "updatedAt": "2026-10-30T18:11:42.273736Z"
+    "updated": "2 November 2026",
+    "downloads": "Updated alpha TV guide \u00b7 360 build",
+    "updatedAt": "2026-11-02T15:57:39.277318+00:00"
+  },
+  {
+    "models": [
+      "other"
+    ],
+    "name": "ITVX",
+    "abbr": "IT",
+    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/itvx.png",
+    "file": "ITVX.apk",
+    "packageName": "air.ITVMobilePlayer",
+    "versionCode": 1301717000,
+    "category": "Entertainment",
+    "tags": [
+      "livetv"
+    ],
+    "size": "36.0 MB",
+    "rating": 4.0,
+    "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
+    "updated": "September 2026",
+    "downloads": "1.3k",
+    "updatedAt": "2026-09-15T00:00:00Z"
   }
 ]

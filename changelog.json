@@ -1,5 +1,16 @@
 [
   {
+    "id": 16,
+    "date": "2 November 2026",
+    "title": "Disney+, ITVX and TV guide updates",
+    "items": [
+      "Disney+ 26.20 and ITVX 17.20: picture, sound and remote navigation confirmed on A5 Pro and XBJ 360. Manual sign-in is supported; scan-to-login is not available in these tested flows.",
+      "TellyGrid updated to 0.8.2-alpha.8.2 for A5 Pro and 360; launches on both. Stock launchers retained.",
+      "Disney+ A5 downloads as one merged compatibility APK. Disney+ 360 and ITVX use original signed package sets. ITVX requires removing the older differently signed version, clearing its login/settings.",
+      "Fixed model-specific package selection when two projector variants share the same tile name."
+    ]
+  },
+  {
     "id": 15,
     "date": "2 November 2026",
     "title": "BBC iPlayer download now installs Beeb",

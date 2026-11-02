@@ -1,0 +1,3 @@
+TellyGrid 0.8.2-alpha.8.2 by lozza
+Upstream: https://github.com/lozza/TellyGrid/releases/tag/v0.8.2-alpha.8.2
+A5 APK is unchanged upstream release. 360 APK uses the existing local compatibility signing key, with app code and resources unchanged. Source and licence notices are in TellyGrid-0.8.2-alpha8.2-source.zip.
