@@ -1010,31 +1010,8 @@ function dismissWhatsNew(maxId) {
   try { localStorage.setItem(CHANGELOG_SEEN_KEY, String(maxId)); } catch(e) {}
 }
 function checkWhatsNew() {
-  if (whatsNewChecked) return;
+  // Automatic release-notice popup removed at Karl's request.
   whatsNewChecked = true;
-  fetch(CHANGELOG_URL + '?nc=' + Date.now())
-    .then(r => r.json())
-    .then(entries => {
-      if (!Array.isArray(entries) || !entries.length) return;
-      const seen = parseInt(localStorage.getItem(CHANGELOG_SEEN_KEY) || '0', 10);
-      const unseen = entries.filter(e => e.id > seen).sort((a, b) => b.id - a.id);
-      const maxId = Math.max(...entries.map(e => e.id));
-      if (!unseen.length) {
-        // Nothing new, but keep the seen-marker in sync in case it was never set.
-        try { localStorage.setItem(CHANGELOG_SEEN_KEY, String(maxId)); } catch(e) {}
-        return;
-      }
-      whatsNewBody.innerHTML = unseen.map(e => `
-        <div class="whats-new-entry">
-          <div class="whats-new-date">${esc(e.date)}</div>
-          <div class="whats-new-title">${esc(e.title)}</div>
-          <ul class="whats-new-list">${(e.items || []).map(i => `<li>${esc(i)}</li>`).join('')}</ul>
-        </div>`).join('');
-      whatsNewModal.classList.remove('hidden');
-      whatsNewModal.dataset.maxId = maxId;
-      setTimeout(() => { try { document.getElementById('whatsNewClose').focus(); } catch(e) {} }, 60);
-    })
-    .catch(() => {});
 }
 
 const lock = document.getElementById('lock');
