@@ -535,47 +535,6 @@
   },
   {
     "models": [
-      "a5pro",
-      "360"
-    ],
-    "name": "ITVX",
-    "abbr": "IT",
-    "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/itvx.png",
-    "file": "ITVX-17.20-original.apkm",
-    "packageName": "air.ITVMobilePlayer",
-    "versionCode": 1301720000,
-    "category": "Entertainment",
-    "tags": [
-      "livetv"
-    ],
-    "size": "44 MB",
-    "rating": 4.0,
-    "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
-    "updated": "2 November 2026",
-    "downloads": "Manual sign-in \u00b7 fresh install may be required",
-    "updatedAt": "2026-11-02T15:57:39.277318+00:00",
-    "versionName": "17.20.0",
-    "minSdk": 28,
-    "splits": [
-      {
-        "file": "ITVX-17.20-base.apk"
-      },
-      {
-        "file": "ITVX-17.20-split_config.armeabi_v7a.apk"
-      },
-      {
-        "file": "ITVX-17.20-split_config.en.apk"
-      },
-      {
-        "file": "ITVX-17.20-split_config.xxhdpi.apk"
-      },
-      {
-        "file": "ITVX-17.20-split_config.xxxhdpi.apk"
-      }
-    ]
-  },
-  {
-    "models": [
       "all"
     ],
     "name": "NetMirrorTV",
@@ -834,7 +793,7 @@
   },
   {
     "models": [
-      "other"
+      "all"
     ],
     "name": "ITVX",
     "abbr": "IT",
@@ -849,8 +808,8 @@
     "size": "36.0 MB",
     "rating": 4.0,
     "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
-    "updated": "September 2026",
-    "downloads": "1.3k",
-    "updatedAt": "2026-09-15T00:00:00Z"
+    "updated": "2 November 2026",
+    "downloads": "Previous working single APK \u00b7 newer installer under test",
+    "updatedAt": "2026-11-02T16:20:35.764553+00:00"
   }
 ]
