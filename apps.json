@@ -798,18 +798,20 @@
     "name": "ITVX",
     "abbr": "IT",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/itvx.png",
-    "file": "ITVX.apk",
+    "file": "ITVX-17.20-single.apk",
     "packageName": "air.ITVMobilePlayer",
-    "versionCode": 1301717000,
+    "versionCode": 1301720000,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "36.0 MB",
+    "size": "48.0 MB",
     "rating": 4.0,
     "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
     "updated": "2 November 2026",
-    "downloads": "Previous working single APK \u00b7 newer installer under test",
-    "updatedAt": "2026-11-02T16:20:35.764553+00:00"
+    "downloads": "Single APK \u00b7 manual sign-in \u00b7 uninstall older build first",
+    "updatedAt": "2026-11-02T16:45:34.582466+00:00",
+    "versionName": "17.20.0",
+    "minSdk": 28
   }
 ]
