@@ -1,5 +1,15 @@
 [
   {
+    "id": 14,
+    "date": "2 November 2026",
+    "title": "YouTube single-APK download fixed",
+    "items": [
+      "YouTube 5.30.304 now downloads as one original Google-signed APK, replacing the split package. No merged or re-signed YouTube build is used.",
+      "Sign-in and playback tested on A5 Pro and XBJ 360.",
+      "If a newer YouTube version is installed, Android may require uninstalling it before installing this compatibility build. This clears app settings and may require signing in again."
+    ]
+  },
+  {
     "id": 13,
     "date": "2 November 2026",
     "title": "Channel 4 TV app available for all projector selections",
