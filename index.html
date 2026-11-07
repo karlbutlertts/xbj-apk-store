@@ -914,7 +914,7 @@ body {
 const _S = 'Uk9UQ0VKT1JQSkJYTFJBSw==';
 const TOTP_SECRET = atob(_S).split('').reverse().join('');
 const SESSION_KEY = 'xbj_unlocked_until';
-const SESSION_MINUTES = 43200; // 30 days
+const ACTIVATION_KEY = 'xbj_activated';
 const STEP = 30;          // seconds — standard, matches Google Authenticator
 const WINDOW = 10;        // ±10 steps = ±5 minutes tolerance
 
@@ -1026,31 +1026,31 @@ const whatsNewModal = document.getElementById('whatsNewModal');
 const whatsNewBody = document.getElementById('whatsNewBody');
 const viewBody = document.getElementById('viewBody');
 
-// Save session to both localStorage and a cookie so it survives browser
-// restarts and projector reboots (some Android TV browsers wipe localStorage
-// when the browser is killed, but cookies with max-age persist on disk).
+// Activation belongs to this installation and has no time limit.
+// Retain the old timestamp key only to migrate customers who already activated,
+// including those whose former 30-day session has expired.
 function saveSession() {
-  const until = Date.now() + SESSION_MINUTES * 60 * 1000;
-  try { localStorage.setItem(SESSION_KEY, String(until)); } catch(e) {}
-  const maxAge = SESSION_MINUTES * 60;
-  document.cookie = `${SESSION_KEY}=${until}; max-age=${maxAge}; path=/; SameSite=Lax`;
+  try { localStorage.setItem(ACTIVATION_KEY, '1'); } catch(e) {}
+  // Cookie fallback for browsers that discard localStorage. Refresh on launch;
+  // app WebView storage remains the primary, non-expiring activation record.
+  document.cookie = `${ACTIVATION_KEY}=1; max-age=34560000; path=/; SameSite=Lax; Secure`;
 }
 
 function loadSession() {
-  // Try localStorage first, then fall back to cookie
-  const ls = parseInt(localStorage.getItem(SESSION_KEY) || '0', 10);
-  if (ls > Date.now()) return ls;
-  const match = document.cookie.split(';').map(c => c.trim())
-    .find(c => c.startsWith(SESSION_KEY + '='));
-  if (match) {
-    const val = parseInt(match.split('=')[1], 10);
-    if (val > Date.now()) {
-      // Re-sync localStorage from cookie
-      try { localStorage.setItem(SESSION_KEY, String(val)); } catch(e) {}
-      return val;
-    }
+  let activated = false;
+  try {
+    activated = localStorage.getItem(ACTIVATION_KEY) === '1' ||
+      Number(localStorage.getItem(SESSION_KEY)) > 0;
+  } catch(e) {}
+  if (!activated) {
+    activated = document.cookie.split(';').some(cookie => {
+      const [key, value] = cookie.trim().split('=');
+      return (key === ACTIVATION_KEY && value === '1') ||
+        (key === SESSION_KEY && Number(value) > 0);
+    });
   }
-  return 0;
+  if (activated) saveSession();
+  return activated;
 }
 
 const MODEL_KEY = 'xbj_model';
@@ -1085,7 +1085,7 @@ const CHANGELOG_SEEN_KEY = 'xbj_changelog_seen';
 
 // Any app whose file lives under apks/entertainment/ is part of the hidden
 // "Entertainment" section — excluded from the shelves until re-entering the
-// same access code (checkCode) unlocks it. Unlike the main 30-day login
+// same access code (checkCode) unlocks it. Unlike the main permanent activation
 // session, this unlock is never written to localStorage: it's a plain
 // in-memory timestamp that expires on its own after 30 minutes and
 // disappears entirely on reload/app relaunch either way.
@@ -1543,11 +1543,11 @@ function unlock() {
   }
 }
 
-if (loadSession() > Date.now()) {
+if (loadSession()) {
   lock.classList.add('hidden');
-  // Returning user with a still-valid session skips the code-entry unlock()
+  // Returning user with a saved activation skips the code-entry unlock()
   // path entirely, so it needs its own call to trigger the native app's
-  // update check — otherwise it only ever fires once per 30-day session.
+  // update check — otherwise it only ever fires on the initial activation.
   if (window.AndroidBridge && typeof AndroidBridge.onUnlocked === 'function') {
     try { AndroidBridge.onUnlocked(); } catch (e) {}
   }
