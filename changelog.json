@@ -1,5 +1,15 @@
 [
   {
+    "id": 18,
+    "date": "7 November 2026",
+    "title": "One-time app activation \u2014 version 2.11.3",
+    "items": [
+      "Removed the 30-day activation expiry. Once activated, the app stays activated on that installation.",
+      "Existing saved activations are retained, including activations whose old 30-day session has expired.",
+      "Version 2.11.3 disables app-data backup so activation data is not backed up for a reinstall. Clearing app data or reinstalling requires a PIN again."
+    ]
+  },
+  {
     "id": 17,
     "date": "2 November 2026",
     "title": "ITVX single-APK installer fixed",
@@ -63,10 +73,10 @@
   {
     "id": 11,
     "date": "30 October 2026",
-    "title": "Projector Guy 2.11.2 — installer update",
+    "title": "Projector Guy 2.11.2 \u2014 installer update",
     "items": [
-      "Added a Projector install option when Android cannot install an app’s split APK files. Tested with the original Google-signed YouTube on A5 Pro.",
-      "The fallback requires debugging enabled and one-time approval of Projector Guy’s connection. Existing app data is kept.",
+      "Added a Projector install option when Android cannot install an app\u2019s split APK files. Tested with the original Google-signed YouTube on A5 Pro.",
+      "The fallback requires debugging enabled and one-time approval of Projector Guy\u2019s connection. Existing app data is kept.",
       "Downloads now show one overall progress percentage, and failed installs retain their files for retry."
     ]
   },
@@ -83,7 +93,7 @@
     "date": "30 October 2026",
     "title": "Original A5 Pro YouTube restored",
     "items": [
-      "YouTube now offers the original A5 Pro 5.30.304 build, with Google’s original signature.",
+      "YouTube now offers the original A5 Pro 5.30.304 build, with Google\u2019s original signature.",
       "This replaces the newer 360 build in the catalogue."
     ]
   },
@@ -101,9 +111,9 @@
     "date": "30 October 2026",
     "title": "Disney+, Netflix and STV updates",
     "items": [
-      "Disney+ updated to 26.19.0 — picture, sound and remote navigation confirmed on A5 Pro. Requires Android 12L or later.",
+      "Disney+ updated to 26.19.0 \u2014 picture, sound and remote navigation confirmed on A5 Pro. Requires Android 12L or later.",
       "Netflix 9.88.0 build 7 is now available for A5 Pro.",
-      "STV Player updated to TV build 1.8.14.2 — picture, sound and remote navigation confirmed on A5 Pro. Requires Android 12L or later.",
+      "STV Player updated to TV build 1.8.14.2 \u2014 picture, sound and remote navigation confirmed on A5 Pro. Requires Android 12L or later.",
       "Disney+ and STV may require uninstalling your existing version first, then signing in again."
     ]
   },
@@ -112,12 +122,12 @@
     "date": "17 September 2026",
     "title": "XBJ Remote Control added",
     "items": [
-      "New Remote Control page — control your XBJ projector from the Projector Guy app",
+      "New Remote Control page \u2014 control your XBJ projector from the Projector Guy app",
       "Full D-pad navigation with power, menu, and OK buttons",
       "Quick-access hotkeys for Netflix, YouTube, Hulu and Disney+",
       "Volume and focus controls, plus playback buttons",
       "Automatic projector discovery on your local network",
-      "Works with the native Projector Guy app — just tap Remote in the sidebar"
+      "Works with the native Projector Guy app \u2014 just tap Remote in the sidebar"
     ]
   },
   {
@@ -125,10 +135,10 @@
     "date": "15 September 2026",
     "title": "Split APK support & new streaming apps",
     "items": [
-      "Added ITV Mobile Player 17.17.0 with full split APK support — now installs smoothly on all devices",
+      "Added ITV Mobile Player 17.17.0 with full split APK support \u2014 now installs smoothly on all devices",
       "Updated STV Player 4.43.0.1 with split APK support for better compatibility",
       "Updated BBC iPlayer to Nvidia Shield Partners version with new official BBC iPlayer logo",
-      "Added automatic split APK handling in the store — download and install multiple APK files in one go"
+      "Added automatic split APK handling in the store \u2014 download and install multiple APK files in one go"
     ]
   },
   {
@@ -136,7 +146,7 @@
     "date": "23 August 2026",
     "title": "New TV-style app store design",
     "items": [
-      "Redesigned the whole store into a TV-style layout — a side menu plus big poster-style cards, instead of the old top-tab layout",
+      "Redesigned the whole store into a TV-style layout \u2014 a side menu plus big poster-style cards, instead of the old top-tab layout",
       "Added AK47 Sports, MovieBox and HD Streamz to Entertainment",
       "Added a \"Change Projector\" option in the sidebar to quickly switch models without digging into Preferences",
       "Entertainment now stays unlocked for 30 minutes after entering the code, instead of just 2",
@@ -149,7 +159,7 @@
     "date": "4 September 2026",
     "title": "Generate your own Entertainment code",
     "items": [
-      "The Entertainment unlock screen now has a \"Generate my code\" button — get instant access without messaging us, no need to wait for a reply",
+      "The Entertainment unlock screen now has a \"Generate my code\" button \u2014 get instant access without messaging us, no need to wait for a reply",
       "Self-generated codes are valid for 60 seconds, so they can't be shared around after the fact"
     ]
   },
@@ -158,7 +168,7 @@
     "date": "5 September 2026",
     "title": "Install all Live TV apps in one go",
     "items": [
-      "The Live TV section now has an \"Install all\" button — installs BBC iPlayer, ITVX, Channel 4 and My5 one after another instead of finding and installing each one yourself"
+      "The Live TV section now has an \"Install all\" button \u2014 installs BBC iPlayer, ITVX, Channel 4 and My5 one after another instead of finding and installing each one yourself"
     ]
   },
   {
