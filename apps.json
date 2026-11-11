@@ -30,7 +30,7 @@
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
     "file": "ProjectorGuyApp.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 32,
+    "versionCode": 33,
     "category": "Tools",
     "tags": [
       "tools"
@@ -40,8 +40,8 @@
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
     "updated": "11 November 2026",
     "downloads": "New",
-    "updatedAt": "2026-11-11T16:21:01Z",
-    "versionName": "2.11.4"
+    "updatedAt": "2026-11-11T18:26:24Z",
+    "versionName": "2.11.5"
   },
   {
     "models": [
