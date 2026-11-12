@@ -686,6 +686,22 @@ body {
   .splash-badge { width:152px; height:152px; border-radius:36px; }
   .splash-title { font-size:32px; margin-top:30px; }
 }
+
+.welcome-panel { position:relative; z-index:1; width:min(100%, 990px); padding:45px 52px 48px; text-align:center; border:1px solid #ffffff1a; border-radius:26px; background:#ffffff0f; }
+.welcome-panel h1 { margin:0; font-size:36px; line-height:1.12; letter-spacing:-.7px; font-weight:800; }
+.welcome-model { margin:10px 0 27px; color:#c2ccdd; font-size:17px; }
+.welcome-tiles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:17px; }
+.welcome-tile { display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; font:inherit; color:inherit; min-width:0; min-height:242px; border:1.5px solid #ffffff24; border-radius:17px; background:#ffffff08; padding:15px 12px 20px; cursor:pointer; }
+.welcome-tile:focus { outline:3px solid #5aa6ff; outline-offset:3px; border-color:#5aa6ff; background:#ffffff13; }
+.welcome-art { height:128px; margin:0 auto 15px; display:grid; place-items:center; }
+.welcome-art img { display:block; max-width:100%; width:185px; height:128px; object-fit:contain; }
+.welcome-title { display:block; font-size:22px; font-weight:800; margin-bottom:5px; }
+.welcome-detail { display:block; color:#c2ccdd; font-size:15px; line-height:1.3; }
+.welcome-controls { width:112px; height:94px; padding:16px; border:2px solid #6899e0; border-radius:19px; display:grid; align-content:space-around; background:linear-gradient(145deg,#254b7d,#101d38); box-shadow:0 0 22px #559eff33; }
+.welcome-track { position:relative; display:block; height:3px; background:#78a9eb; border-radius:9px; }
+.welcome-track::after { position:absolute; content:""; width:11px; height:11px; left:var(--position); top:50%; transform:translate(-50%,-50%); background:#dcecff; border-radius:100%; box-shadow:0 0 7px #a5cdff; }
+@media(max-width:750px){ .welcome-panel{padding:28px 21px;} .welcome-tile{min-height:190px;} .welcome-art,.welcome-art img{height:90px;} .welcome-title{font-size:17px;} .welcome-detail{font-size:13px;} }
+@media(max-width:530px){ .welcome-tiles{grid-template-columns:1fr;} .welcome-tile{min-height:155px;} }
 </style>
 </head>
 <body>
@@ -727,7 +743,7 @@ body {
 </div>
 
 <div id="hub" class="hidden">
-  <div class="hub-card model-card">
+  <div class="hub-card model-card" id="modelPicker">
     <div class="lock-title">Which projector do you have?</div>
     <div class="lock-sub">We'll show the right apps and guides for your model.</div>
     <div class="model-tiles">
@@ -745,6 +761,13 @@ body {
       </button>
     </div>
   </div>
+  <section class="welcome-panel hidden" id="projectorWelcome" aria-labelledby="projectorWelcomeTitle">
+<h1 id="projectorWelcomeTitle">What would you like to do?</h1><p class="welcome-model">XBJ A5 Pro</p>
+<div class="welcome-tiles">
+<button class="welcome-tile" type="button" id="welcomeApps"><span class="welcome-art"><img src="img/hub-apps.png" alt=""></span><span class="welcome-title">Apps &amp; Updates</span><span class="welcome-detail">Live TV and streaming updates</span></button>
+<button class="welcome-tile" type="button" id="welcomeBrightness"><span class="welcome-art" aria-hidden="true"><span class="welcome-controls"><i class="welcome-track" style="--position:32%"></i><i class="welcome-track" style="--position:68%"></i><i class="welcome-track" style="--position:45%"></i></span></span><span class="welcome-title">Brightness &amp; Sound</span><span class="welcome-detail">Adjust image and sound settings</span></button>
+<a class="welcome-tile" href="tools.html?model=a5pro"><span class="welcome-art"><img src="img/hub-hidden-features.png" alt=""></span><span class="welcome-title">Hidden Features</span><span class="welcome-detail">Explore extra projector controls</span></a>
+</div></section>
 </div>
 
 
@@ -1514,13 +1537,42 @@ function enterShell(view) {
 
 function selectModel(model) {
   saveModel(model);
+  const bridge = window.AndroidBridge;
+  if (model === 'a5pro' && bridge
+      && typeof bridge.hasPictureSettings === 'function' && bridge.hasPictureSettings()
+      && typeof bridge.openPictureShortcutSetup === 'function') {
+    document.getElementById('modelPicker').classList.add('hidden');
+    document.getElementById('projectorWelcome').classList.remove('hidden');
+    document.getElementById('welcomeApps').focus();
+    return;
+  }
   enterShell('home');
   if (model === '360' && window.AndroidBridge && typeof AndroidBridge.showProjectorOptimisation === 'function') {
     AndroidBridge.showProjectorOptimisation(model);
   }
 }
 
+document.getElementById('welcomeApps').addEventListener('click', () => enterShell('home'));
+document.getElementById('welcomeBrightness').addEventListener('click', () => {
+  if (!window.AndroidBridge.openPictureShortcutSetup()) {
+    window.alert('Could not open Brightness & Sound.');
+  }
+});
+
+const projectorWelcome = document.getElementById('projectorWelcome');
+projectorWelcome.addEventListener('keydown', event => {
+  const direction = DIRS[event.key] || DIRS[event.keyCode];
+  if (!direction) return;
+  const tiles = Array.from(projectorWelcome.querySelectorAll('.welcome-tile'));
+  const current = tiles.indexOf(document.activeElement);
+  const step = direction === 'left' || direction === 'up' ? -1 : 1;
+  event.preventDefault();
+  tiles[Math.max(0, Math.min(tiles.length - 1, current + step))].focus();
+});
+
 function changeModel() {
+  document.getElementById('projectorWelcome').classList.add('hidden');
+  document.getElementById('modelPicker').classList.remove('hidden');
   shell.classList.add('hidden');
   document.getElementById('hub').classList.remove('hidden');
   setTimeout(() => focusFirstIn('hub'), 150);
