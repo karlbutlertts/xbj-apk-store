@@ -1,0 +1,30 @@
+.menu-return {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.menu-return-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 54px;
+  width: min(100%, 260px);
+  padding: 12px 24px;
+  border: 1px solid #ffffff33;
+  border-radius: 14px;
+  background: var(--surface2, #182339);
+  color: var(--text, #fff);
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.menu-return-button:focus {
+  border-color: #5aa6ff;
+  outline: 3px solid #5aa6ff;
+  outline-offset: 3px;
+}

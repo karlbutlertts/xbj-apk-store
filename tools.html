@@ -20,12 +20,6 @@
   }
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   .wrap{max-width:900px;margin:0 auto;padding:18px 16px 48px;min-height:100vh}
-  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-  .back{
-    background:var(--surface2);border:1px solid var(--border);color:var(--text);
-    border-radius:12px;padding:8px 12px;font-size:14px;cursor:pointer;
-  }
-  .back:active{transform:scale(.97)}
   .title-lg{font-size:22px;font-weight:700;margin:4px 0 2px}
   .sub{color:var(--muted);font-size:14px;line-height:1.5}
   .model-badge{
@@ -121,13 +115,10 @@
   }
   .browse-row input:focus{border-color:var(--blue)}
 </style>
+<link rel="stylesheet" href="menu-return.css">
 </head>
 <body>
 <div class="wrap">
-  <div class="topbar">
-    <button class="back" onclick="goBack()">← Back to Menu</button>
-  </div>
-
   <h1 class="title-lg">🛠️ Engineering Tools</h1>
   <div class="sub">Direct access to hidden factory menus, picture-quality (PQ) settings and system activities on your projector. For advanced users only — some menus can change low-level display calibration.</div>
   <div class="model-badge" id="modelBadge">📽️ Showing tools for your projector</div>
@@ -154,6 +145,12 @@
       <div class="status" id="detailStatus"></div>
       <ul class="activity-list" id="detailList"></ul>
     </div>
+  </div>
+  <div class="menu-return">
+    <button class="menu-return-button" id="backToMenu" type="button" onclick="goBack()">
+      <span aria-hidden="true">←</span>
+      <span>Back to Menu</span>
+    </button>
   </div>
 </div>
 
@@ -440,8 +437,22 @@ function renderCarousel(){
 // D-pad left/right moves focus between tiles and keeps the focused one
 // scrolled into view. Enter/OK on a focused <button> triggers its native
 // click event already, so no extra handling is needed for "select".
+const backToMenu = document.getElementById('backToMenu');
+let lastToolTile = null;
 document.addEventListener('keydown', e => {
-  if (!carouselEl.contains(document.activeElement)) return;
+  const focused = document.activeElement;
+  if ((e.key === 'ArrowUp' || e.keyCode === 38) && focused === backToMenu && lastToolTile) {
+    e.preventDefault();
+    lastToolTile.focus();
+    return;
+  }
+  if (!carouselEl.contains(focused)) return;
+  if ((e.key === 'ArrowDown' || e.keyCode === 40) && !detailPanel.classList.contains('show')) {
+    e.preventDefault();
+    lastToolTile = focused;
+    backToMenu.focus();
+    return;
+  }
   const isLeft = e.key === 'ArrowLeft' || e.keyCode === 37;
   const isRight = e.key === 'ArrowRight' || e.keyCode === 39;
   if (!isLeft && !isRight) return;

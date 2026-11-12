@@ -20,12 +20,6 @@
   }
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   .wrap{max-width:480px;margin:0 auto;padding:18px 16px 40px;min-height:100vh}
-  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-  .back{
-    background:var(--surface2);border:1px solid var(--border);color:var(--text);
-    border-radius:12px;padding:8px 12px;font-size:14px;cursor:pointer;
-  }
-  .back:active{transform:scale(.97)}
   .title-lg{font-size:22px;font-weight:700;margin:4px 0 2px}
   .sub{color:var(--muted);font-size:14px;line-height:1.5}
 
@@ -135,13 +129,10 @@
   .errbox{display:none;color:#ff8a8a;background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.4);border-radius:12px;padding:12px;font-size:14px;margin-top:12px}
   .mockbadge{position:fixed;left:8px;bottom:8px;font-size:10px;color:#555;background:#111;border:1px solid #222;border-radius:6px;padding:3px 6px;z-index:99}
 </style>
+<link rel="stylesheet" href="menu-return.css">
 </head>
 <body>
 <div class="wrap">
-  <div class="topbar">
-    <button class="back" onclick="goBack()">← Back to Menu</button>
-  </div>
-
   <!-- STATE 1: checking -->
   <section class="state active" id="s1">
     <div class="center">
@@ -166,7 +157,6 @@
       <div class="card-title">No update available yet</div>
       <div class="card-body">There's no firmware fix published for this projector model yet. Message @karlsmidlifecrisis on TikTok and check back soon.</div>
     </div>
-    <button class="btn btn-ghost" onclick="goBack()">Back to Menu</button>
   </section>
 
   <!-- STATE 3: confirm format -->
@@ -242,6 +232,12 @@
 
     <button class="btn btn-green" onclick="goBack()">Done</button>
   </section>
+  <div class="menu-return">
+    <button class="menu-return-button" id="backToMenu" type="button" onclick="goBack()">
+      <span aria-hidden="true">←</span>
+      <span>Back to Menu</span>
+    </button>
+  </div>
 </div>
 
 <div class="mockbadge" id="mockBadge" style="display:none">browser preview (mock bridge)</div>
