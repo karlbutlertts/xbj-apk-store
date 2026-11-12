@@ -697,9 +697,19 @@ body {
 .welcome-art img { display:block; max-width:100%; width:185px; height:128px; object-fit:contain; }
 .welcome-title { display:block; font-size:22px; font-weight:800; margin-bottom:5px; }
 .welcome-detail { display:block; color:#c2ccdd; font-size:15px; line-height:1.3; }
-.welcome-controls { width:112px; height:94px; padding:16px; border:2px solid #6899e0; border-radius:19px; display:grid; align-content:space-around; background:linear-gradient(145deg,#254b7d,#101d38); box-shadow:0 0 22px #559eff33; }
-.welcome-track { position:relative; display:block; height:3px; background:#78a9eb; border-radius:9px; }
-.welcome-track::after { position:absolute; content:""; width:11px; height:11px; left:var(--position); top:50%; transform:translate(-50%,-50%); background:#dcecff; border-radius:100%; box-shadow:0 0 7px #a5cdff; }
+.welcome-illustration {
+  display:block;
+  width:170px;
+  max-width:100%;
+  aspect-ratio:25 / 19;
+  background: url('img/a5-welcome-art.jpg') no-repeat;
+  background-size:669% 495%;
+  -webkit-mask-image:radial-gradient(ellipse farthest-side, #000 78%, transparent 100%);
+  mask-image:radial-gradient(ellipse farthest-side, #000 78%, transparent 100%);
+}
+.welcome-brightness-art { background-position:50.2% 52.9%; }
+.welcome-features-art { background-position:77.7% 52.9%; }
+@media(max-width:750px) { .welcome-illustration { width:118px; } }
 @media(max-width:750px){ .welcome-panel{padding:28px 21px;} .welcome-tile{min-height:190px;} .welcome-art,.welcome-art img{height:90px;} .welcome-title{font-size:17px;} .welcome-detail{font-size:13px;} }
 @media(max-width:530px){ .welcome-tiles{grid-template-columns:1fr;} .welcome-tile{min-height:155px;} }
 </style>
@@ -765,8 +775,8 @@ body {
 <h1 id="projectorWelcomeTitle">What would you like to do?</h1><p class="welcome-model">XBJ A5 Pro</p>
 <div class="welcome-tiles">
 <button class="welcome-tile" type="button" id="welcomeApps"><span class="welcome-art"><img src="img/hub-apps.png" alt=""></span><span class="welcome-title">Apps &amp; Updates</span><span class="welcome-detail">Live TV and streaming updates</span></button>
-<button class="welcome-tile" type="button" id="welcomeBrightness"><span class="welcome-art" aria-hidden="true"><span class="welcome-controls"><i class="welcome-track" style="--position:32%"></i><i class="welcome-track" style="--position:68%"></i><i class="welcome-track" style="--position:45%"></i></span></span><span class="welcome-title">Brightness &amp; Sound</span><span class="welcome-detail">Adjust image and sound settings</span></button>
-<a class="welcome-tile" href="tools.html?model=a5pro"><span class="welcome-art"><img src="img/hub-hidden-features.png" alt=""></span><span class="welcome-title">Hidden Features</span><span class="welcome-detail">Explore extra projector controls</span></a>
+<button class="welcome-tile" type="button" id="welcomeBrightness"><span class="welcome-art welcome-illustration welcome-brightness-art" aria-hidden="true"></span><span class="welcome-title">Brightness &amp; Sound</span><span class="welcome-detail">Adjust image and sound settings</span></button>
+<a class="welcome-tile" href="tools.html?model=a5pro"><span class="welcome-art welcome-illustration welcome-features-art" aria-hidden="true"></span><span class="welcome-title">Hidden Features</span><span class="welcome-detail">Explore extra projector controls</span></a>
 </div></section>
 </div>
 
