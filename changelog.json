@@ -1,5 +1,15 @@
 [
   {
+    "id": 22,
+    "date": "19 November 2026",
+    "title": "A5 Pro touchscreen auto-hide \u2014 2.11.12",
+    "items": [
+      "Added Auto-hide touchscreen controls to Optimise A5 Pro. Touch the built-in screen to show the controls; they hide after five seconds without touch.",
+      "OFF restores the original control visibility. The ON preference is saved and restores after Android completes its startup broadcasts.",
+      "Tested on the A5 Pro, including physical touch, switching OFF and restarting. Requires supported factory-rooted A5 Pro firmware and locally authorised ADB."
+    ]
+  },
+  {
     "id": 21,
     "date": "19 November 2026",
     "title": "Faster TellyGrid download for A5 Pro and 360",
