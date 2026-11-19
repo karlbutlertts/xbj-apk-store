@@ -1151,6 +1151,9 @@ window._allApps = [];
 
 // Apps that suit the projector model the buyer picked, minus anything from
 // the hidden Entertainment section unless it's currently unlocked.
+function isProjectorGuyApp(a) {
+  return a.packageName === "com.projectorguy.app" || a.name === "Projector Guy App";
+}
 function visibleApps() {
   const model = loadModel();
   const unlocked = entertainmentIsUnlocked();
@@ -1158,13 +1161,14 @@ function visibleApps() {
     if (isHiddenApp(a) && !unlocked) return false;
     if (!a.models || a.models.includes('all')) return true;
     return model && a.models.includes(model);
-  });
+  }).sort((a, b) => Number(isProjectorGuyApp(a)) - Number(isProjectorGuyApp(b)));
 }
 function openApps()   { return visibleApps().filter(a => !isHiddenApp(a)); }
 function hiddenApps() { return visibleApps().filter(isHiddenApp); }
 function byTag(list, tag) { return list.filter(a => Array.isArray(a.tags) && a.tags.includes(tag)); }
 function newestFirst(list) {
-  return list.slice().sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
+  return list.slice().sort((a, b) => Number(isProjectorGuyApp(a)) - Number(isProjectorGuyApp(b))
+    || new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
 }
 function appHref(a) { return a.url || APK_BASE_URL + a.file; }
 function hasSplits(a) { return !!(a.splits && Array.isArray(a.splits) && a.splits.length > 0); }
@@ -1302,7 +1306,7 @@ function heroHtml(a) {
         <div class="hero-icon" style="background:${esc(a.color || '#12203a')}">${art}</div>
         <div class="hero-copy">
           <div class="hero-eyebrow">Latest update</div>
-          <div class="hero-title">${esc(a.name)}</div>
+          <div class="hero-title">${esc(a.heroTitle || a.name)}</div>
           <div class="hero-meta">
             <span><span class="star">★</span> ${esc(a.rating)}</span><span class="dot">·</span>
             <span>${esc(a.size)}</span><span class="dot">·</span>
@@ -1365,7 +1369,7 @@ function renderTopbar(view) {
 
 function renderHome() {
   const open = openApps();
-  const recent = newestFirst(open).slice(0, 10);
+  const recent = newestFirst(open.filter(a => !isProjectorGuyApp(a))).slice(0, 10);
   const helpCards = HELP_CARDS.map(wideCardHtml).join('');
   const entRow = entertainmentIsUnlocked()
     ? rowHtml('Entertainment', newestFirst(hiddenApps()))
