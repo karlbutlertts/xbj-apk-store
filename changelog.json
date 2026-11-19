@@ -1,5 +1,16 @@
 [
   {
+    "id": 19,
+    "date": "19 November 2026",
+    "title": "A5 Pro optimisation controls \u2014 2.11.10",
+    "items": [
+      "Added Optimise A5 Pro below Sound Settings for supported A5 Pro devices.",
+      "Remote-friendly on/off pills control navigation sounds, animation performance and Android\u2019s Allow game mode setting.",
+      "Navigation sounds use the manufacturer\u2019s persistent key-sound control. Performance Off restores the animation values saved before switching it on.",
+      "Gaming mode controls Android\u2019s permission for low-latency requests. Active processing bypass and lower input latency have not been verified."
+    ]
+  },
+  {
     "id": 18,
     "date": "7 November 2026",
     "title": "One-time app activation \u2014 version 2.11.3",
