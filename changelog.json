@@ -1,5 +1,17 @@
 [
   {
+    "id": 20,
+    "date": "19 November 2026",
+    "title": "Faster A5 Pro Home and app optimisation \u2014 2.11.11",
+    "items": [
+      "Improve projector speed now includes a direct stock-launcher Home route on supported rooted A5 Pro firmware, menu animation settings and Android app compilation.",
+      "A progress bar shows compilation progress. The completed state is saved and survives reboot. Switching Off restores the saved Home route and animation settings; compiled app code is retained.",
+      "Remove navigation sounds now uses ON to silence clicks and OFF to restore them.",
+      "Renamed the gaming control Activate gaming mode \ud83c\udfae. It controls Android\u2019s Allow game mode permission; active low-latency processing remains unverified.",
+      "The completion popup button now reads Mate... I know."
+    ]
+  },
+  {
     "id": 19,
     "date": "19 November 2026",
     "title": "A5 Pro optimisation controls \u2014 2.11.10",
