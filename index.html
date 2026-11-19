@@ -776,7 +776,7 @@ body {
 <div class="welcome-tiles">
 <button class="welcome-tile" type="button" id="welcomeApps"><span class="welcome-art"><img src="img/hub-apps.png" alt=""></span><span class="welcome-title">Apps &amp; Updates</span><span class="welcome-detail">Live TV and streaming updates</span></button>
 <button class="welcome-tile" type="button" id="welcomeBrightness"><span class="welcome-art welcome-illustration welcome-brightness-art" aria-hidden="true"></span><span class="welcome-title">Brightness &amp; Sound</span><span class="welcome-detail">Adjust image and sound settings</span></button>
-<a class="welcome-tile" href="tools.html?model=a5pro"><span class="welcome-art welcome-illustration welcome-features-art" aria-hidden="true"></span><span class="welcome-title">Hidden Features</span><span class="welcome-detail">Explore extra projector controls</span></a>
+<button class="welcome-tile" type="button" id="welcomeOptimise"><span class="welcome-art welcome-illustration welcome-features-art" aria-hidden="true"></span><span class="welcome-title">Optimise A5 Pro</span><span class="welcome-detail">Speed, gaming and touchscreen controls</span></button>
 </div></section>
 </div>
 
@@ -1567,6 +1567,15 @@ function selectModel(model) {
 }
 
 document.getElementById('welcomeApps').addEventListener('click', () => enterShell('home'));
+document.getElementById('welcomeOptimise').addEventListener('click', () => {
+  const bridge = window.AndroidBridge;
+  if (loadModel() === 'a5pro' && bridge
+      && typeof bridge.showProjectorOptimisation === 'function') {
+    bridge.showProjectorOptimisation('a5pro');
+  } else {
+    alert('Update Projector Guy to use A5 Pro optimisation.');
+  }
+});
 document.getElementById('welcomeBrightness').addEventListener('click', () => {
   if (!window.AndroidBridge.openPictureShortcutSetup()) {
     window.alert('Could not open Brightness & Sound.');
