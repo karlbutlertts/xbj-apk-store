@@ -797,21 +797,22 @@
     "name": "TellyGrid (A5 Pro)",
     "abbr": "TG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/tellygrid-app.svg",
-    "file": "TellyGrid-0.8.2-alpha8.2-A5.apk",
-    "packageName": "io.github.lozza.tellygrid",
-    "versionCode": 10,
-    "versionName": "0.8.2-alpha.8.2",
+    "file": "TellyGrid-0.8.2-PG1.apk",
+    "packageName": "io.github.lozza.tellygrid.speedtest",
+    "versionCode": 11,
+    "versionName": "0.8.2-alpha.8.2-PG1",
     "minSdk": 26,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "15.5 MB",
+    "size": "14.2 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#7249ac,#201533)",
-    "updated": "2 November 2026",
-    "downloads": "Updated alpha TV guide",
-    "updatedAt": "2026-11-02T15:57:39.277318+00:00"
+    "updated": "19 November 2026",
+    "downloads": "Faster non-debug build",
+    "updatedAt": "2026-11-19T17:05:00.333709Z",
+    "description": "Faster non-debug TellyGrid copy. Installs alongside the earlier official copy. Use the new TellyGrid icon after installation; earlier settings remain with the earlier copy."
   },
   {
     "models": [
@@ -820,21 +821,22 @@
     "name": "TellyGrid (360)",
     "abbr": "TG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/tellygrid-app.svg",
-    "file": "TellyGrid-0.8.2-alpha8.2-360.apk",
-    "packageName": "io.github.lozza.tellygrid",
-    "versionCode": 10,
-    "versionName": "0.8.2-alpha.8.2",
+    "file": "TellyGrid-0.8.2-PG1.apk",
+    "packageName": "io.github.lozza.tellygrid.speedtest",
+    "versionCode": 11,
+    "versionName": "0.8.2-alpha.8.2-PG1",
     "minSdk": 26,
     "category": "Entertainment",
     "tags": [
       "livetv"
     ],
-    "size": "15.5 MB",
+    "size": "14.2 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#7249ac,#201533)",
-    "updated": "2 November 2026",
-    "downloads": "Updated alpha TV guide \u00b7 360 build",
-    "updatedAt": "2026-11-02T15:57:39.277318+00:00"
+    "updated": "19 November 2026",
+    "downloads": "Faster non-debug build",
+    "updatedAt": "2026-11-19T17:05:00.333709Z",
+    "description": "Faster non-debug TellyGrid copy. Installs alongside the earlier official copy. Use the new TellyGrid icon after installation; earlier settings remain with the earlier copy."
   },
   {
     "models": [

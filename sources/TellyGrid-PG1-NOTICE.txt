@@ -1,0 +1,10 @@
+TellyGrid PG1 for A5 Pro and 360
+Original project: https://github.com/lozza/TellyGrid
+Upstream version: v0.8.2-alpha.8.2, commit 6b01e5645e9a09d9b845270892c60b8d56be5c3d.
+Upstream source archive remains available in this repository as sources/TellyGrid-0.8.2-alpha8.2-source.zip. Retain upstream copyright and licence terms.
+
+PG1 modifications: Android application package io.github.lozza.tellygrid.speedtest, debuggable=false, launcher label TellyGrid, versionCode 11, versionName 0.8.2-alpha.8.2-PG1. Relative component class names remain in the original Java namespace. Custom permissions and provider authorities use the separate package identity. HOME intent category removed so installation does not register a replacement home launcher. App bytecode is unchanged.
+
+Reproduction: use Apktool 2.12.1 to decode the official APK with -s (retain bytecode), replace AndroidManifest.xml and apktool.yml with the files in the accompanying changes archive, rebuild, zipalign, and sign with your own signing key. The Projector Guy build uses its compatibility signing certificate, SHA256 129f475afd942c4f350f9451668d7c504cc9e42a709b252bcd8b81e2c77fa04e. No private signing key is included.
+
+This is a separately signed Projector Guy compatibility build. Android compilation is device-local and is not bundled in the APK. Subsequent official updates need separate compatibility testing.
