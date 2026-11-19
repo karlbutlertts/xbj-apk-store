@@ -1,5 +1,14 @@
 [
   {
+    "id": 23,
+    "date": "19 November 2026",
+    "title": "Wider A5 Pro Optimise popup \u2014 2.11.13",
+    "items": [
+      "The Optimise A5 Pro popup now scales to 74% of the landscape screen width, giving labels and switches more space.",
+      "Existing optimisation preferences are retained. The welcome shortcut is labelled Optimise my projector."
+    ]
+  },
+  {
     "id": 22,
     "date": "19 November 2026",
     "title": "A5 Pro touchscreen auto-hide \u2014 2.11.12",
