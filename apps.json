@@ -28,20 +28,21 @@
     "name": "Projector Guy App",
     "abbr": "PG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
-    "file": "ProjectorGuyApp-2.11.13.apk",
+    "file": "ProjectorGuyApp-2.12.0.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 41,
+    "versionCode": 42,
     "category": "Tools",
     "tags": [
       "tools"
     ],
-    "size": "2.5 MB",
+    "size": "3.6 MB",
     "rating": 5.0,
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
-    "updated": "19 November 2026",
-    "downloads": "New",
-    "updatedAt": "2026-11-19T23:05:47.844458Z",
-    "versionName": "2.11.13"
+    "updated": "21 November 2026",
+    "downloads": "A5 first-time setup · remembers completion",
+    "updatedAt": "2026-11-21T23:07:57.768644+00:00",
+    "versionName": "2.12.0",
+    "sha256": "71f0d2550ec4efe3b84bcbbb31e0da4c8561cc9c3799a3ae0ee3b065aa5074ca"
   },
   {
     "models": [
@@ -199,8 +200,8 @@
     "abbr": "NW",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/nowtv.png",
     "file": "nowtv.apk",
-    "packageName": "com.nowtv.it",
-    "versionCode": 1,
+    "packageName": "com.bskyb.nowtv.beta",
+    "versionCode": 500000,
     "category": "Entertainment",
     "tags": [
       "streaming"
@@ -210,7 +211,9 @@
     "color": "linear-gradient(145deg,#0f5c5c,#052626)",
     "updated": "June 2026",
     "downloads": "New",
-    "updatedAt": "2026-06-11T14:26:00Z"
+    "updatedAt": "2026-06-11T14:26:00Z",
+    "versionName": "5.0.0-AndroidTV-GB",
+    "minSdk": 22
   },
   {
     "models": [

@@ -1,5 +1,18 @@
 [
   {
+    "id": 25,
+    "date": "21 November 2026",
+    "title": "A5 first-time setup — Projector Guy 2.12.0",
+    "items": [
+      "New A5 customers can check installed apps, choose streaming and Live TV apps, then install or update them one by one. Existing and newer apps are retained; signature conflicts are left for attention without removing logins.",
+      "Finish with your choice of A5 speed, navigation sounds, gaming preference and touchscreen auto-hide settings. The storage check now reads Android free space directly and keeps a 400 MiB reserve.",
+      "Setup completion is remembered. Reopening takes you to Home. Existing customers keep their login and go to Home after this update.",
+      "Added the personalised Entertainment end card, corrected emoji/apostrophe encoding and added the brew message while apps install.",
+      "A5 setup requires a one-time local debugging approval where Android asks. Other projector models keep their existing flow.",
+      "Corrected NOW TV package/version metadata to match the existing APK so installed-app checks can identify it correctly."
+    ]
+  },
+  {
     "id": 24,
     "date": "21 November 2026",
     "title": "STV Player — one-file download",
