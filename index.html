@@ -1493,6 +1493,7 @@ function renderSettings() {
 function setView(view, opts) {
   opts = opts || {};
   currentView = view;
+  if (view === 'home') closeEntOverlay();
   sidebar.querySelectorAll('.side-item').forEach(el =>
     el.classList.toggle('active', el.dataset.view === view));
   renderTopbar(view);
