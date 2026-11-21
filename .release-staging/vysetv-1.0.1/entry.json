@@ -1,0 +1,24 @@
+{
+  "models": [
+    "all"
+  ],
+  "name": "Streaming Services",
+  "abbr": "SS",
+  "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/streaming-services.png",
+  "file": "entertainment/streaming/StreamingServices-VyseTV-1.0.1.apk",
+  "packageName": "com.vyse.vyse_tv",
+  "versionCode": 1004,
+  "versionName": "1.0.1",
+  "minSdk": 25,
+  "category": "Entertainment",
+  "tags": [
+    "streaming"
+  ],
+  "size": "71.9 MB",
+  "color": "linear-gradient(145deg,#273c72,#10182b)",
+  "updated": "21 November 2026",
+  "updatedAt": "2026-11-21T08:50:17.914640+00:00",
+  "downloads": "VyseTV \u00b7 streaming services",
+  "description": "VyseTV 1.0.1, backed up from the A5 Pro. Requires Android 7.1 or later and ARMv7 support.",
+  "rating": "\u2014"
+}
