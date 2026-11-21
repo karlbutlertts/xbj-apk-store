@@ -1,5 +1,15 @@
 [
   {
+    "id": 26,
+    "date": "21 November 2026",
+    "title": "A5 setup compatibility fix — 2.12.1",
+    "items": [
+      "Auto-hide no longer stops setup when the built-in touchscreen is inactive. The controls hide and the helper waits for a touch device to become available.",
+      "The helper is copied in small, verified chunks to stay within the projector connection limit.",
+      "Optimisation progress now moves forward consistently between saving preferences and preparing apps."
+    ]
+  },
+  {
     "id": 25,
     "date": "21 November 2026",
     "title": "A5 first-time setup — Projector Guy 2.12.0",
