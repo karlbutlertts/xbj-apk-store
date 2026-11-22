@@ -2,11 +2,12 @@
   {
     "id": 28,
     "date": "22 November 2026",
-    "title": "A smoother first-time A5 setup — 2.13.0",
+    "title": "A smoother first-time A5 setup — 2.13.1",
     "items": [
       "Choose streaming and Live TV apps in one place, then select your A5 improvements before setup starts.",
       "Selected app installs and projector optimisation now run together, with progress from the real native jobs and a brew break message.",
       "Saved choices support resuming interrupted setup. Apps already installed at the current or a newer version are kept. Failed apps can be retried or left for later without removing existing logins.",
+      "Slow native connections cannot replay the previous install result while optimisation starts.",
       "Renamed the sound switch to Remove annoying navigation sounds in setup and Optimise A5 Pro.",
       "New personalised Cinema finish screen with corrected apostrophes and emojis. Entertainment retains its access-code lock; exploring later returns Home.",
       "Release build, signature and browser integration checks passed. This revision has not been freshly tested on a projector."
