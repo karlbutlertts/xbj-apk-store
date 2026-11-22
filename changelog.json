@@ -1,5 +1,15 @@
 [
   {
+    "id": 27,
+    "date": "22 November 2026",
+    "title": "NOW TV — newer single-file A5 download",
+    "items": [
+      "Replaced the old NOW TV 5.0.0 download with NOW 7.11.200 as one complete APK for A5 Pro.",
+      "The exact single APK installed and reached the sign-in screen on the A5 Pro. Playback and account sign-in have not been tested.",
+      "Replacing a differently signed existing NOW app may require uninstalling it first, which clears its login/settings."
+    ]
+  },
+  {
     "id": 26,
     "date": "21 November 2026",
     "title": "A5 setup compatibility fix — 2.12.1",

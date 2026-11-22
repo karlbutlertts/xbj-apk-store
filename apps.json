@@ -199,21 +199,22 @@
     "name": "NOW TV",
     "abbr": "NW",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/nowtv.png",
-    "file": "nowtv.apk",
+    "file": "NOW-7.11.200-single.apk",
     "packageName": "com.bskyb.nowtv.beta",
-    "versionCode": 500000,
+    "versionCode": 230711200,
     "category": "Entertainment",
     "tags": [
       "streaming"
     ],
-    "size": "15 MB",
+    "size": "11.4 MB",
     "rating": 4.1,
     "color": "linear-gradient(145deg,#0f5c5c,#052626)",
-    "updated": "June 2026",
-    "downloads": "New",
-    "updatedAt": "2026-06-11T14:26:00Z",
-    "versionName": "5.0.0-AndroidTV-GB",
-    "minSdk": 22
+    "updated": "22 November 2026",
+    "downloads": "Single APK · sign-in screen tested on A5",
+    "updatedAt": "2026-11-22T00:03:46.150628Z",
+    "versionName": "7.11.200",
+    "minSdk": 32,
+    "sha256": "0cfa9aa4857c51df9507becafa7926857c0834c4769001fab991ea1c99a7f1b2"
   },
   {
     "models": [
