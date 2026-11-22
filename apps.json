@@ -28,21 +28,21 @@
     "name": "Projector Guy App",
     "abbr": "PG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
-    "file": "ProjectorGuyApp-2.12.1.apk",
+    "file": "ProjectorGuyApp-2.13.0.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 43,
+    "versionCode": 44,
     "category": "Tools",
     "tags": [
       "tools"
     ],
-    "size": "3.6 MB",
+    "size": "3.4 MB",
     "rating": 5.0,
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
-    "updated": "21 November 2026",
-    "downloads": "A5 setup · dormant touchscreen fix",
-    "updatedAt": "2026-11-21T23:29:00.143619+00:00",
-    "versionName": "2.12.1",
-    "sha256": "1ca7ea3054517e0e1ff2dab0f1739520fce4bf51f0d04dc767ddaec1aee128e9"
+    "updated": "22 November 2026",
+    "downloads": "New A5 setup experience",
+    "updatedAt": "2026-11-22T23:29:42.067548+00:00",
+    "versionName": "2.13.0",
+    "sha256": "ca6efa9431ac1830ffe5eb047265ea2a51d804e6c0528e792cc92f2b7c47e783"
   },
   {
     "models": [
