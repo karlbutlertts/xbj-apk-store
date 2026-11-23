@@ -1,5 +1,16 @@
 [
   {
+    "id": 31,
+    "date": "23 November 2026",
+    "title": "A5 cleanup tools and smoother setup — 2.15.2",
+    "items": [
+      "New A5 Tools → RAM & storage: live available RAM, free storage, safe background-app cleanup and a review screen for completed installer files or inactive-app cache. App logins and settings are kept.",
+      "Optional Close background apps on exit switch in Optimise A5 Pro and setup. Runs when you exit Projector Guy with Back; saved across reboots and off by default.",
+      "First-time setup starts after login and A5 projector selection. Completed setup stays completed; other projector models skip the A5 setup.",
+      "Factory menus is now available only in Hidden Features. LinkDrop is in Entertainment → Tools."
+    ]
+  },
+  {
     "id": 30,
     "date": "23 November 2026",
     "title": "Factory menus, simpler settings and LinkDrop — 2.15.1",

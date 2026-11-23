@@ -28,21 +28,21 @@
     "name": "Projector Guy App",
     "abbr": "PG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
-    "file": "ProjectorGuyApp-2.15.1.apk",
+    "file": "ProjectorGuyApp-2.15.2.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 48,
+    "versionCode": 49,
     "category": "Tools",
     "tags": [
       "tools"
     ],
-    "size": "3.5 MB",
+    "size": "3.3 MB",
     "rating": 5,
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
     "updated": "23 November 2026",
-    "downloads": "Factory menus in Tools + combined picture and sound settings",
-    "updatedAt": "2026-11-23T15:53:20.881Z",
-    "versionName": "2.15.1",
-    "sha256": "b2832ed73f1ad01248eb430af8cfed41fed02f6c494e7898700334a08174304d"
+    "downloads": "A5 RAM & storage tools, optional background cleanup and setup flow fixes",
+    "updatedAt": "2026-11-23T17:27:41.070Z",
+    "versionName": "2.15.2",
+    "sha256": "9e475c361f5230889ed6381a8fc029c9150ed454bbd1ffdcd668f4093a5eab72"
   },
   {
     "models": [
