@@ -1,5 +1,15 @@
 [
   {
+    "id": 34,
+    "date": "23 November 2026",
+    "title": "Home-screen notification test — 2.15.5",
+    "items": [
+      "Adds a clearly labelled, once-only test notice: Projector Guy app has a new update — Test notification.",
+      "Appears only on Home after installing and activating this version, with background alerts enabled. Waits while another app is open and disappears automatically.",
+      "The test expires after 30 November 2026. Installing the update or seeing the notification does not install any streaming app."
+    ]
+  },
+  {
     "id": 33,
     "date": "23 November 2026",
     "title": "Updates on your Home screen — 2.15.4",
