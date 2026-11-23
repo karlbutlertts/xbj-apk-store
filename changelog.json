@@ -1,5 +1,15 @@
 [
   {
+    "id": 32,
+    "date": "23 November 2026",
+    "title": "Live readings and a clearer Clean tool — 2.15.3",
+    "items": [
+      "RAM and free-storage readings now refresh every two seconds while Clean is open, including during cleanup. Fresh readings are taken after completion.",
+      "RAM cleanup and temporary-file cleanup now show measured progress as apps and files are checked, followed by the final results scan.",
+      "The Tools cleanup tile is now called Clean, with teal broom artwork. Tools cards align along the same top edge."
+    ]
+  },
+  {
     "id": 31,
     "date": "23 November 2026",
     "title": "A5 cleanup tools and smoother setup — 2.15.2",
