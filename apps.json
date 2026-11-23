@@ -597,7 +597,7 @@
     "name": "LinkDrop",
     "abbr": "LD",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/linkdrop.png",
-    "file": "LinkDrop-1.0.38.apk",
+    "file": "entertainment/tools/LinkDrop-1.0.38.apk",
     "packageName": "com.linkdrop.tvapp",
     "versionCode": 39,
     "category": "Tools",
