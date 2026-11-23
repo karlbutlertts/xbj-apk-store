@@ -36,7 +36,7 @@
       "tools"
     ],
     "size": "3.5 MB",
-    "rating": 5.0,
+    "rating": 5,
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
     "updated": "23 November 2026",
     "downloads": "Automatic English menus + network speed checker",
@@ -618,19 +618,22 @@
     "name": "LinkDrop",
     "abbr": "LD",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icons/linkdrop.png",
-    "file": "entertainment/tools/link.apk",
+    "file": "LinkDrop-1.0.38.apk",
     "packageName": "com.linkdrop.tvapp",
-    "versionCode": 28,
+    "versionCode": 39,
     "category": "Tools",
     "tags": [
       "tools"
     ],
-    "size": "3.8 MB",
+    "size": "4.5 MB",
     "rating": 4.5,
     "color": "linear-gradient(145deg,#4f7cff,#7b2ff7)",
-    "updated": "September 2026",
+    "updated": "23 November 2026",
     "downloads": "Discover, browse and download trending apps for Android TV",
-    "updatedAt": "2026-09-15T00:00:00Z"
+    "updatedAt": "2026-11-23T15:48:08.097Z",
+    "versionName": "1.0.38",
+    "minSdk": 21,
+    "sha256": "66994e12faef10f5a06799a96da0e71fb598a8abb2c22fbdca2982e063994c33"
   },
   {
     "models": [
@@ -846,7 +849,7 @@
       "livetv"
     ],
     "size": "48.0 MB",
-    "rating": 4.0,
+    "rating": 4,
     "color": "linear-gradient(145deg,#d9e85c,#8a9c1e)",
     "updated": "2 November 2026",
     "downloads": "Single APK · manual sign-in · uninstall older build first",
