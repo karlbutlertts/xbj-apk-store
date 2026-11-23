@@ -1,5 +1,17 @@
 [
   {
+    "id": 29,
+    "date": "23 November 2026",
+    "title": "Automatic English menus and network speed — 2.15.0",
+    "items": [
+      "Supported Newlink factory menus now get offline English labels automatically after app activation or first opening. Customers do not need to turn on the English switch on compatible units with the projector connection available.",
+      "Known labels are translated while the manufacturer controls, focus values and existing accessibility services stay intact. The overlay disappears outside supported menus. Unknown labels remain unchanged; original Chinese can be selected in English menus.",
+      "If Android requires a one-time accessibility/debugging approval, the English menus screen explains how to finish permission setup. Translation does not run motor tests, calibration or repair procedures.",
+      "New Network speed tool: download Mbps, HTTPS latency, jitter, Stop and a saved last result. A test downloads up to 50 MB from Cloudflare; streaming guidance is an estimate, not a playback guarantee.",
+      "The signed build was tested on A5 Pro: automatic English activation, menu navigation, preserved values, overlay exit and manual OFF; network measurement, Stop and saved-result reopening were also tested."
+    ]
+  },
+  {
     "id": 28,
     "date": "22 November 2026",
     "title": "A smoother first-time A5 setup — 2.13.1",
