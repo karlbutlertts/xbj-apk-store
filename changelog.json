@@ -1,5 +1,15 @@
 [
   {
+    "id": 30,
+    "date": "23 November 2026",
+    "title": "Factory menus, simpler settings and LinkDrop — 2.15.1",
+    "items": [
+      "Factory menus is now in Tools, replacing the older factory-menu entry. Automatic English labels and the original-language switch remain available.",
+      "Picture and sound controls are combined into Picture & Sound Settings. The separate English menus sidebar shortcut has been removed.",
+      "LinkDrop updated to the official single APK 1.0.38, version code 39. Installation and launch tested on the A5 Pro; Karl confirmed it works."
+    ]
+  },
+  {
     "id": 29,
     "date": "23 November 2026",
     "title": "Automatic English menus and network speed — 2.15.0",

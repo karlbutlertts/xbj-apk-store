@@ -259,7 +259,7 @@ const TILES = [
     ]
   },
   {
-    icon: '🏭', title: 'Factory Menus', sub: 'Newlink & SStar factory + test-pattern menus',
+    icon: '🏭', title: 'Factory menus', sub: 'Open factory menus with automatic English labels', factoryTranslation: true,
     models: ['a5pro'], type: 'group', children: [
       {
         icon: '📂', title: 'Newlink Factory Menu', sub: 'com.newlink.factorymenu', tested: true,
@@ -526,6 +526,12 @@ function launchActivity(pkg, activity){
 }
 
 function openTile(t){
+  if (t.factoryTranslation && NATIVE && typeof window.AndroidBridge.openFactoryTranslation === 'function') {
+    const ok = window.AndroidBridge.openFactoryTranslation();
+    if (!ok) { openDetail(t.title, t.sub); setStatus('Factory menus could not be opened.', false); }
+    return;
+  }
+
   // Drilling in/out of a sub-section carousel works even in a plain browser
   // preview — it's just navigating the catalog, no native call involved.
   if (t.type === 'group') { activeGroup = t; renderCarousel(); return; }
