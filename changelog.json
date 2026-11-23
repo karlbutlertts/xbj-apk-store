@@ -1,5 +1,14 @@
 [
   {
+    "id": 35,
+    "date": "23 November 2026",
+    "title": "Live update-alert test — 2.15.6",
+    "items": [
+      "Version-only release for testing detection of a newer Projector Guy app on the Home screen. Retains the existing notification features and once-only test notice.",
+      "Background checks are periodic. This release does not automatically install itself or change projector settings."
+    ]
+  },
+  {
     "id": 34,
     "date": "23 November 2026",
     "title": "Home-screen notification test — 2.15.5",

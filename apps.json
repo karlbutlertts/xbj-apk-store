@@ -28,9 +28,9 @@
     "name": "Projector Guy App",
     "abbr": "PG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
-    "file": "ProjectorGuyApp-2.15.5.apk",
+    "file": "ProjectorGuyApp-2.15.6.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 52,
+    "versionCode": 53,
     "category": "Tools",
     "tags": [
       "tools"
@@ -39,10 +39,10 @@
     "rating": 5,
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
     "updated": "23 November 2026",
-    "downloads": "Once-only customer test notification on Home",
-    "updatedAt": "2026-11-23T21:17:22.387Z",
-    "versionName": "2.15.5",
-    "sha256": "d5e6162b5f8f0f1cfdb682ae4e15d9aa8a685b981212770afbdca18c721ae890"
+    "downloads": "Live update-alert verification release",
+    "updatedAt": "2026-11-23T21:19:40.624Z",
+    "versionName": "2.15.6",
+    "sha256": "716d21661be4f2e189b0d54f5ce1ce12e2d8448e45ae0e46629cd43673431848"
   },
   {
     "models": [
