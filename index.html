@@ -1416,10 +1416,8 @@ function renderAppView(view) {
   const list = view === 'all' ? newestFirst(open) : byTag(open, view);
   const extra = (view === 'all' && !entertainmentIsUnlocked() && window._allApps.some(isHiddenApp))
     ? lockedCardHtml() : '';
-  const factory = view === 'tools' && loadModel() === 'a5pro'
-    ? '<button type="button" class="card nav-focusable" onclick="openFactoryMenusTool()"><div class="card-art" style="background:linear-gradient(145deg,#385d87,#172438)"><span class="card-abbr">🏭</span></div><div class="card-title">Factory menus</div><div class="card-sub">Automatic English labels</div></button>' : '';
   const banner = view === 'livetv' ? installAllBannerHtml(list) : '';
-  return banner + gridHtml(titles[view] || 'Apps', list, extra + factory);
+  return banner + gridHtml(titles[view] || 'Apps', list, extra);
 }
 
 function renderEntertainment() {
