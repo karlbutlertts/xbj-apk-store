@@ -28,9 +28,9 @@
     "name": "Projector Guy App",
     "abbr": "PG",
     "icon": "https://raw.githubusercontent.com/karlbutlertts/xbj-apk-store/main/icon-512.png",
-    "file": "ProjectorGuyApp-2.15.3.apk",
+    "file": "ProjectorGuyApp-2.15.4.apk",
     "packageName": "com.projectorguy.app",
-    "versionCode": 50,
+    "versionCode": 51,
     "category": "Tools",
     "tags": [
       "tools"
@@ -39,10 +39,10 @@
     "rating": 5,
     "color": "linear-gradient(145deg,#5aa6ff,#2563d6)",
     "updated": "23 November 2026",
-    "downloads": "Live RAM/storage readings, cleanup progress and aligned Clean tile",
-    "updatedAt": "2026-11-23T17:54:16.678Z",
-    "versionName": "2.15.3",
-    "sha256": "291aaa321bb9ecfc6e76c662056f7227a68a8acc0b1a6962d1bd1370c467dc2f"
+    "downloads": "Compact Home-screen update alerts with app logos",
+    "updatedAt": "2026-11-23T19:20:40.370Z",
+    "versionName": "2.15.4",
+    "sha256": "c5183b345ad750af4e3a86e295eb45902a758049da57f932d309b5d0e0d0989a"
   },
   {
     "models": [

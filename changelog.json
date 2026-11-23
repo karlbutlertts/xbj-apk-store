@@ -1,5 +1,16 @@
 [
   {
+    "id": 33,
+    "date": "23 November 2026",
+    "title": "Updates on your Home screen — 2.15.4",
+    "items": [
+      "Compact update banner with logos for installed streaming apps and Projector Guy features. Only compatible apps with a newer library version are included.",
+      "Alerts wait while another app is open, appear on the stock launcher, and disappear when you leave Home. Your remote stays with the launcher.",
+      "Checks run about every six hours when connected and are scheduled again after reboot. Already shown app versions are remembered to avoid repeat alerts.",
+      "Background alerts default on after activation and can be turned off in Preferences. Automatic launcher-alert setup was verified on the A5 Pro; Android permission setup remains available where required. No app is installed by the notification."
+    ]
+  },
+  {
     "id": 32,
     "date": "23 November 2026",
     "title": "Live readings and a clearer Clean tool — 2.15.3",
